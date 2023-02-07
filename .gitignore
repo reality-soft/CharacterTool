@@ -8,3 +8,6 @@
 /CharacterTool/CharacterTool.vcxproj.user
 /CharacterTool.vcxproj.filters
 /CharacterTool.vcxproj.user
+/CharacterTool/imgui.ini
+/vendor/premake
+/ProjectGenerator.bat
