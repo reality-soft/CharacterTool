@@ -8,13 +8,12 @@ void CharacterTool::OnInit()
 	DINPUT->Init(ENGINE->GetWindowHandle(), ENGINE->GetInstanceHandle());
 
 	LoadResource();
-  
+		
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	character.Regist(reg_scene);
-	character.InitComponents();
-	character.BindComponents(reg_scene);
-
+	//character.Regist(reg_scene);
+	//character.InitComponents();
+	//character.BindComponents(reg_scene);
 
 	sys_render.OnCreate(reg_scene);
 	sys_animation.OnCreate(reg_scene);
@@ -29,12 +28,12 @@ void CharacterTool::OnInit()
 void CharacterTool::OnUpdate()
 {
 	sys_input.OnUpdate(reg_scene);
-	sys_camera.OnUpdate(reg_scene);
+	//sys_camera.OnUpdate(reg_scene);
 }
 
 void CharacterTool::OnRender()
 {   
-	//sys_animation.OnUpdate(reg_scene);
+	sys_animation.OnUpdate(reg_scene);
 	sys_render.OnUpdate(reg_scene);
 
 	// GUI
@@ -44,12 +43,12 @@ void CharacterTool::OnRender()
 	{
 	case MsgType::NONE: break;
 
-	case MsgType::OW_FBX_IMPORTER:
+	case MsgType::OW_RES_VIEWER:
 	{
-		GwFbxImporter* gw_fbx_importer = new GwFbxImporter;
-		if (GUI->FindWidget(GWNAME(gw_fbx_importer)) == nullptr)
+		GwResViewer* gw_res_viewer = new GwResViewer;
+		if (GUI->FindWidget(GWNAME(gw_res_viewer)) == nullptr)
 		{
-			GUI->AddWidget(GWNAME(gw_fbx_importer), gw_fbx_importer);
+			GUI->AddWidget(GWNAME(gw_res_viewer), gw_res_viewer);
 		}
 	}
 	}
@@ -63,7 +62,4 @@ void CharacterTool::OnRelease()
 void CharacterTool::LoadResource()
 {
 	RESOURCE->Init("../../Contents/");
-	RESOURCE->PushResource<FbxLoader>("player", "FBX/RumbaDancing.fbx");
-	RESOURCE->PushResource<VsSkinned>("player", "Shader/SkinningVS.cso");
-	RESOURCE->PushResource<PsDefault>("player", "Shader/SkinningPS.cso");
 }

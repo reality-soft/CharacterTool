@@ -2,11 +2,11 @@
 #include "Engine_include.h"
 
 #define GWNAME(gwclass) typeid(gwclass).name()
+using namespace KGCA41B;
 
 enum class MsgType
 {
 	NONE,
-	OW_FBX_IMPORTER,
 	OW_RES_VIEWER,
 };
 
@@ -19,17 +19,15 @@ public:
 	MsgType msg_ = MsgType::NONE;
 };
 
-class GwFbxImporter : public KGCA41B::GuiWidget
+class GwResViewer : public KGCA41B::GuiWidget
 {
 public:
 	virtual void Update() override;
 	virtual void Render() override;
 
-public:
-	string filepath_;
+private:
+	map<string, string> res_id_map;
 };
-
-
 
 class GwPorperty : public KGCA41B::GuiWidget
 {
