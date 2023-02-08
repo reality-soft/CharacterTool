@@ -11,9 +11,9 @@ void CharacterTool::OnInit()
 		
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	//character.Regist(reg_scene);
-	//character.InitComponents();
-	//character.BindComponents(reg_scene);
+	character.Regist(reg_scene);
+	character.InitComponents();
+	character.BindComponents(reg_scene);
 
 	sys_render.OnCreate(reg_scene);
 	sys_animation.OnCreate(reg_scene);
@@ -28,7 +28,8 @@ void CharacterTool::OnInit()
 void CharacterTool::OnUpdate()
 {
 	sys_input.OnUpdate(reg_scene);
-	//sys_camera.OnUpdate(reg_scene);
+	sys_camera.OnUpdate(reg_scene);
+
 }
 
 void CharacterTool::OnRender()
@@ -49,6 +50,14 @@ void CharacterTool::OnRender()
 		if (GUI->FindWidget(GWNAME(gw_res_viewer)) == nullptr)
 		{
 			GUI->AddWidget(GWNAME(gw_res_viewer), gw_res_viewer);
+		}
+	}
+	case MsgType::OW_COMP_VIEWER:
+	{
+		GwCompViewer* gw_comp_viewer = new GwCompViewer(character);
+		if (GUI->FindWidget(GWNAME(gw_comp_viewer)) == nullptr)
+		{
+			GUI->AddWidget(GWNAME(gw_comp_viewer), gw_comp_viewer);
 		}
 	}
 	}

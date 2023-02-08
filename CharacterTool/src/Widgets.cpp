@@ -26,6 +26,10 @@ void GwMainMenu::Render()
         {
             msg_ = MsgType::OW_RES_VIEWER;
         }
+        if (ImGui::MenuItem("ComponentVeiwer"))
+        {
+            msg_ = MsgType::OW_COMP_VIEWER;
+        }
     }
     ImGui::EndMainMenuBar();
 }
@@ -88,20 +92,108 @@ void GwResViewer::Render()
         ImGui::SameLine();
         ImGui::BeginGroup();
         {
-            ImGui::ButtonEx(res_id.second.c_str(), ImVec2(80, 80));
+            ImGui::ButtonEx(res_id.second.c_str(), ImVec2(100, 100));
             ImGui::PopStyleColor();
-            ImGui::Text(res_id.first.c_str(), ImVec2(80, 80));
+            ImGui::Text(res_id.first.c_str());
         }
         ImGui::EndGroup();
-        if ((int)ImGui::GetWindowWidth() > 80)
+        if ((int)ImGui::GetWindowWidth() > 100)
         {
-            if ((i + 1) % ((int)ImGui::GetWindowWidth() / 80) == 0)
+            if ((i + 1) % ((int)ImGui::GetWindowWidth() / 100) == 0)
             {
                 ImGui::NewLine();
             }
         }
 
         ++i;
+    }
+    ImGui::End();
+}
+
+GwCompViewer::GwCompViewer(PlayerActor& player_actor)
+{
+    this->player_actor_ = make_shared<PlayerActor>(player_actor);
+}
+
+void GwCompViewer::Update()
+{
+}
+
+void GwCompViewer::Render()
+{
+    ImGui::Begin("Component Viewer", &open_);
+    {
+        ImGui::SetWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+        ImGui::SameLine();
+
+        ImGui::BeginChild("Component List");
+        {
+            ImGui::BeginListBox("##", ImVec2(200, 400));
+
+            if (ImGui::Selectable("Skeletal Mesh"))
+            {
+                select = 0;
+            }
+            if (ImGui::Selectable("Skeleton"))
+            {
+                select = 1;
+            }
+            if (ImGui::Selectable("Animation"))
+            {
+                select = 2;
+            }
+            if (ImGui::Selectable("Material"))
+            {
+                select = 3;
+            }
+
+            ImGui::EndListBox();
+        }
+        ImGui::EndChild();
+
+        ImGui::BeginChild("##");
+        {
+            string buffer;
+            buffer.resize(255);
+
+            switch (select)
+            {
+            case -1: break;
+            case 0:
+            {
+                if (ImGui::InputText("Resource ID [Skeletal Mesh]", buffer.data(), buffer.size()))
+                    player_actor_.get()->comp_skm_.mesh_id = buffer;
+
+                if (ImGui::InputText("Resource ID [Vertex Shader]", buffer.data(), buffer.size()))
+                    player_actor_.get()->comp_skm_.mesh_id = buffer;
+
+            }break;
+            case 1:
+            {
+                if (ImGui::InputText("Resource ID [Skeleton]", buffer.data(), buffer.size()))
+                    player_actor_.get()->comp_skeleton_.skeleton_id = buffer;
+
+            }break;
+            case 2:
+            {
+                if (ImGui::InputText("Resource ID [Animation]", buffer.data(), buffer.size()))
+                    player_actor_.get()->comp_animation_.anim_id = buffer;
+
+            }break;
+            case 3:
+            {
+                if (ImGui::InputText("Resource ID [Material]", buffer.data(), buffer.size()))
+                    player_actor_.get()->comp_material_.shader_id = buffer;
+
+            }break;
+            }
+
+        }
+        ImGui::EndChild();
+
+
+
+
     }
     ImGui::End();
 }
