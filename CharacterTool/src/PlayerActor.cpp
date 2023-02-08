@@ -17,23 +17,12 @@ void PlayerActor::InitComponents()
 
 	comp_input_.tag = "Player";
 
-	comp_skm_.mesh_id = "player";
-	comp_skm_.shader_id = "player";
-
-	comp_skeleton_.skeleton_id = "player";
-	comp_animation_.anim_id = "player";
-
-	comp_material_.shader_id = "player";
-	comp_material_.texture_id = "null";
+	comp_transform_.InitTransform();
 }
 
 void PlayerActor::BindComponents(entt::registry& reg)
 {
 	reg.emplace<Camera>(ent, comp_camera_);
 	reg.emplace<InputMapping>(ent, comp_input_);
-	reg.emplace<SkeletalMesh>(ent, comp_skm_);
-	reg.emplace<Skeleton>(ent, comp_skeleton_);
-	reg.emplace<Animation>(ent, comp_animation_);
-	reg.emplace<Material>(ent, comp_material_);
 	reg.emplace<Transform>(ent, comp_transform_);
 }
