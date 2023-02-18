@@ -13,9 +13,6 @@ public:
 public:
 	void LoadResource();
 
-public:
-	GwMainMenu gw_main_menu_;
-
 private:
 	entt::registry reg_scene;
 	entt::entity   debug_entity_;
