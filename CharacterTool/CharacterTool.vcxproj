@@ -157,12 +157,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="src\CharacterData.h" />
     <ClInclude Include="src\CharacterTool.h" />
     <ClInclude Include="src\PlayerActor.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="src\CharacterTool.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
