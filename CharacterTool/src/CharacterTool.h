@@ -18,8 +18,11 @@ public:
 
 private:
 	entt::registry reg_scene;
+	entt::entity   debug_entity_;
 
 	PlayerActor character;
+
+	KGCA41B::Camera debug_camera_;
 
 	KGCA41B::RenderSystem sys_render;
 	KGCA41B::CameraSystem sys_camera;

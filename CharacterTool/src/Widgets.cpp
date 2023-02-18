@@ -156,38 +156,6 @@ void GwCompViewer::Render()
             string buffer;
             buffer.resize(255);
 
-            switch (select)
-            {
-            case -1: break;
-            case 0:
-            {
-                if (ImGui::InputText("Resource ID [Skeletal Mesh]", buffer.data(), buffer.size()))
-                    player_actor_.get()->comp_skm_.mesh_id = buffer;
-
-                if (ImGui::InputText("Resource ID [Vertex Shader]", buffer.data(), buffer.size()))
-                    player_actor_.get()->comp_skm_.mesh_id = buffer;
-
-            }break;
-            case 1:
-            {
-                if (ImGui::InputText("Resource ID [Skeleton]", buffer.data(), buffer.size()))
-                    player_actor_.get()->comp_skeleton_.skeleton_id = buffer;
-
-            }break;
-            case 2:
-            {
-                if (ImGui::InputText("Resource ID [Animation]", buffer.data(), buffer.size()))
-                    player_actor_.get()->comp_animation_.anim_id = buffer;
-
-            }break;
-            case 3:
-            {
-                if (ImGui::InputText("Resource ID [Material]", buffer.data(), buffer.size()))
-                    player_actor_.get()->comp_material_.shader_id = buffer;
-
-            }break;
-            }
-
         }
         ImGui::EndChild();
 
