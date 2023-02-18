@@ -20,14 +20,12 @@ private:
 	entt::registry reg_scene;
 	entt::entity   debug_entity_;
 
-	PlayerActor character;
+	KGCA41B::Camera			debug_camera_;
+	KGCA41B::InputMapping	debug_input_;
 
-	KGCA41B::Camera debug_camera_;
-
-	KGCA41B::RenderSystem sys_render;
-	KGCA41B::CameraSystem sys_camera;
-	KGCA41B::InputSystem  sys_input;
-	KGCA41B::AnimationSystem sys_animation;
-
+	KGCA41B::CameraSystem sys_camera_;
+	KGCA41B::InputSystem  sys_input_;
+	KGCA41B::RenderSystem  sys_render_;
+	KGCA41B::AnimationSystem  sys_animation_;
 };
 
