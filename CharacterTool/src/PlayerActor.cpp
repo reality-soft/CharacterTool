@@ -1,6 +1,6 @@
 #include "PlayerActor.h"
 
-void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABB<3> collision_box)
+void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_box)
 {
 	collision_box_ = collision_box;
 

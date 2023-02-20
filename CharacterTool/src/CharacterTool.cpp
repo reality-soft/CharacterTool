@@ -7,7 +7,8 @@ void CharacterTool::OnInit()
 {
 	DINPUT->Init(ENGINE->GetWindowHandle(), ENGINE->GetInstanceHandle());
 
-	character_actor.OnInit(reg_scene, KGCA41B::AABB<3>({ 0, 0, 0 }, { 100, 100, 100 }));
+	AABBShape aabb;
+	character_actor.OnInit(reg_scene, aabb);
 
 	SCENE->PushScene("CharacterTool", this);
 
@@ -33,6 +34,9 @@ void CharacterTool::OnInit()
 	debug_camera_.speed = 30;
 	debug_camera_.tag = "Player";
 	reg_scene.emplace<Camera>(debug_entity_, debug_camera_);
+
+	debug_input_.tag = "Player";
+	reg_scene.emplace<InputMapping>(debug_entity_, debug_input_);
 
 	sys_camera_.TargetTag(reg_scene, "Player");
 	sys_camera_.OnCreate(reg_scene);
