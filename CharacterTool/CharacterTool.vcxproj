@@ -157,16 +157,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="src\CharacterData.h" />
     <ClInclude Include="src\CharacterTool.h" />
     <ClInclude Include="src\PlayerActor.h" />
+    <ClInclude Include="src\SceneMgr.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="src\CharacterTool.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
+    <ClCompile Include="src\SceneMgr.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -194,6 +194,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
+      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

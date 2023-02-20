@@ -36,7 +36,7 @@ void CharacterTool::OnInit()
 	sys_render_.OnCreate(reg_scene);
 
 	//GUI
-	GUI->AddWidget("MainMenu", &GwMainMenu());
+	GUI->AddWidget("MainMenu", new GwMainMenu());
 }
 
 void CharacterTool::OnUpdate()
