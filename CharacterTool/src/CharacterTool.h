@@ -13,8 +13,10 @@ public:
 public:
 	void LoadResource();
 
-private:
 	entt::registry reg_scene;
+	PlayerActor character_actor;
+private:
+
 	entt::entity   debug_entity_;
 
 	KGCA41B::Camera			debug_camera_;

@@ -50,4 +50,9 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 	registry.emplace_or_replace<KGCA41B::Material>(entity_id_, material);
 
 	bool result = registry.all_of<KGCA41B::Transform, KGCA41B::Animation, KGCA41B::SkeletalMesh, KGCA41B::Skeleton>(entity_id_);
+	result = registry.all_of<KGCA41B::Transform>(entity_id_);
+	result = registry.all_of<KGCA41B::Animation>(entity_id_);
+	result = registry.all_of<KGCA41B::SkeletalMesh>(entity_id_);
+	result = registry.all_of<KGCA41B::Skeleton>(entity_id_);
+	result = registry.all_of<KGCA41B::Material>(entity_id_);
 }

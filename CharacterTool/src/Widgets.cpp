@@ -106,7 +106,10 @@ void GwCharacterWindow::CharacterBoard()
 	ImGui::SameLine();
 	if (ImGui::Button("Render"))
 	{
-
+		auto scene = SCENE->LoadScene("CharacterTool");
+		CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+		if (character_scene)
+			character_scene->character_actor.SetCharacterData(character_scene->reg_scene, input_character_data);
 	}
 }
 

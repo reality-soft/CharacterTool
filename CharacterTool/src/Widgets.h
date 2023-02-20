@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_include.h"
 #include "PlayerActor.h"
+#include "SceneMgr.h"
 
 #define GWNAME(gwclass) typeid(gwclass).name()
 using namespace KGCA41B;
@@ -52,7 +53,5 @@ class GwDataViewer : public KGCA41B::GuiWidget
 {
 	virtual void Update() override;
 	virtual void Render() override;
-public:
-	string	data_id_;
 };
 

@@ -7,6 +7,10 @@ void CharacterTool::OnInit()
 {
 	DINPUT->Init(ENGINE->GetWindowHandle(), ENGINE->GetInstanceHandle());
 
+	character_actor.OnInit(reg_scene, KGCA41B::AABB<3>({ 0, 0, 0 }, { 100, 100, 100 }));
+
+	SCENE->PushScene("CharacterTool", this);
+
 	// Manager Init
 	DATA->Init("../../Contents/Data");
 	DATA->LoadDir("../../Contents/Data");
@@ -53,8 +57,6 @@ void CharacterTool::OnRender()
 
 	// GUI
 	GUI->RenderWidgets();
-
-	sys_render_.OnUpdate(reg_scene);
 }
 
 void CharacterTool::OnRelease()
