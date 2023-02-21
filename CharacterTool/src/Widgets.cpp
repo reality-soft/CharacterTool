@@ -20,7 +20,12 @@ void GwMainMenu::Render()
 	{
 		if (ImGui::MenuItem("Character"))
 		{
-			GUI->AddWidget("CharacterTool", new GwCharacterWindow);
+			if (GUI->FindWidget("CharacterTool") == nullptr) {
+				GUI->AddWidget("CharacterTool", new GwCharacterWindow);
+			}
+			else {
+				GUI->FindWidget("CharacterTool")->InvertOpen();
+			}
 		}
 	}
 	ImGui::EndMainMenuBar();
