@@ -8,6 +8,13 @@ using namespace KGCA41B;
 
 #define GET_VARIABLE_NAME(n) #n
 
+void GwMainMenu::Init()
+{
+	// (optional) set browser properties
+	file_dialog.SetTitle("FbxLoader");
+	file_dialog.SetTypeFilters({ ".fbx"});
+}
+
 void GwMainMenu::Update()
 {
 	ImGui::SetCurrentContext(GUI->GetContext());
@@ -27,6 +34,18 @@ void GwMainMenu::Render()
 				GUI->FindWidget("CharacterTool")->InvertOpen();
 			}
 		}
+		if (ImGui::MenuItem("LoadFbx"))
+		{
+			file_dialog.Open();
+		}
+
+		if (file_dialog.HasSelected())
+		{
+			string name = file_dialog.GetSelected().string();
+			RESOURCE->ImportFbx(name);
+		}
+
+		file_dialog.Display();
 	}
 	ImGui::EndMainMenuBar();
 }

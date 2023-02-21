@@ -16,10 +16,13 @@ enum class MsgType
 class GwMainMenu : public KGCA41B::GuiWidget
 {
 public:
+	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render() override;
 
 	MsgType msg_ = MsgType::NONE;
+	ImGui::FileBrowser file_dialog;
+
 };
 
 class GwCharacterWindow : public KGCA41B::GuiWidget
