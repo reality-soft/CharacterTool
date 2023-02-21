@@ -45,9 +45,6 @@ void GwCharacterWindow::Render()
 		string clicked = "";
 		ImGui::BeginMenuBar();
 		{
-			if (loading_data_id_.size() != 0)
-				LoadCharacterData();
-
 			if (ImGui::BeginMenu("Current Character"))
 			{
 				CharacterBoard();
@@ -57,8 +54,14 @@ void GwCharacterWindow::Render()
 			{
 				if (ImGui::MenuItem("Loading From DataManager"))
 				{
-					auto widget = new GwDataViewer;
-					GUI->AddWidget("FileViewer", widget);
+					GuiWidget* widget_ptr = GUI->FindWidget("FileViewer");
+					if (widget_ptr == nullptr) {
+						auto widget = new GwDataViewer;
+						GUI->AddWidget("FileViewer", widget);
+					}
+					else {
+						widget_ptr->InvertOpen();
+					}
 				}
 				ImGui::EndMenu();
 			}
@@ -351,7 +354,7 @@ void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 		return;
 	sheetName += ".csv";
 
-	auto sheet = DATA->AddNewSheet(DATA->directory() + '/' + sheetName);
+	auto sheet = DATA->AddNewSheet(sheetName);
 
 	auto character = sheet->AddItem(data.character_name);
 
@@ -375,14 +378,14 @@ void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 	character->SetValue("texture_id", data.texture_id);
 	character->SetValue("ps_id", data.ps_id);
 
-	DATA->SaveSheetFile(DATA->directory() + '/' + sheetName);
+	DATA->SaveSheetFile(sheetName);
 }
 
-void GwCharacterWindow::LoadCharacterData()
+void GwCharacterWindow::LoadCharacterData(string loading_data_id)
 {
-	auto sheet = DATA->LoadSheet(loading_data_id_);
+	auto sheet = DATA->LoadSheet(loading_data_id);
 
-	auto strs1 = split(loading_data_id_, '/');
+	auto strs1 = split(loading_data_id, '/');
 	auto strs = split(strs1[strs1.size() - 1], '.');
 	auto name = strs[0];
 
@@ -399,7 +402,7 @@ void GwCharacterWindow::LoadCharacterData()
 	input_character_data.vs_id = item->GetValue("vs_id");
 	input_character_data.ps_id = item->GetValue("ps_id");
 
-	loading_data_id_ = "";
+	loading_data_id = "";
 }
 
 void GwDataViewer::Update()
@@ -434,9 +437,9 @@ void GwDataViewer::Render()
 			{
 			}
 			else
-			{
+			{	
 				auto tool_window = dynamic_cast<GwCharacterWindow*>(GUI->FindWidget("CharacterTool"));
-				tool_window->set_loading_data_id(id_list[item_current_idx]);
+				tool_window->LoadCharacterData(id_list[item_current_idx]);
 			}
 		}
 	}

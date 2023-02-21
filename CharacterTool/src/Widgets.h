@@ -44,7 +44,7 @@ private:
 	string loading_data_id_;
 public:
 	void set_loading_data_id(string loading_data_id) { loading_data_id_ = loading_data_id; }
-	void LoadCharacterData();
+	void LoadCharacterData(string loading_data_id);
 public:
 	CharacterData input_character_data;
 };
