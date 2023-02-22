@@ -89,8 +89,8 @@ project "CharacterTool"
 
 		postbuildcommands
 		{
-			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\TestGame\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
-			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\TestGame\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\""
+			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
+			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\""
 		}
 
 	filter "configurations:Debug"
