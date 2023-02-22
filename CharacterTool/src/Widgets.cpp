@@ -42,7 +42,7 @@ void GwMainMenu::Render()
 		if (file_dialog.HasSelected())
 		{
 			string name = file_dialog.GetSelected().string();
-			RESOURCE->ImportFbx(name);
+			FBX->ImportAndSaveFbx(name);
 			file_dialog.ClearSelected();
 		}
 
