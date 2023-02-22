@@ -95,8 +95,8 @@
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\TestGame\*.cso" "..\..\Contents\Shader\*.cso"
-copy "..\..\output\bin\Release-windows-x86_64\TestGame\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
+copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,8 +125,8 @@ copy "..\..\output\bin\Release-windows-x86_64\TestGame\*.cso" "..\..\Contents\Sh
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\TestGame\*.cso" "..\..\Contents\Shader\*.cso"
-copy "..\..\output\bin\Release-windows-x86_64\TestGame\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
+copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -155,8 +155,8 @@ copy "..\..\output\bin\Release-windows-x86_64\TestGame\*.cso" "..\..\Contents\Sh
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\TestGame\*.cso" "..\..\Contents\Shader\*.cso"
-copy "..\..\output\bin\Release-windows-x86_64\TestGame\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
+copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

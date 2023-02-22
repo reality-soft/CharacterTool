@@ -33,10 +33,10 @@ void CharacterTool::OnInit()
 	debug_camera_.roll = 0;
 	debug_camera_.speed = 30;
 	debug_camera_.tag = "Player";
-	reg_scene.emplace<Camera>(debug_entity_, debug_camera_);
+	reg_scene.emplace<C_Camera>(debug_entity_, debug_camera_);
 
 	debug_input_.tag = "Player";
-	reg_scene.emplace<InputMapping>(debug_entity_, debug_input_);
+	reg_scene.emplace<C_InputMapping>(debug_entity_, debug_input_);
 
 	sys_camera_.TargetTag(reg_scene, "Player");
 	sys_camera_.OnCreate(reg_scene);

@@ -19,8 +19,8 @@ private:
 
 	entt::entity   debug_entity_;
 
-	KGCA41B::Camera			debug_camera_;
-	KGCA41B::InputMapping	debug_input_;
+	KGCA41B::C_Camera			debug_camera_;
+	KGCA41B::C_InputMapping	debug_input_;
 
 	KGCA41B::CameraSystem sys_camera_;
 	KGCA41B::InputSystem  sys_input_;

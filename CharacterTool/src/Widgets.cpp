@@ -43,6 +43,7 @@ void GwMainMenu::Render()
 		{
 			string name = file_dialog.GetSelected().string();
 			RESOURCE->ImportFbx(name);
+			file_dialog.ClearSelected();
 		}
 
 		file_dialog.Display();
@@ -112,10 +113,7 @@ void GwCharacterWindow::CharacterBoard()
 
 	SelectSKM(input_character_data.skm_id);
 	ImGui::SameLine();
-	SelectSKT(input_character_data.skeleton_id);
 	ImGui::Text(input_character_data.skm_id.c_str());
-	ImGui::SameLine();
-	ImGui::Text(input_character_data.skeleton_id.c_str());
 
 	SelectVertexShader(input_character_data.vs_id);
 	ImGui::SameLine();
@@ -335,37 +333,6 @@ void GwCharacterWindow::SelectSKM(string& id)
 	if (skm_vec.size() != 0)id = skm_vec[item_current_idx];
 }
 
-void GwCharacterWindow::SelectSKT(string& id)
-{
-	int item_current_idx = 0;
-
-	auto skt_set = RESOURCE->GetTotalSKID();
-	vector<string> skt_vec(skt_set.begin(), skt_set.end());
-
-	for (int i = 0; i < skt_vec.size(); i++)
-	{
-		if (skt_vec[i] == id)
-			item_current_idx = i;
-	}
-
-	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-	if (ImGui::BeginListBox("Skeleton"))
-	{
-		for (int n = 0; n < skt_vec.size(); n++)
-		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(skt_vec[n].c_str(), is_selected))
-				item_current_idx = n;
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
-		}
-		ImGui::EndListBox();
-	}
-
-	if (skt_vec.size() != 0)id = skt_vec[item_current_idx];
-}
-
 void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 {
 	string sheetName(data.character_name);
@@ -382,7 +349,6 @@ void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 	sheet->AddCategory("max_frame");
 	sheet->AddCategory("cur_frame");
 	sheet->AddCategory("skm_id");
-	sheet->AddCategory("skeleton_id");
 	sheet->AddCategory("vs_id");
 	sheet->AddCategory("texture_id");
 	sheet->AddCategory("ps_id");
@@ -392,7 +358,6 @@ void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 	character->SetValue("max_frame", to_string(data.max_frame));
 	character->SetValue("cur_frame", to_string(data.cur_frame));
 	character->SetValue("skm_id", data.skm_id);
-	character->SetValue("skeleton_id", data.skeleton_id);
 	character->SetValue("vs_id", data.vs_id);
 	character->SetValue("texture_id", data.texture_id);
 	character->SetValue("ps_id", data.ps_id);
@@ -417,7 +382,6 @@ void GwCharacterWindow::LoadCharacterData(string loading_data_id)
 	input_character_data.cur_frame = stoi(item->GetValue("cur_frame"));
 	input_character_data.texture_id = item->GetValue("texture_id");
 	input_character_data.skm_id = item->GetValue("skm_id");
-	input_character_data.skeleton_id = item->GetValue("skeleton_id");
 	input_character_data.vs_id = item->GetValue("vs_id");
 	input_character_data.ps_id = item->GetValue("ps_id");
 
