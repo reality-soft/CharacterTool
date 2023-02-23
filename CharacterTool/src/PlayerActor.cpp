@@ -5,7 +5,6 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 	collision_box_ = collision_box;
 
 	entity_id_ = registry.create();
-	//this->node_num_ = SpacePartition::GetInst()->UpdateNodeObjectBelongs(0, collision_box_, entity_id_);
 
 	entt::type_hash<KGCA41B::C_Transform> type_hash_transform;
 	KGCA41B::C_Transform transform;
@@ -13,9 +12,11 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 	transform.world = XMMatrixIdentity();
 	registry.emplace<KGCA41B::C_Transform>(entity_id_, transform);
 
-	transform_tree_.root_node = make_shared<TransformTreeNode>(type_hash_transform.value());
+	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(C_Transform));
 
 	transform_tree_.root_node->OnUpdate(registry, entity_id_);
+
+
 }
 
 void KGCA41B::PlayerActor::OnUpdate(entt::registry& registry)
@@ -32,7 +33,7 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 	registry.emplace_or_replace<KGCA41B::C_Animation>(entity_id_, animation);
 
 	KGCA41B::C_SkeletalMesh skm;
-	skm.local = XMMatrixIdentity();
+	skm.local = XMMatrixScaling(0.5, 0.5, 0.5) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	skm.world = XMMatrixIdentity();
 	skm.skeletal_mesh_id = data.skm_id;
 	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
@@ -42,4 +43,6 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 	}
 	skm.vertex_shader_id = data.vs_id;
 	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
+
+	skm = registry.get<C_SkeletalMesh>(entity_id_);
 }

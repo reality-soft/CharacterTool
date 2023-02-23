@@ -28,7 +28,7 @@ void CharacterTool::OnInit()
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 	debug_entity_ = reg_scene.create();
-	debug_camera_.position = { 0, 100, -200, 0 };
+	debug_camera_.position = { 0, 500, -1000, 0 };
 	debug_camera_.look = { 0, -1, 0, 0 };
 	debug_camera_.up = { 0, 1, 0, 0 };
 	debug_camera_.near_z = 1.f;
@@ -63,8 +63,8 @@ void CharacterTool::OnUpdate()
 void CharacterTool::OnRender()
 {   
 	sys_animation_.OnUpdate(reg_scene);
-	KGCA41B::QUADTREE->Render();
 	sys_render_.OnUpdate(reg_scene);
+	KGCA41B::QUADTREE->Render();
 
 	// GUI
 	GUI->RenderWidgets();
