@@ -13,18 +13,18 @@ public:
 public:
 	void LoadResource();
 
-public:
-	GwMainMenu gw_main_menu_;
-
-private:
 	entt::registry reg_scene;
+	PlayerActor character_actor;
+private:
 
-	PlayerActor character;
+	entt::entity   debug_entity_;
 
-	KGCA41B::RenderSystem sys_render;
-	KGCA41B::CameraSystem sys_camera;
-	KGCA41B::InputSystem  sys_input;
-	KGCA41B::AnimationSystem sys_animation;
+	KGCA41B::C_Camera			debug_camera_;
+	KGCA41B::C_InputMapping	debug_input_;
 
+	KGCA41B::CameraSystem sys_camera_;
+	KGCA41B::InputSystem  sys_input_;
+	KGCA41B::RenderSystem  sys_render_;
+	KGCA41B::AnimationSystem  sys_animation_;
 };
 
