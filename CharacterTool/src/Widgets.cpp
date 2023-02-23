@@ -10,7 +10,6 @@ using namespace KGCA41B;
 
 void GwMainMenu::Init()
 {
-	// (optional) set browser properties
 	file_dialog.SetTitle("FbxLoader");
 	file_dialog.SetTypeFilters({ ".fbx"});
 }

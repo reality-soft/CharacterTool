@@ -35,6 +35,11 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 	skm.local = XMMatrixIdentity();
 	skm.world = XMMatrixIdentity();
 	skm.skeletal_mesh_id = data.skm_id;
+	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
+	for (auto& mesh : meshes) {
+		mesh.material.texture_id = data.texture_id;
+		mesh.material.shader_id = data.ps_id;
+	}
 	skm.vertex_shader_id = data.vs_id;
 	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
 }
