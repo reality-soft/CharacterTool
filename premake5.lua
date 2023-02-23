@@ -36,7 +36,8 @@ project "CharacterTool"
 		"../SDK/DirectXTK/include",
 		"../SDK/FBXSDK/include",
 		"../SDK/FMOD/include",
-		"../SDK/IMGUI/include"
+		"../SDK/IMGUI/include",
+		"../SDK/RP3D/include"
 	}
 
 	libdirs
@@ -45,7 +46,8 @@ project "CharacterTool"
 		"../SDK/DirectXTK/lib",
 		"../SDK/FBXSDK/lib/debug",
 		"../SDK/FMOD/lib/debug",
-		"../SDK/IMGUI/lib"
+		"../SDK/IMGUI/lib",
+		"../SDK/RP3D/lib"
 	}
 
 	links
@@ -87,7 +89,8 @@ project "CharacterTool"
 
 		postbuildcommands
 		{
-			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\""
+			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
+			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\""
 		}
 
 	filter "configurations:Debug"

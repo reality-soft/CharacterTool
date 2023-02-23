@@ -1,20 +1,18 @@
 #pragma once
 #include "Engine_include.h"
+#include "CharacterData.h"
+#include "Components.h"
 
 using namespace KGCA41B;
 
-class PlayerActor : public Actor
+namespace KGCA41B
 {
-public:
-	Camera comp_camera_;
-	InputMapping comp_input_;
-
-	SkeletalMesh comp_skm_;
-	Skeleton comp_skeleton_;
-	Animation comp_animation_;
-	Material comp_material_;
-
-	void InitComponents();
-	void BindComponents(entt::registry& reg);
-};
+	class PlayerActor : public Actor
+	{
+	public:
+		virtual void OnInit(entt::registry& registry, AABBShape collision_box) override;
+		virtual void OnUpdate(entt::registry& registry) override;
+		void SetCharacterData(entt::registry& registry, CharacterData data);
+	};
+}
 
