@@ -16,6 +16,7 @@ public:
 	entt::registry reg_scene;
 	PlayerActor character_actor;
 private:
+	KGCA41B::Level level;
 
 	entt::entity   debug_entity_;
 

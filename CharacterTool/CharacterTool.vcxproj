@@ -160,6 +160,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EventMgr.h" />
     <ClInclude Include="src\CharacterData.h" />
     <ClInclude Include="src\CharacterTool.h" />
     <ClInclude Include="src\PlayerActor.h" />
@@ -167,6 +168,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="src\CharacterTool.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
     <ClCompile Include="src\SceneMgr.cpp" />
@@ -207,11 +209,6 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
-      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
