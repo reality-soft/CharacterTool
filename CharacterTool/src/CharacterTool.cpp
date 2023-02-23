@@ -28,14 +28,14 @@ void CharacterTool::OnInit()
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 	debug_entity_ = reg_scene.create();
-	debug_camera_.position = { 0, 500, -1000, 0 };
+	debug_camera_.position = { 0, 1000, -1000, 0 };
 	debug_camera_.look = { 0, -1, 0, 0 };
 	debug_camera_.up = { 0, 1, 0, 0 };
 	debug_camera_.near_z = 1.f;
 	debug_camera_.far_z = 10000.f;
 	debug_camera_.fov = XMConvertToRadians(45);
 	debug_camera_.yaw = 0;
-	debug_camera_.pitch = 0;
+	debug_camera_.pitch = XMConvertToRadians(45);
 	debug_camera_.roll = 0;
 	debug_camera_.speed = 100;
 	debug_camera_.tag = "Player";
