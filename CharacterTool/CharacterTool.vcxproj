@@ -160,16 +160,18 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="EventMgr.h" />
     <ClInclude Include="src\CharacterData.h" />
     <ClInclude Include="src\CharacterTool.h" />
+    <ClInclude Include="src\EventMgr.h" />
+    <ClInclude Include="src\Movements.h" />
     <ClInclude Include="src\PlayerActor.h" />
     <ClInclude Include="src\SceneMgr.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="src\CharacterTool.cpp" />
+    <ClCompile Include="src\EventMgr.cpp" />
+    <ClCompile Include="src\Movements.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
     <ClCompile Include="src\SceneMgr.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
@@ -197,26 +199,14 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelPS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">PS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">5.0</ShaderModel>
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelVS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">5.0</ShaderModel>
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkinningPS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -231,7 +221,6 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-    <None Include="HLSL\LevelHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">

@@ -1,5 +1,7 @@
 #include "CharacterTool.h"
 #include "ComponentSystem.h"
+#include "EventMgr.h"
+#include "Movements.h"
 
 using namespace KGCA41B;
 
@@ -51,6 +53,10 @@ void CharacterTool::OnInit()
 
 	//GUI
 	GUI->AddWidget("MainMenu", new GwMainMenu());
+
+	EVENT->Subscribe('D', Movements::MoveRightStart, KEY_PUSH);
+	EVENT->Subscribe('D', Movements::MoveRight, KEY_HOLD);
+	EVENT->Subscribe('D', Movements::Idle, KEY_UP);
 }
 
 void CharacterTool::OnUpdate()
@@ -58,6 +64,7 @@ void CharacterTool::OnUpdate()
 	sys_input_.OnUpdate(reg_scene);
 	sys_camera_.OnUpdate(reg_scene);
 	KGCA41B::QUADTREE->Frame(&sys_camera_);
+	EVENT->PollEvents();
 }
 
 void CharacterTool::OnRender()

@@ -6,6 +6,10 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 
 	entity_id_ = registry.create();
 
+	transform_ = XMMatrixIdentity();
+
+	speed_ = 100;
+
 	entt::type_hash<KGCA41B::C_Transform> type_hash_transform;
 	KGCA41B::C_Transform transform;
 	transform.local = XMMatrixIdentity();
@@ -14,9 +18,8 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 
 	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(C_Transform));
 
-	transform_tree_.root_node->OnUpdate(registry, entity_id_);
-
-
+	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
+	transform_tree_.AddNodeToNode(TYPE_ID(KGCA41B::C_Transform), TYPE_ID(KGCA41B::C_SkeletalMesh));
 }
 
 void KGCA41B::PlayerActor::OnUpdate(entt::registry& registry)
@@ -45,4 +48,17 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
 
 	skm = registry.get<C_SkeletalMesh>(entity_id_);
+}
+
+void KGCA41B::PlayerActor::SetCharacterAnimation(entt::registry& registry, string anim_id)
+{
+	C_Animation animation;
+	animation.anim_id = anim_id;
+	registry.emplace_or_replace<KGCA41B::C_Animation>(entity_id_, animation);
+}
+
+void KGCA41B::PlayerActor::PlayerMovement(entt::registry& registry, float x, float y, float z)
+{
+	transform_ *= XMMatrixTranslation(x, y, z);
+	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
 }
