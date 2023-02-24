@@ -12,6 +12,28 @@ void Movements::MoveRight()
 	}
 }
 
+void Movements::MoveRightForward()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RF.anim");
+		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, movement, 0);
+	}
+}
+
+void Movements::MoveRightBack()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RB.anim");
+		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, -movement, 0);
+	}
+}
+
 void Movements::MoveLeft()
 {
 	auto scene = SCENE->LoadScene("CharacterTool");
@@ -23,7 +45,29 @@ void Movements::MoveLeft()
 	}
 }
 
-void Movements::MoveFront()
+void Movements::MoveLeftForward()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LF.anim");
+		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, movement, 0);
+	}
+}
+
+void Movements::MoveLeftBack()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LB.anim");
+		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, -movement, 0);
+	}
+}
+
+void Movements::MoveForward()
 {
 	auto scene = SCENE->LoadScene("CharacterTool");
 	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
@@ -51,5 +95,14 @@ void Movements::Idle()
 	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Breathing.anim");
+	}
+}
+
+void Movements::Fire()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Handgun_Fire.anim");
 	}
 }

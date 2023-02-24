@@ -4,8 +4,13 @@
 
 namespace Movements {
 	void MoveRight();
+	void MoveRightForward();
+	void MoveRightBack();
 	void MoveLeft();
-	void MoveFront();
+	void MoveLeftForward();
+	void MoveLeftBack();
+	void MoveForward();
 	void MoveBack();
 	void Idle();
+	void Fire();
 }
