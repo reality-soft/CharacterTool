@@ -3,7 +3,9 @@
 #include "SceneMgr.h"
 
 namespace Movements {
-	void MoveRightStart();
 	void MoveRight();
+	void MoveLeft();
+	void MoveFront();
+	void MoveBack();
 	void Idle();
 }

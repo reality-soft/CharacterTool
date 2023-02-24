@@ -8,7 +8,7 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 
 	transform_ = XMMatrixIdentity();
 
-	speed_ = 100;
+	speed_ = 200;
 
 	entt::type_hash<KGCA41B::C_Transform> type_hash_transform;
 	KGCA41B::C_Transform transform;

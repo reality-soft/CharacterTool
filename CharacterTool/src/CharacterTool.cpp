@@ -54,9 +54,14 @@ void CharacterTool::OnInit()
 	//GUI
 	GUI->AddWidget("MainMenu", new GwMainMenu());
 
-	EVENT->Subscribe('D', Movements::MoveRightStart, KEY_PUSH);
 	EVENT->Subscribe('D', Movements::MoveRight, KEY_HOLD);
-	EVENT->Subscribe('D', Movements::Idle, KEY_UP);
+	EVENT->Subscribe('D', Movements::Idle, KEY_UP);	
+	EVENT->Subscribe('A', Movements::MoveLeft, KEY_HOLD);
+	EVENT->Subscribe('A', Movements::Idle, KEY_UP);	
+	EVENT->Subscribe('W', Movements::MoveFront, KEY_HOLD);
+	EVENT->Subscribe('W', Movements::Idle, KEY_UP);	
+	EVENT->Subscribe('S', Movements::MoveBack, KEY_HOLD);
+	EVENT->Subscribe('S', Movements::Idle, KEY_UP);
 }
 
 void CharacterTool::OnUpdate()
