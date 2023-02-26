@@ -7,8 +7,6 @@ using namespace KGCA41B;
 
 void CharacterTool::OnInit()
 {
-	DINPUT->Init(ENGINE->GetWindowHandle(), ENGINE->GetInstanceHandle());
-
 	AABBShape aabb;
 	character_actor.OnInit(reg_scene, aabb);
 
@@ -43,12 +41,9 @@ void CharacterTool::OnInit()
 	debug_camera_.tag = "Player";
 	reg_scene.emplace<C_Camera>(debug_entity_, debug_camera_);
 
-	debug_input_.tag = "Player";
-	reg_scene.emplace<C_InputMapping>(debug_entity_, debug_input_);
 
 	sys_camera_.TargetTag(reg_scene, "Player");
 	sys_camera_.OnCreate(reg_scene);
-	sys_input_.OnCreate(reg_scene);
 	sys_render_.OnCreate(reg_scene);
 
 	//GUI
@@ -78,7 +73,6 @@ void CharacterTool::OnInit()
 
 void CharacterTool::OnUpdate()
 {
-	sys_input_.OnUpdate(reg_scene);
 	sys_camera_.OnUpdate(reg_scene);
 	KGCA41B::QUADTREE->Frame(&sys_camera_);
 	EVENT->PollEvents();
@@ -87,7 +81,6 @@ void CharacterTool::OnUpdate()
 
 void CharacterTool::OnRender()
 {   
-	sys_animation_.OnUpdate(reg_scene);
 	sys_render_.OnUpdate(reg_scene);
 	KGCA41B::QUADTREE->Render();
 

@@ -1,3 +1,5 @@
+#include "VSHeader.hlsli"
+
 struct VS_IN
 {
 	float3 p : F3_POSITION;
@@ -16,16 +18,10 @@ struct VS_OUT
 	float3 vLight : TEXCOORD1;
 };
 
-cbuffer cb_transform_data : register(b0)
+cbuffer cb_transform_data : register(b1)
 {
 	matrix g_matWorld;
 };
-
-cbuffer cb_viewproj_data : register(b1)
-{
-	matrix g_matView;
-	matrix g_matProj;
-}
 
 cbuffer cb_bone_data : register(b2)
 {
@@ -36,7 +32,6 @@ VS_OUT VS(VS_IN input)
 {
 	VS_OUT output = (VS_OUT)0;
 	float4 vLocal = float4(input.p, 1.0f);
-
 
 	float4 animation = 0;
 	float4 animNormal = 0;

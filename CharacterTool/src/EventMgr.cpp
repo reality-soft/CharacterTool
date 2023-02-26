@@ -4,7 +4,7 @@
 void EventMgr::PollEvents()
 {
     for (auto& [key, callbacks] : push_subscribers_) {
-        DWORD key_state = DINPUT->GetKey(key);
+        DWORD key_state = DINPUT->GetKeyState(key);
         if (key_state == KGCA41B::KEY_PUSH) {
             for (auto& callback : callbacks) {
                 callback();
@@ -13,7 +13,7 @@ void EventMgr::PollEvents()
     }
 
     for (auto& [key, callbacks] : free_subscribers_) {
-        DWORD key_state = DINPUT->GetKey(key);
+        DWORD key_state = DINPUT->GetKeyState(key);
         if (key_state == KGCA41B::KEY_FREE) {
             for (auto& callback : callbacks) {
                 callback();
@@ -23,7 +23,7 @@ void EventMgr::PollEvents()
 
     int num_held_keys = 0;
     for (int key = 0;key < 256;key++) {
-        DWORD key_state = DINPUT->GetKey(key);
+        DWORD key_state = DINPUT->GetKeyState(key);
         if (key_state == KGCA41B::KEY_HOLD) {
             num_held_keys++;
         }
@@ -31,7 +31,7 @@ void EventMgr::PollEvents()
     for (auto& [keys, callbacks] : combination_hold_subscribers_) {
         bool all_pressed = true;
         for (auto key : keys) {
-            DWORD key_state = DINPUT->GetKey(key);
+            DWORD key_state = DINPUT->GetKeyState(key);
             if (key_state != KGCA41B::KEY_HOLD) {
                 all_pressed = false;
                 break;
@@ -46,7 +46,7 @@ void EventMgr::PollEvents()
     }
 
     for (auto& [key, callbacks] : up_subscribers_) {
-        DWORD key_state = DINPUT->GetKey(key);
+        DWORD key_state = DINPUT->GetKeyState(key);
         if (key_state == KGCA41B::KEY_UP) {
             for (auto& callback : callbacks) {
                 callback();

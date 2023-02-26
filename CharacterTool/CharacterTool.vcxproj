@@ -125,7 +125,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\*.cso"
 copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -155,7 +155,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\*.cso"
 copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -221,11 +221,6 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
-      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

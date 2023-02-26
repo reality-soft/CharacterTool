@@ -1,3 +1,5 @@
+#include "PSHeader.hlsli"
+
 struct PS_IN
 {
 	float3 p : POSITION;
