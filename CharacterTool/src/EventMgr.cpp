@@ -36,6 +36,9 @@ void EventMgr::PollEvents()
                 all_pressed = false;
                 break;
             }
+            else {
+                std::cout << "a";
+            }
         }
         
         if (all_pressed && num_held_keys == keys.size()) {

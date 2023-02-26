@@ -1,15 +1,10 @@
 #include "LevelHeader.hlsli"
+#include "VSHeader.hlsli"
 
-cbuffer cb_data : register(b0)
+cbuffer cb_data : register(b1)
 {
 	matrix g_matWorld;
 };
-
-cbuffer cb_viewproj : register(b1)
-{
-	matrix g_matView;
-	matrix g_matProj;
-}
 
 VS_OUT VS(VS_IN input)
 {

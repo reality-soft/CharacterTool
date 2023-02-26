@@ -51,22 +51,22 @@ void CharacterTool::OnInit()
 
 
 	// Key Settings
-	EVENT->Subscribe({ 'D' }, Movements::MoveRight, KEY_HOLD);
-	EVENT->Subscribe({ 'W', 'D' }, Movements::MoveRightForward, KEY_HOLD);
-	EVENT->Subscribe({ 'S', 'D' }, Movements::MoveRightBack, KEY_HOLD);
-	EVENT->Subscribe({ 'A' }, Movements::MoveLeft, KEY_HOLD);
-	EVENT->Subscribe({ 'W', 'A' }, Movements::MoveLeftForward, KEY_HOLD);
-	EVENT->Subscribe({ 'S', 'A' }, Movements::MoveLeftBack, KEY_HOLD);
-	EVENT->Subscribe({ 'W' }, Movements::MoveForward, KEY_HOLD);
-	EVENT->Subscribe({ 'S' }, Movements::MoveBack, KEY_HOLD);
+	EVENT->Subscribe({ DIK_D }, Movements::MoveRight, KEY_HOLD);
+	EVENT->Subscribe({ DIK_W, DIK_D }, Movements::MoveRightForward, KEY_HOLD);
+	EVENT->Subscribe({ DIK_S, DIK_D }, Movements::MoveRightBack, KEY_HOLD);
+	EVENT->Subscribe({ DIK_A }, Movements::MoveLeft, KEY_HOLD);
+	EVENT->Subscribe({ DIK_W, DIK_A }, Movements::MoveLeftForward, KEY_HOLD);
+	EVENT->Subscribe({ DIK_S, DIK_A }, Movements::MoveLeftBack, KEY_HOLD);
+	EVENT->Subscribe({ DIK_W }, Movements::MoveForward, KEY_HOLD);
+	EVENT->Subscribe({ DIK_S }, Movements::MoveBack, KEY_HOLD);
 
-	EVENT->Subscribe({ 'D' }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ 'S' }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ 'W' }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ 'A' }, Movements::Idle, KEY_UP);
+	EVENT->Subscribe({ DIK_D }, Movements::Idle, KEY_UP);
+	EVENT->Subscribe({ DIK_S }, Movements::Idle, KEY_UP);
+	EVENT->Subscribe({ DIK_W }, Movements::Idle, KEY_UP);
+	EVENT->Subscribe({ DIK_A }, Movements::Idle, KEY_UP);
 
-	EVENT->Subscribe({ VK_SPACE }, Movements::Fire, KEY_HOLD);
-	EVENT->Subscribe({ VK_SPACE }, Movements::Idle, KEY_UP);
+	EVENT->Subscribe({ DIK_SPACE }, Movements::Fire, KEY_HOLD);
+	EVENT->Subscribe({ DIK_SPACE }, Movements::Idle, KEY_UP);
 
 	sys_light_.OnCreate(reg_scene);
 }
