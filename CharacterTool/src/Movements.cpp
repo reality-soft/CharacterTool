@@ -8,7 +8,7 @@ void Movements::MoveRight()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RF.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, 0, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, 0, 0);
 	}
 }
 
@@ -19,7 +19,7 @@ void Movements::MoveRightForward()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RF.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, movement, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, 0, movement);
 	}
 }
 
@@ -30,7 +30,7 @@ void Movements::MoveRightBack()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RB.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, -movement, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, 0, -movement);
 	}
 }
 
@@ -41,7 +41,7 @@ void Movements::MoveLeft()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LF.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, 0, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, 0, 0);
 	}
 }
 
@@ -52,7 +52,7 @@ void Movements::MoveLeftForward()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LF.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, movement, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, 0, movement);
 	}
 }
 
@@ -63,7 +63,7 @@ void Movements::MoveLeftBack()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LB.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, movement, -movement, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, -movement, 0, -movement);
 	}
 }
 
@@ -74,7 +74,7 @@ void Movements::MoveForward()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_F.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, 0, movement, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, 0, 0, movement);
 	}
 }
 
@@ -85,7 +85,7 @@ void Movements::MoveBack()
 	if (character_scene) {
 		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_B.anim");
 		float movement = TimeMgr::GetInst()->GetDeltaTime() * character_scene->character_actor.GetSpeed();
-		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, 0, -movement, 0);
+		character_scene->character_actor.PlayerMovement(character_scene->reg_scene, 0, 0, -movement);
 	}
 }
 

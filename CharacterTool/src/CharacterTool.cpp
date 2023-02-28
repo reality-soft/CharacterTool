@@ -27,46 +27,31 @@ void CharacterTool::OnInit()
 	
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene);
-	debug_entity_ = reg_scene.create();
-	debug_camera_.position = { 0, 1000, -1000, 0 };
-	debug_camera_.look = { 0, -1, 0, 0 };
-	debug_camera_.up = { 0, 1, 0, 0 };
-	debug_camera_.near_z = 1.f;
-	debug_camera_.far_z = 10000.f;
-	debug_camera_.fov = XMConvertToRadians(45);
-	debug_camera_.yaw = 0;
-	debug_camera_.pitch = XMConvertToRadians(45);
-	debug_camera_.roll = 0;
-	debug_camera_.speed = 100;
-	debug_camera_.tag = "Player";
-	reg_scene.emplace<C_Camera>(debug_entity_, debug_camera_);
 
-
-	sys_camera_.TargetTag(reg_scene, "Player");
+	//sys_camera_.TargetTag(reg_scene, "Player");
 	sys_camera_.OnCreate(reg_scene);
 	sys_render_.OnCreate(reg_scene);
 
 	//GUI
 	GUI->AddWidget("MainMenu", new GwMainMenu());
 
-
 	// Key Settings
-	EVENT->Subscribe({ DIK_D }, Movements::MoveRight, KEY_HOLD);
-	EVENT->Subscribe({ DIK_W, DIK_D }, Movements::MoveRightForward, KEY_HOLD);
-	EVENT->Subscribe({ DIK_S, DIK_D }, Movements::MoveRightBack, KEY_HOLD);
-	EVENT->Subscribe({ DIK_A }, Movements::MoveLeft, KEY_HOLD);
-	EVENT->Subscribe({ DIK_W, DIK_A }, Movements::MoveLeftForward, KEY_HOLD);
-	EVENT->Subscribe({ DIK_S, DIK_A }, Movements::MoveLeftBack, KEY_HOLD);
-	EVENT->Subscribe({ DIK_W }, Movements::MoveForward, KEY_HOLD);
-	EVENT->Subscribe({ DIK_S }, Movements::MoveBack, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_D }, Movements::MoveRight, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_W, DIK_D }, Movements::MoveRightForward, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_S, DIK_D }, Movements::MoveRightBack, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_A }, Movements::MoveLeft, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_W, DIK_A }, Movements::MoveLeftForward, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_S, DIK_A }, Movements::MoveLeftBack, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_W }, Movements::MoveForward, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_S }, Movements::MoveBack, KEY_HOLD);
 
-	EVENT->Subscribe({ DIK_D }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ DIK_S }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ DIK_W }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ DIK_A }, Movements::Idle, KEY_UP);
+	//EVENT->Subscribe({ DIK_D }, Movements::Idle, KEY_UP);
+	//EVENT->Subscribe({ DIK_S }, Movements::Idle, KEY_UP);
+	//EVENT->Subscribe({ DIK_W }, Movements::Idle, KEY_UP);
+	//EVENT->Subscribe({ DIK_A }, Movements::Idle, KEY_UP);
 
-	EVENT->Subscribe({ DIK_SPACE }, Movements::Fire, KEY_HOLD);
-	EVENT->Subscribe({ DIK_SPACE }, Movements::Idle, KEY_UP);
+	//EVENT->Subscribe({ DIK_SPACE }, Movements::Fire, KEY_HOLD);
+	//EVENT->Subscribe({ DIK_SPACE }, Movements::Idle, KEY_UP);
 
 	sys_light_.OnCreate(reg_scene);
 }
@@ -74,6 +59,7 @@ void CharacterTool::OnInit()
 void CharacterTool::OnUpdate()
 {
 	sys_camera_.OnUpdate(reg_scene);
+
 	KGCA41B::QUADTREE->Frame(&sys_camera_);
 	EVENT->PollEvents();
 	sys_light_.OnUpdate(reg_scene);

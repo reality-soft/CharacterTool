@@ -15,11 +15,26 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 	transform.local = XMMatrixIdentity();
 	transform.world = XMMatrixIdentity();
 	registry.emplace<KGCA41B::C_Transform>(entity_id_, transform);
-
 	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(C_Transform));
 
-	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
+	KGCA41B::C_SkeletalMesh skm;
+	skm.local = XMMatrixIdentity();
+	skm.world = XMMatrixIdentity();
+	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
+	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
 	transform_tree_.AddNodeToNode(TYPE_ID(KGCA41B::C_Transform), TYPE_ID(KGCA41B::C_SkeletalMesh));
+
+	C_Camera camera;
+	camera.local = XMMatrixTranslationFromVector({ 0, 0, -300, 0 });
+	camera.near_z = 1.f;
+	camera.far_z = 10000.f;
+	camera.fov = XMConvertToRadians(45);
+	camera.tag = "Player";
+	registry.emplace<C_Camera>(entity_id_, camera);
+
+	transform_tree_.AddNodeToNode(TYPE_ID(C_SkeletalMesh), TYPE_ID(C_Camera));
+
+	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
 }
 
 void KGCA41B::PlayerActor::OnUpdate(entt::registry& registry)
@@ -36,14 +51,12 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 	registry.emplace_or_replace<KGCA41B::C_Animation>(entity_id_, animation);
 
 	KGCA41B::C_SkeletalMesh skm;
-	skm.local = XMMatrixScaling(0.5, 0.5, 0.5) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	skm.world = XMMatrixIdentity();
 	skm.skeletal_mesh_id = data.skm_id;
+	skm.local = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
 	skm.vertex_shader_id = data.vs_id;
 	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
-
-	skm = registry.get<C_SkeletalMesh>(entity_id_);
+	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
 }
 
 void KGCA41B::PlayerActor::SetCharacterAnimation(entt::registry& registry, string anim_id)
