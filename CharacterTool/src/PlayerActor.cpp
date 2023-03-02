@@ -18,14 +18,14 @@ void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(C_Transform));
 
 	KGCA41B::C_SkeletalMesh skm;
-	skm.local = XMMatrixIdentity();
+	skm.local = XMMatrixIdentity();//* XMMatrixScalingFromVector({ 0.1, 0.1, 0.1, 0.0 });
 	skm.world = XMMatrixIdentity();
 	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
 	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
 	transform_tree_.AddNodeToNode(TYPE_ID(KGCA41B::C_Transform), TYPE_ID(KGCA41B::C_SkeletalMesh));
 
 	C_Camera camera;
-	camera.local = XMMatrixTranslationFromVector({ 0, 0, -300, 0 });
+	camera.local = XMMatrixTranslationFromVector({ 0, 70, -70, 0 });
 	camera.near_z = 1.f;
 	camera.far_z = 10000.f;
 	camera.fov = XMConvertToRadians(45);
@@ -52,7 +52,7 @@ void KGCA41B::PlayerActor::SetCharacterData(entt::registry& registry, CharacterD
 
 	KGCA41B::C_SkeletalMesh skm;
 	skm.skeletal_mesh_id = data.skm_id;
-	skm.local = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	skm.local = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180)) * XMMatrixScalingFromVector({ 0.3, 0.3, 0.3, 0.0 });
 	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
 	skm.vertex_shader_id = data.vs_id;
 	registry.emplace_or_replace<KGCA41B::C_SkeletalMesh>(entity_id_, skm);
@@ -68,6 +68,8 @@ void KGCA41B::PlayerActor::SetCharacterAnimation(entt::registry& registry, strin
 
 void KGCA41B::PlayerActor::PlayerMovement(entt::registry& registry, float x, float y, float z)
 {
-	transform_ *= XMMatrixTranslation(x, y, z);
+	XMVECTOR movement_vector = XMVector3Normalize({ x, y, z });
+	movement_vector *= TimeMgr::GetInst()->GetDeltaTime() * speed_;
+	transform_ *= XMMatrixTranslationFromVector(movement_vector);
 	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
 }
