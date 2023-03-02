@@ -1,4 +1,4 @@
-#include "VSHeader.hlsli"
+#include "include/VertexCommon.hlsli"
 
 struct VS_IN
 {
@@ -15,7 +15,7 @@ struct VS_OUT
 	float4 n : NORMAL;
 	float4 c : COLOR0;
 	float2 t : TEXCOORD0;
-	float3 vLight : TEXCOORD1;
+	float lod : TEXCOORD1;
 };
 
 cbuffer cb_transform_data : register(b1)
@@ -46,15 +46,16 @@ VS_OUT VS(VS_IN input)
 	}
 
 	float4 vWorld = mul(animation, g_matWorld);
-	float4 vView = mul(vWorld, g_matView);
-	float4 vProj = mul(vView, g_matProj);
+	float4 vView = mul(vWorld, view_matrix);
+	float4 vProj = mul(vView, projection_matrix);
 
+	output.lod = 0;
 	output.p = vProj;
 	output.n = animNormal;
 	output.c = input.c;
 	output.t = input.t;
 
-	output.vLight = float3(0, 0, -1);
+	//output.vLight = float3(0, 0, -1);
 
 	return output;
 }
