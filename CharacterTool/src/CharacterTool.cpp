@@ -9,27 +9,28 @@ void CharacterTool::OnInit()
 {
 	AABBShape aabb;
 	character_actor.OnInit(reg_scene, aabb);
+	sys_camera_.OnCreate(reg_scene);
+	sys_camera_.TargetTag(reg_scene, camera_mode);
 
 	SCENE->PushScene("CharacterTool", this);
-
-	level.CreateLevel(3, 100, 50, { 8, 8 });
-	level.vs_id_ = "LevelVS.cso";
-	level.ps_id_ = "LevelPS.cso";
-	level.texture_id = { "Ground.png" };
-
-	KGCA41B::QUADTREE->Init(&level);
 
 	// Manager Init
 	DATA->Init("../../Contents/Data");
 	DATA->LoadDir("../../Contents/Data");
 	RESOURCE->Init("../../Contents");
 	LoadResource();
+
+	level.CreateLevel(3, 30, 30, { 32 , 32 });
+	level.vs_id_ = "LevelVS.cso";
+	level.ps_id_ = "LevelPS.cso";
+	level.texture_id = { "Ground.png" };
+
+	KGCA41B::QUADTREE->Init(&level);
+	level.SetCamera(sys_camera_.GetCamera());
 	
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	sys_camera_.TargetTag(reg_scene, "Player");
-	sys_camera_.OnCreate(reg_scene);
 	sys_render_.OnCreate(reg_scene);
 
 	//GUI
@@ -53,12 +54,16 @@ void CharacterTool::OnInit()
 	EVENT->Subscribe({ DIK_SPACE }, Movements::Fire, KEY_HOLD);
 	EVENT->Subscribe({ DIK_SPACE }, Movements::Idle, KEY_UP);
 
+	EVENT->Subscribe({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
+
 	sys_light_.OnCreate(reg_scene);
 }
 
 void CharacterTool::OnUpdate()
 {
 	sys_camera_.OnUpdate(reg_scene);
+
+	character_actor.OnUpdate(reg_scene);
 
 	KGCA41B::QUADTREE->Frame(&sys_camera_);
 	EVENT->PollEvents();

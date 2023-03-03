@@ -94,34 +94,25 @@ void GwCharacterWindow::CharacterBoard()
 {
 	ImVec2 img_size = { 200, 200 };
 	ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcItemSize(img_size, img_size.x, img_size.y).x) / 4);
-
+	ImGui::NewLine();
 	ImGui::InputText("CharacterName", input_character_data.character_name, 100);
 
-
 	ImGui::NewLine();
-	//SelectFrame(character_data.max_frame, character_data.cur_frame);
-	//ImGui::NewLine();
 
-	SelectTexture(input_character_data.texture_id);
-
-	ImGui::SameLine();
 	SelectAnimation(input_character_data.anim_id);
-	ImGui::Text(input_character_data.texture_id.c_str());
-	ImGui::SameLine();
 	ImGui::Text(input_character_data.anim_id.c_str());
+	ImGui::NewLine();
 
 	SelectSKM(input_character_data.skm_id);
-	ImGui::SameLine();
 	ImGui::Text(input_character_data.skm_id.c_str());
+	ImGui::NewLine();
 
 	SelectVertexShader(input_character_data.vs_id);
-	ImGui::SameLine();
-	SelectPixelShader(input_character_data.ps_id);
 	ImGui::Text(input_character_data.vs_id.c_str());
-	ImGui::SameLine();
-	ImGui::Text(input_character_data.ps_id.c_str());
-
 	ImGui::NewLine();
+
+	SetBoundingBox(input_character_data.x, input_character_data.y, input_character_data.z);
+
 	ImGui::NewLine();
 	if (ImGui::Button("Save"))
 	{
@@ -332,12 +323,19 @@ void GwCharacterWindow::SelectSKM(string& id)
 	if (skm_vec.size() != 0)id = skm_vec[item_current_idx];
 }
 
+void GwCharacterWindow::SetBoundingBox(int& x, int& y, int& z)
+{
+	ImGui::Text("BoundingBox");
+	ImGui::InputInt("x", &x, 1, 10, ImGuiInputTextFlags_CharsDecimal);
+	ImGui::InputInt("y", &y, 1, 10, ImGuiInputTextFlags_CharsDecimal);
+	ImGui::InputInt("z", &z, 1, 10, ImGuiInputTextFlags_CharsDecimal);
+}
+
 void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 {
 	string sheetName(data.character_name);
 	if (sheetName.length() == 0)
 		return;
-	sheetName += ".csv";
 
 	auto sheet = DATA->AddNewSheet(sheetName);
 
@@ -345,21 +343,19 @@ void GwCharacterWindow::SaveCharacterData(CharacterData& data)
 
 	sheet->AddCategory("character_name");
 	sheet->AddCategory("anim_id");
-	sheet->AddCategory("max_frame");
-	sheet->AddCategory("cur_frame");
 	sheet->AddCategory("skm_id");
 	sheet->AddCategory("vs_id");
-	sheet->AddCategory("texture_id");
-	sheet->AddCategory("ps_id");
+	sheet->AddCategory("x");
+	sheet->AddCategory("y");
+	sheet->AddCategory("z");
 
 	character->SetValue("character_name", data.character_name);
 	character->SetValue("anim_id", data.anim_id);
-	character->SetValue("max_frame", to_string(data.max_frame));
-	character->SetValue("cur_frame", to_string(data.cur_frame));
 	character->SetValue("skm_id", data.skm_id);
 	character->SetValue("vs_id", data.vs_id);
-	character->SetValue("texture_id", data.texture_id);
-	character->SetValue("ps_id", data.ps_id);
+	character->SetValue("x", to_string(data.x));
+	character->SetValue("y", to_string(data.y));
+	character->SetValue("z", to_string(data.z));
 
 	DATA->SaveSheetFile(sheetName);
 }
@@ -377,12 +373,13 @@ void GwCharacterWindow::LoadCharacterData(string loading_data_id)
 		return;
 
 	strncpy(input_character_data.character_name, item->GetValue("character_name").c_str(), item->GetValue("character_name").size());
-	input_character_data.max_frame = stoi(item->GetValue("max_frame"));
-	input_character_data.cur_frame = stoi(item->GetValue("cur_frame"));
-	input_character_data.texture_id = item->GetValue("texture_id");
+	
+	input_character_data.anim_id = item->GetValue("anim_id");
 	input_character_data.skm_id = item->GetValue("skm_id");
 	input_character_data.vs_id = item->GetValue("vs_id");
-	input_character_data.ps_id = item->GetValue("ps_id");
+	input_character_data.x = stoi(item->GetValue("x"));
+	input_character_data.y = stoi(item->GetValue("y"));
+	input_character_data.z = stoi(item->GetValue("z"));
 
 	loading_data_id = "";
 }

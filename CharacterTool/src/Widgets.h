@@ -38,7 +38,7 @@ private:
 	void	SelectTexture(string& id);
 	void	SelectAnimation(string& id);
 	void	SelectSKM(string& id);
-	void	SelectSKT(string& id);
+	void	SetBoundingBox(int& x, int& y, int& z);
 
 private:
 	void SaveCharacterData(CharacterData& data);
