@@ -13,4 +13,5 @@ namespace Movements {
 	void MoveBack();
 	void Idle();
 	void Fire();
+	void CameraModeChange();
 }
