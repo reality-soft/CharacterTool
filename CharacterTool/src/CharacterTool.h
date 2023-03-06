@@ -2,7 +2,7 @@
 #include "PlayerActor.h"
 #include "Widgets.h"
 
-class CharacterTool : public KGCA41B::Scene
+class CharacterTool : public reality::Scene
 {
 public:
 	virtual void OnInit();
@@ -16,12 +16,12 @@ public:
 	string camera_mode = "Player";
 	entt::registry reg_scene;
 	PlayerActor character_actor;
-	KGCA41B::CameraSystem sys_camera_;
+	reality::CameraSystem sys_camera_;
 private:
-	KGCA41B::Level level;
+	reality::Level level;
 
-	KGCA41B::LightingSystem sys_light_;
-	KGCA41B::RenderSystem  sys_render_;
-	KGCA41B::MovementSystem  sys_movement_;
+	reality::LightingSystem sys_light_;
+	reality::RenderSystem  sys_render_;
+	reality::MovementSystem  sys_movement_;
 };
 

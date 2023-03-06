@@ -5,7 +5,7 @@ void EventMgr::PollEvents()
 {
     for (auto& [key, callbacks] : push_subscribers_) {
         DWORD key_state = DINPUT->GetKeyState(key);
-        if (key_state == KGCA41B::KEY_PUSH) {
+        if (key_state == reality::KEY_PUSH) {
             for (auto& callback : callbacks) {
                 callback();
             }
@@ -14,7 +14,7 @@ void EventMgr::PollEvents()
 
     for (auto& [key, callbacks] : free_subscribers_) {
         DWORD key_state = DINPUT->GetKeyState(key);
-        if (key_state == KGCA41B::KEY_FREE) {
+        if (key_state == reality::KEY_FREE) {
             for (auto& callback : callbacks) {
                 callback();
             }
@@ -24,7 +24,7 @@ void EventMgr::PollEvents()
     int num_held_keys = 0;
     for (int key = 0;key < 256;key++) {
         DWORD key_state = DINPUT->GetKeyState(key);
-        if (key_state == KGCA41B::KEY_HOLD) {
+        if (key_state == reality::KEY_HOLD) {
             num_held_keys++;
         }
     }
@@ -32,7 +32,7 @@ void EventMgr::PollEvents()
         bool all_pressed = true;
         for (auto key : keys) {
             DWORD key_state = DINPUT->GetKeyState(key);
-            if (key_state != KGCA41B::KEY_HOLD) {
+            if (key_state != reality::KEY_HOLD) {
                 all_pressed = false;
                 break;
             }
@@ -47,7 +47,7 @@ void EventMgr::PollEvents()
 
     for (auto& [key, callbacks] : up_subscribers_) {
         DWORD key_state = DINPUT->GetKeyState(key);
-        if (key_state == KGCA41B::KEY_UP) {
+        if (key_state == reality::KEY_UP) {
             for (auto& callback : callbacks) {
                 callback();
             }
@@ -58,16 +58,16 @@ void EventMgr::PollEvents()
 void EventMgr::Subscribe(vector<int> key, std::function<void()> callback, DWORD key_state)
 {
     switch (key_state) {
-    case KGCA41B::KEY_PUSH:
+    case reality::KEY_PUSH:
         push_subscribers_[key[0]].push_back(callback);
         break;
-    case KGCA41B::KEY_FREE:
+    case reality::KEY_FREE:
         free_subscribers_[key[0]].push_back(callback);
         break;
-    case KGCA41B::KEY_HOLD:
+    case reality::KEY_HOLD:
         combination_hold_subscribers_[key].push_back(callback);
         break;
-    case KGCA41B::KEY_UP:
+    case reality::KEY_UP:
         up_subscribers_[key[0]].push_back(callback);
         break;
     }

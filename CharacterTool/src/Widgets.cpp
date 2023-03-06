@@ -1,7 +1,7 @@
 #include "Widgets.h"
 #include "CharacterTool.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 #define LISTBOX_WIDTH 150.0f
 #define TEXT_WIDTH 150.0f

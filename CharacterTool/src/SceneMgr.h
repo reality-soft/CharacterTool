@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 
-namespace KGCA41B
+namespace reality
 {
 	class SceneMgr
 	{

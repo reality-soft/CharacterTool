@@ -3,9 +3,9 @@
 #include "CharacterData.h"
 #include "Components.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
-namespace KGCA41B
+namespace reality
 {
 	class PlayerActor : public Character
 	{

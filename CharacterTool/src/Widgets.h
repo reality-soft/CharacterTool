@@ -4,7 +4,7 @@
 #include "SceneMgr.h"
 
 #define GWNAME(gwclass) typeid(gwclass).name()
-using namespace KGCA41B;
+using namespace reality;
 
 enum class MsgType
 {
@@ -13,7 +13,7 @@ enum class MsgType
 	OW_COMP_VIEWER,
 };
 
-class GwMainMenu : public KGCA41B::GuiWidget
+class GwMainMenu : public reality::GuiWidget
 {
 public:
 	virtual void Init() override;
@@ -25,7 +25,7 @@ public:
 
 };
 
-class GwCharacterWindow : public KGCA41B::GuiWidget
+class GwCharacterWindow : public reality::GuiWidget
 {
 public:
 	virtual void Update() override;
@@ -48,7 +48,7 @@ public:
 	CharacterData input_character_data;
 };
 
-class GwDataViewer : public KGCA41B::GuiWidget
+class GwDataViewer : public reality::GuiWidget
 {
 	virtual void Update() override;
 	virtual void Render() override;

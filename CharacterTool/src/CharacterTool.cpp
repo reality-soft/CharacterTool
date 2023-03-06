@@ -3,7 +3,7 @@
 #include "EventMgr.h"
 #include "Movements.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 void CharacterTool::OnInit()
 {
@@ -25,7 +25,7 @@ void CharacterTool::OnInit()
 	level.ps_id_ = "LevelPS.cso";
 	level.texture_id = { "Ground.png" };
 
-	KGCA41B::QUADTREE->Init(&level);
+	reality::QUADTREE->Init(&level);
 	level.SetCamera(sys_camera_.GetCamera());
 	
 	// Component Init
@@ -67,7 +67,7 @@ void CharacterTool::OnUpdate()
 
 	character_actor.OnUpdate(reg_scene);
 
-	KGCA41B::QUADTREE->Frame(&sys_camera_);
+	reality::QUADTREE->Frame(&sys_camera_);
 	EVENT->PollEvents();
 	sys_light_.OnUpdate(reg_scene);
 	
@@ -76,7 +76,7 @@ void CharacterTool::OnUpdate()
 
 void CharacterTool::OnRender()
 {   
-	KGCA41B::QUADTREE->Render();
+	reality::QUADTREE->Render();
 	sys_render_.OnUpdate(reg_scene);
 
 	// GUI
