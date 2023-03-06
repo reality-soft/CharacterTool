@@ -7,17 +7,25 @@ using namespace KGCA41B;
 
 namespace KGCA41B
 {
-	class PlayerActor : public Actor
+	class PlayerActor : public Character
 	{
 		XMMATRIX transform_;
-		float speed_;
 	public:
-		float GetSpeed() { return speed_; };
 		virtual void OnInit(entt::registry& registry, AABBShape collision_box) override;
 		virtual void OnUpdate(entt::registry& registry) override;
 		void SetCharacterData(entt::registry& registry, CharacterData data);
 		void SetCharacterAnimation(entt::registry& registry, string anim_id);
-		void PlayerMovement(entt::registry& registry, float x, float y, float z);
+
+		void MoveRight();
+		void MoveRightForward();
+		void MoveRightBack();
+		void MoveLeft();
+		void MoveLeftForward();
+		void MoveLeftBack();
+		void MoveForward();
+		void MoveBack();
+		void Idle();
+		void Fire();
 	};
 }
 

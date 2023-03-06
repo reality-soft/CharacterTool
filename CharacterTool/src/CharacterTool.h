@@ -20,13 +20,8 @@ public:
 private:
 	KGCA41B::Level level;
 
-	entt::entity   debug_entity_;
-
-	KGCA41B::C_Camera		debug_camera_;
-
-
 	KGCA41B::LightingSystem sys_light_;
-
 	KGCA41B::RenderSystem  sys_render_;
+	KGCA41B::MovementSystem  sys_movement_;
 };
 

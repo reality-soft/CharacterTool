@@ -8,7 +8,7 @@ using namespace KGCA41B;
 void CharacterTool::OnInit()
 {
 	AABBShape aabb;
-	character_actor.OnInit(reg_scene, aabb);
+	character_actor.CharacterInit(reg_scene, aabb);
 	sys_camera_.OnCreate(reg_scene);
 	sys_camera_.TargetTag(reg_scene, camera_mode);
 
@@ -35,24 +35,26 @@ void CharacterTool::OnInit()
 
 	//GUI
 	GUI->AddWidget("MainMenu", new GwMainMenu());
-
+	
 	// Key Settings
-	EVENT->Subscribe({ DIK_D }, Movements::MoveRight, KEY_HOLD);
-	EVENT->Subscribe({ DIK_W, DIK_D }, Movements::MoveRightForward, KEY_HOLD);
-	EVENT->Subscribe({ DIK_S, DIK_D }, Movements::MoveRightBack, KEY_HOLD);
-	EVENT->Subscribe({ DIK_A }, Movements::MoveLeft, KEY_HOLD);
-	EVENT->Subscribe({ DIK_W, DIK_A }, Movements::MoveLeftForward, KEY_HOLD);
-	EVENT->Subscribe({ DIK_S, DIK_A }, Movements::MoveLeftBack, KEY_HOLD);
-	EVENT->Subscribe({ DIK_W }, Movements::MoveForward, KEY_HOLD);
-	EVENT->Subscribe({ DIK_S }, Movements::MoveBack, KEY_HOLD);
+	EVENT->Subscribe({ DIK_D }, std::bind(&PlayerActor::MoveRight, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_W, DIK_D }, std::bind(&PlayerActor::MoveRightForward, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_S, DIK_D }, std::bind(&PlayerActor::MoveRightBack, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_A }, std::bind(&PlayerActor::MoveLeft, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_W, DIK_A }, std::bind(&PlayerActor::MoveLeftForward, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_S, DIK_A }, std::bind(&PlayerActor::MoveLeftBack, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_W }, std::bind(&PlayerActor::MoveForward, &character_actor), KEY_HOLD);
+	EVENT->Subscribe({ DIK_S }, std::bind(&PlayerActor::MoveBack, &character_actor), KEY_HOLD);
 
-	EVENT->Subscribe({ DIK_D }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ DIK_S }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ DIK_W }, Movements::Idle, KEY_UP);
-	EVENT->Subscribe({ DIK_A }, Movements::Idle, KEY_UP);
+	std::function<void()> idle = std::bind(&PlayerActor::Idle, &character_actor);
+	EVENT->Subscribe({ DIK_D }, idle, KEY_UP);
+	EVENT->Subscribe({ DIK_S }, idle, KEY_UP);
+	EVENT->Subscribe({ DIK_W }, idle, KEY_UP);
+	EVENT->Subscribe({ DIK_A }, idle, KEY_UP);
+	EVENT->Subscribe({ DIK_SPACE }, idle, KEY_UP);
 
-	EVENT->Subscribe({ DIK_SPACE }, Movements::Fire, KEY_HOLD);
-	EVENT->Subscribe({ DIK_SPACE }, Movements::Idle, KEY_UP);
+	EVENT->Subscribe({ DIK_SPACE }, std::bind(&PlayerActor::Fire, &character_actor), KEY_HOLD);
+
 
 	EVENT->Subscribe({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
 
@@ -68,6 +70,8 @@ void CharacterTool::OnUpdate()
 	KGCA41B::QUADTREE->Frame(&sys_camera_);
 	EVENT->PollEvents();
 	sys_light_.OnUpdate(reg_scene);
+	
+	sys_movement_.OnUpdate(reg_scene);
 }
 
 void CharacterTool::OnRender()

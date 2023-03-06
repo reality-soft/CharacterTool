@@ -1,14 +1,12 @@
 #include "PlayerActor.h"
+#include "SceneMgr.h"
+#include "CharacterTool.h"
 
 void KGCA41B::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_box)
 {
 	collision_box_ = collision_box;
 
-	entity_id_ = registry.create();
-
 	transform_ = XMMatrixIdentity();
-
-	speed_ = 200;
 
 	KGCA41B::C_Transform transform;
 	transform.local = XMMatrixIdentity();
@@ -79,10 +77,121 @@ void KGCA41B::PlayerActor::SetCharacterAnimation(entt::registry& registry, strin
 	registry.emplace_or_replace<KGCA41B::C_Animation>(entity_id_, animation);
 }
 
-void KGCA41B::PlayerActor::PlayerMovement(entt::registry& registry, float x, float y, float z)
+void KGCA41B::PlayerActor::MoveRight()
 {
-	XMVECTOR movement_vector = XMVector3Normalize({ x, y, z });
-	movement_vector *= TimeMgr::GetInst()->GetDeltaTime() * speed_;
-	transform_ *= XMMatrixTranslationFromVector(movement_vector);
-	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_);
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RF_Anim.anim");
+		movement_component_->direction.m128_f32[0]++;
+	}
+}
+
+void KGCA41B::PlayerActor::MoveRightForward()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RF_Anim.anim");
+		movement_component_->direction.m128_f32[2]++;
+		movement_component_->direction.m128_f32[0]++;
+
+		movement_component_->direction = XMVector3Normalize(movement_component_->direction);
+	}
+}
+
+void KGCA41B::PlayerActor::MoveRightBack()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_RB_Anim.anim");
+		movement_component_->direction.m128_f32[2]--;
+		movement_component_->direction.m128_f32[0]++;
+
+		movement_component_->direction = XMVector3Normalize(movement_component_->direction);
+	}
+}
+
+void KGCA41B::PlayerActor::MoveLeft()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LF_Anim.anim");
+		movement_component_->direction.m128_f32[0]--;
+	}
+}
+
+void KGCA41B::PlayerActor::MoveLeftForward()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LF_Anim.anim");
+		movement_component_->direction.m128_f32[2]++;
+		movement_component_->direction.m128_f32[0]--;
+
+		movement_component_->direction = XMVector3Normalize(movement_component_->direction);
+	}
+}
+
+void KGCA41B::PlayerActor::MoveLeftBack()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_LB_Anim.anim");
+		movement_component_->direction.m128_f32[2]--;
+		movement_component_->direction.m128_f32[0]--;
+
+		movement_component_->direction = XMVector3Normalize(movement_component_->direction);
+	}
+}
+
+void KGCA41B::PlayerActor::MoveForward()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_F_Anim.anim");
+		movement_component_->direction.m128_f32[2]++;
+	}
+}
+
+void KGCA41B::PlayerActor::MoveBack()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+
+	if (character_scene) {
+		SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Jog_B_Anim.anim");
+		movement_component_->direction.m128_f32[2]--;
+	}
+}
+
+void KGCA41B::PlayerActor::Idle()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		movement_component_->direction = { 0, 0, 0, 0 };
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Breathing_Anim.anim");
+	}
+}
+
+void KGCA41B::PlayerActor::Fire()
+{
+	auto scene = SCENE->LoadScene("CharacterTool");
+	CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
+	if (character_scene) {
+		character_scene->character_actor.SetCharacterAnimation(character_scene->reg_scene, "A_TP_CH_Handgun_Fire_Anim.anim");
+	}
 }
