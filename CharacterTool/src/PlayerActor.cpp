@@ -29,7 +29,7 @@ void reality::PlayerActor::OnInit(entt::registry& registry, AABBShape collision_
 
 
 	C_Camera camera;
-	camera.local = XMMatrixTranslationFromVector({ 0, 30, -30, 0 });
+	camera.local = XMMatrixTranslationFromVector({ 0, 10, -40, 0 });
 	camera.near_z = 1.f;
 	camera.far_z = 10000.f;
 	camera.fov = XMConvertToRadians(45);
