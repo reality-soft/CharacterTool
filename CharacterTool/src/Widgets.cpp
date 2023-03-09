@@ -121,10 +121,9 @@ void GwCharacterWindow::CharacterBoard()
 	ImGui::SameLine();
 	if (ImGui::Button("Render"))
 	{
-		auto scene = SCENE->LoadScene("CharacterTool");
-		CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
-		if (character_scene)
-			character_scene->character_actor.SetCharacterData(character_scene->reg_scene, input_character_data);
+		auto player = SCENE_MGR->GetPlayer(0);
+		shared_ptr<PlayerActor> player_character = dynamic_pointer_cast<PlayerActor>(player.lock());
+		player_character->SetCharacterData(input_character_data);
 	}
 }
 

@@ -6,7 +6,8 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	CharacterTool charcter_tool;
 
-	ENGINE->Run(&charcter_tool);
+	SCENE_MGR->SetScene<CharacterTool>();
+	ENGINE->Run();
 
 	ENGINE->OnRelease();
 

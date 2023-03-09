@@ -163,14 +163,12 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
     <ClInclude Include="src\CharacterTool.h" />
     <ClInclude Include="src\Movements.h" />
     <ClInclude Include="src\PlayerActor.h" />
-    <ClInclude Include="src\SceneMgr.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CharacterTool.cpp" />
     <ClCompile Include="src\Movements.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
-    <ClCompile Include="src\SceneMgr.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

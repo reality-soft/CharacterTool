@@ -14,8 +14,6 @@ public:
 	void LoadResource();
 
 	string camera_mode = "Player";
-	entt::registry reg_scene;
-	PlayerActor character_actor;
 	reality::CameraSystem sys_camera_;
 private:
 	reality::Level level;

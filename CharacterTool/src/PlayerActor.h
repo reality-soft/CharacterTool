@@ -11,10 +11,10 @@ namespace reality
 	{
 		XMMATRIX transform_;
 	public:
-		virtual void OnInit(entt::registry& registry, AABBShape collision_box) override;
-		virtual void OnUpdate(entt::registry& registry) override;
-		void SetCharacterData(entt::registry& registry, CharacterData data);
-		void SetCharacterAnimation(entt::registry& registry, string anim_id);
+		virtual void OnInit(entt::registry& registry) override;
+		virtual void OnUpdate() override;
+		void SetCharacterData(CharacterData data);
+		void SetCharacterAnimation(string anim_id);
 
 		void MoveRight();
 		void MoveRightForward();
