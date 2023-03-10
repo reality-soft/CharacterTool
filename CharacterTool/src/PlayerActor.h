@@ -9,7 +9,6 @@ namespace reality
 {
 	class PlayerActor : public Character
 	{
-		XMMATRIX transform_;
 	public:
 		virtual void OnInit(entt::registry& registry) override;
 		virtual void OnUpdate() override;
