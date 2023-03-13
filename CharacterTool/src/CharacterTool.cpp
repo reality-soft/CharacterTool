@@ -18,13 +18,7 @@ void CharacterTool::OnInit()
 	RESOURCE->Init("../../Contents");
 	LoadResource();
 
-	level.CreateLevel(3, 30, 30, { 32 , 32 });
-	level.vs_id_ = "LevelVS.cso";
-	level.ps_id_ = "LevelPS.cso";
-	level.texture_id = { "Ground.png" };
-
-	reality::QUADTREE->Init(&level);
-	level.SetCamera(sys_camera_.GetCamera());
+	level.Create("DeadPoly_FullLevel.ltmesh", "LevelVS.cso", "LevelGS.cso");
 	
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene_);
@@ -62,9 +56,9 @@ void CharacterTool::OnInit()
 
 void CharacterTool::OnUpdate()
 {
+	level.Update();
 	sys_camera_.OnUpdate(reg_scene_);
 
-	reality::QUADTREE->Frame(&sys_camera_);
 	INPUT_EVENT->PollEvents();
 	sys_light_.OnUpdate(reg_scene_);
 	
@@ -73,7 +67,7 @@ void CharacterTool::OnUpdate()
 
 void CharacterTool::OnRender()
 {   
-	reality::QUADTREE->Render();
+	level.Render();
 	sys_render_.OnUpdate(reg_scene_);
 
 	// GUI

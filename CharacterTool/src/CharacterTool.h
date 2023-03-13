@@ -16,7 +16,7 @@ public:
 	string camera_mode = "Player";
 	reality::CameraSystem sys_camera_;
 private:
-	reality::Level level;
+	reality::LightMeshLevel level;
 
 	reality::LightingSystem sys_light_;
 	reality::RenderSystem  sys_render_;
