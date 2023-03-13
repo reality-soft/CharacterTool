@@ -4,20 +4,14 @@
 
 void reality::PlayerActor::OnInit(entt::registry& registry)
 {
-	//transform_matrix_ = XMMatrixTranslationFromVector({ 0, 200, 0 });
-
 	Character::OnInit(registry);
+
+	movement_component_->speed = 100;
 
 	collision_box_ = AABBShape();
 
-	reality::C_Transform transform;
-	transform.local = XMMatrixIdentity();
-	transform.world = XMMatrixIdentity();
-	registry.emplace<reality::C_Transform>(entity_id_, transform);
-
-
 	reality::C_SkeletalMesh skm;
-	skm.local = XMMatrixIdentity() * XMMatrixScalingFromVector({ 0.1, 0.1, 0.1, 0.0 });
+	skm.local = XMMatrixIdentity();
 	skm.world = XMMatrixIdentity();
 	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
 	registry.emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
@@ -31,16 +25,15 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 
 
 	C_Camera camera;
-	camera.local = XMMatrixTranslationFromVector({ 0, 10, -40, 0 });
+	camera.local = XMMatrixTranslationFromVector({ 0, 20, -40, 0 });
 	camera.near_z = 1.f;
 	camera.far_z = 10000.f;
 	camera.fov = XMConvertToRadians(45);
 	camera.tag = "Player";
 	registry.emplace<C_Camera>(entity_id_, camera);
 
-	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(C_Transform));
-	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_Transform), TYPE_ID(reality::C_SkeletalMesh));
-	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_SkeletalMesh), TYPE_ID(reality::C_BoundingBox));
+	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(reality::C_BoundingBox));
+	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_BoundingBox), TYPE_ID(reality::C_SkeletalMesh));
 	transform_tree_.AddNodeToNode(TYPE_ID(C_SkeletalMesh), TYPE_ID(C_Camera));
 
 	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_matrix_);
@@ -48,9 +41,6 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 
 void reality::PlayerActor::OnUpdate()
 {
-	//this->node_num_ = SpacePartition::GetInst()->UpdateNodeObjectBelongs(0, collision_box_, entity_id_);
-	//vector<int> node_to_search = SpacePartition::GetInst()->FindCollisionSearchNode(0, collision_box_);
-	transform_tree_.root_node->OnUpdate(*reg_scene_, entity_id_, transform_matrix_);
 }
 
 void reality::PlayerActor::SetCharacterData(CharacterData data)
@@ -69,7 +59,7 @@ void reality::PlayerActor::SetCharacterData(CharacterData data)
 	skm.vertex_shader_id = data.vs_id;
 	reg_scene_->emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
 
-	transform_tree_.root_node->OnUpdate(*reg_scene_, entity_id_, transform_matrix_);
+	transform_tree_.root_node->ApplyMovement(*reg_scene_, entity_id_, transform_matrix_);
 }
 
 void reality::PlayerActor::SetCharacterAnimation(string anim_id)
