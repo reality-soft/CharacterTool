@@ -121,9 +121,10 @@ void GwCharacterWindow::CharacterBoard()
 	ImGui::SameLine();
 	if (ImGui::Button("Render"))
 	{
-		auto player = SCENE_MGR->GetPlayer(0);
-		shared_ptr<PlayerActor> player_character = dynamic_pointer_cast<PlayerActor>(player.lock());
-		player_character->SetCharacterData(input_character_data);
+		auto player = SCENE_MGR->GetPlayer<PlayerActor>(0);
+		if (player != nullptr) {
+			player->SetCharacterData(input_character_data);
+		}
 	}
 }
 

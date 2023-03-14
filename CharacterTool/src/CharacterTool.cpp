@@ -28,25 +28,25 @@ void CharacterTool::OnInit()
 	//GUI
 	GUI->AddWidget("MainMenu", new GwMainMenu());
 	
-	shared_ptr<PlayerActor> character_actor = dynamic_pointer_cast<PlayerActor>(SCENE_MGR->GetPlayer(0).lock());
+	auto character_actor = SCENE_MGR->GetPlayer<PlayerActor>(0);
 	// Key Settings
-	INPUT_EVENT->Subscribe({ DIK_D }, std::bind(&PlayerActor::MoveRight, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_W, DIK_D }, std::bind(&PlayerActor::MoveRightForward, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_S, DIK_D }, std::bind(&PlayerActor::MoveRightBack, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_A }, std::bind(&PlayerActor::MoveLeft, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_W, DIK_A }, std::bind(&PlayerActor::MoveLeftForward, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_S, DIK_A }, std::bind(&PlayerActor::MoveLeftBack, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_W }, std::bind(&PlayerActor::MoveForward, character_actor.get()), KEY_HOLD);
-	INPUT_EVENT->Subscribe({ DIK_S }, std::bind(&PlayerActor::MoveBack, character_actor.get()), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_D }, std::bind(&PlayerActor::MoveRight, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_W, DIK_D }, std::bind(&PlayerActor::MoveRightForward, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_S, DIK_D }, std::bind(&PlayerActor::MoveRightBack, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_A }, std::bind(&PlayerActor::MoveLeft, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_W, DIK_A }, std::bind(&PlayerActor::MoveLeftForward, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_S, DIK_A }, std::bind(&PlayerActor::MoveLeftBack, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_W }, std::bind(&PlayerActor::MoveForward, character_actor), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_S }, std::bind(&PlayerActor::MoveBack, character_actor), KEY_HOLD);
 
-	std::function<void()> idle = std::bind(&PlayerActor::Idle, character_actor.get());
+	std::function<void()> idle = std::bind(&PlayerActor::Idle, character_actor);
 	INPUT_EVENT->Subscribe({ DIK_D }, idle, KEY_UP);
 	INPUT_EVENT->Subscribe({ DIK_S }, idle, KEY_UP);
 	INPUT_EVENT->Subscribe({ DIK_W }, idle, KEY_UP);
 	INPUT_EVENT->Subscribe({ DIK_A }, idle, KEY_UP);
 	INPUT_EVENT->Subscribe({ DIK_SPACE }, idle, KEY_UP);
 
-	INPUT_EVENT->Subscribe({ DIK_SPACE }, std::bind(&PlayerActor::Fire, character_actor.get()), KEY_HOLD);
+	INPUT_EVENT->Subscribe({ DIK_SPACE }, std::bind(&PlayerActor::Fire, character_actor), KEY_HOLD);
 
 
 	INPUT_EVENT->Subscribe({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
