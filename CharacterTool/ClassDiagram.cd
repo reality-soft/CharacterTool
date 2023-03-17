@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CharacterTool">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="OnInit" Hidden="true" />
+      <Method Name="OnRelease" Hidden="true" />
+      <Method Name="OnRender" Hidden="true" />
+      <Method Name="OnUpdate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>gAABAAQAgAAEQAAAAAAAAABAAAEAAAQAAAAAIAEAAAA=</HashCode>
+      <FileName>src\CharacterTool.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GwMainMenu">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABACAAAAAAg=</HashCode>
+      <FileName>src\Widgets.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GwCharacterWindow">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="SelectFrame" Hidden="true" />
+      <Method Name="SelectPixelShader" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAEACAAAAAAACCIAIAgAAAAQABAQBAAAAAA=</HashCode>
+      <FileName>src\Widgets.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GwDataViewer">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>src\Widgets.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="reality::PlayerActor">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="OnInit" Hidden="true" />
+      <Method Name="OnUpdate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgIABAAAAAAACAAAEAAAAAAAEEAgQIQgAAAAEAAAA=</HashCode>
+      <FileName>src\PlayerActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="CharacterData">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAABwAQAQAgA=</HashCode>
+      <FileName>src\CharacterData.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Malgun Gothic" Size="9" />
+</ClassDiagram>

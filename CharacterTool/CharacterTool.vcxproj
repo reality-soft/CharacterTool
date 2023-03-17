@@ -263,6 +263,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
+    <None Include="ClassDiagram.cd" />
     <None Include="HLSL\EffectHeader.hlsli" />
     <None Include="HLSL\include\LevelHeader.hlsli" />
     <None Include="HLSL\include\PixelCommon.hlsli" />

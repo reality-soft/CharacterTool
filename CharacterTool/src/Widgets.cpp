@@ -41,7 +41,10 @@ void GwMainMenu::Render()
 		if (file_dialog.HasSelected())
 		{
 			string name = file_dialog.GetSelected().string();
-			FBX->ImportAndSaveFbx(name);
+			FbxImportOption option;
+			//option.import_rotation = { 0, 0, 180, 0 };
+			//option.import_scale = 0.3;
+			FBX->ImportAndSaveFbx(name, option);
 			file_dialog.ClearSelected();
 		}
 
