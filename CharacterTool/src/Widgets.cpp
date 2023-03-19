@@ -1,5 +1,6 @@
 #include "Widgets.h"
-#include "CharacterTool.h"
+#include "Engine_include.h"
+#include "FbxMgr.h"
 
 using namespace reality;
 
@@ -42,8 +43,6 @@ void GwMainMenu::Render()
 		{
 			string name = file_dialog.GetSelected().string();
 			FbxImportOption option;
-			//option.import_rotation = { 0, 0, 180, 0 };
-			//option.import_scale = 0.3;
 			FBX->ImportAndSaveFbx(name, option);
 			file_dialog.ClearSelected();
 		}

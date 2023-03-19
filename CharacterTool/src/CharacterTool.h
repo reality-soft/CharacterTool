@@ -1,5 +1,4 @@
 #pragma once
-#include "PlayerActor.h"
 #include "Widgets.h"
 
 class CharacterTool : public reality::Scene

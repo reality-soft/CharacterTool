@@ -24,7 +24,7 @@ float4 PS(PS_OUT output) : SV_Target
     float4 texcolor = CreateColor(textures, sample, output.t);
     float4 skycolor = sky_color;
     
-    if (strength > 0.0f) // baxkgorung sky
+    if (strength.w > 0.0f) // baxkgorung sky
     {
         if (output.origin.y >= 0)
         {

@@ -1,6 +1,4 @@
 #include "PlayerActor.h"
-#include "SceneMgr.h"
-#include "CharacterTool.h"
 
 void reality::PlayerActor::OnInit(entt::registry& registry)
 {

@@ -1,5 +1,5 @@
 #include "CharacterTool.h"
-#include "Engine_include.h"
+#include "PlayerActor.h"
 #include "Movements.h"
 
 using namespace reality;
@@ -18,7 +18,7 @@ void CharacterTool::OnInit()
 	RESOURCE->Init("../../Contents");
 	LoadResource();
 
-	level.Create("DeadPoly_FullLevel.ltmesh", "LevelVS.cso", "LevelGS.cso");
+	level.Create("DeadPoly_FullLevel.ltmesh", "LevelVS.cso", "LevelGS.cso", "DeadPoly_Level_Collision.ltmesh");
 	
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene_);

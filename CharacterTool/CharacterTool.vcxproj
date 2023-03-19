@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -95,7 +95,8 @@
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
+copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -124,7 +125,7 @@
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\*.cso"
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
 copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -134,7 +135,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -154,7 +155,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\*.cso"
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
 copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -194,9 +195,9 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\InstancingVS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelEditorGS.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS</EntryPointName>
@@ -204,14 +205,14 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="HLSL\LevelEditorPS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelEditorVS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelGS.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS</EntryPointName>
@@ -229,9 +230,9 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\MeshSurfacePS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkinningPS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -244,38 +245,23 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkySpherePS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkySphereVS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\StaticMeshVS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="HLSL\EffectHeader.hlsli" />
-    <None Include="HLSL\include\LevelHeader.hlsli" />
-    <None Include="HLSL\include\PixelCommon.hlsli" />
-    <None Include="HLSL\include\VertexCommon.hlsli" />
-    <None Include="HLSL\LevelHeader.hlsli" />
-    <None Include="HLSL\PSHeader.hlsli" />
-    <None Include="HLSL\VSHeader.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
-      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
