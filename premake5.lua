@@ -84,6 +84,11 @@ project "CharacterTool"
 		shaderentry "PS"
 	    shadermodel "5.0"
 
+	filter "files:**GS.hlsl"
+	    shadertype "Geometry"
+		shaderentry "GS"
+	    shadermodel "5.0"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "Off"
@@ -103,7 +108,6 @@ project "CharacterTool"
 		postbuildcommands
 		{
 			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
-			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\""
 		}
 
 	filter "configurations:Debug"

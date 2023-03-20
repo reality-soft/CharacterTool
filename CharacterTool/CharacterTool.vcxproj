@@ -95,8 +95,7 @@
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
-copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,8 +124,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
-copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -155,8 +153,7 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"
-copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -200,9 +197,9 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelEditorGS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Geometry</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>GS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelEditorPS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -215,9 +212,9 @@ copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Conten
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelGS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">GS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Geometry</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>GS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelPS.hlsl">
       <ShaderType>Pixel</ShaderType>
