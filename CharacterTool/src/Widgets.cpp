@@ -1,7 +1,8 @@
 #include "Widgets.h"
-#include "CharacterTool.h"
+#include "Engine_include.h"
+#include "FbxMgr.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 #define LISTBOX_WIDTH 150.0f
 #define TEXT_WIDTH 150.0f
@@ -10,8 +11,8 @@ using namespace KGCA41B;
 
 void GwMainMenu::Init()
 {
-	file_dialog.SetTitle("FbxLoader");
-	file_dialog.SetTypeFilters({ ".fbx"});
+	file_dialog_.SetTitle("FbxLoader");
+	file_dialog_.SetTypeFilters({ ".fbx" });
 }
 
 void GwMainMenu::Update()
@@ -33,19 +34,15 @@ void GwMainMenu::Render()
 				GUI->FindWidget("CharacterTool")->InvertOpen();
 			}
 		}
-		if (ImGui::MenuItem("LoadFbx"))
+		if (ImGui::MenuItem("Load Fbx"))
 		{
-			file_dialog.Open();
+			if (GUI->FindWidget("FbxOption") == nullptr) {
+				GUI->AddWidget("FbxOption", new GwFbxLoadingOptionWindow);
+			}
+			else {
+				GUI->FindWidget("FbxOption")->InvertOpen();
+			}
 		}
-
-		if (file_dialog.HasSelected())
-		{
-			string name = file_dialog.GetSelected().string();
-			FBX->ImportAndSaveFbx(name);
-			file_dialog.ClearSelected();
-		}
-
-		file_dialog.Display();
 	}
 	ImGui::EndMainMenuBar();
 }
@@ -121,10 +118,10 @@ void GwCharacterWindow::CharacterBoard()
 	ImGui::SameLine();
 	if (ImGui::Button("Render"))
 	{
-		auto scene = SCENE->LoadScene("CharacterTool");
-		CharacterTool* character_scene = dynamic_cast<CharacterTool*>(scene);
-		if (character_scene)
-			character_scene->character_actor.SetCharacterData(character_scene->reg_scene, input_character_data);
+		auto player = SCENE_MGR->GetPlayer<PlayerActor>(0);
+		if (player != nullptr) {
+			player->SetCharacterData(input_character_data);
+		}
 	}
 }
 
@@ -423,4 +420,55 @@ void GwDataViewer::Render()
 		}
 	}
 	ImGui::End();
+}
+
+void GwFbxLoadingOptionWindow::Init()
+{
+}
+
+void GwFbxLoadingOptionWindow::Update()
+{
+}
+
+void GwFbxLoadingOptionWindow::Render()
+{
+	ImGui::SetNextWindowSize(ImVec2(600, 600));
+	ImGui::Begin("FbxLoader", &open_, ImGuiWindowFlags_MenuBar);
+	{
+		string clicked = "";
+		ImGui::BeginMenuBar();
+		{
+			if (ImGui::BeginMenu("Set Loading Option"))
+			{
+				FbxLoaderBoard();
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Load Fbx"))
+			{
+				file_dialog_.Open();
+				ImGui::EndMenu();
+			}
+
+			if (file_dialog_.HasSelected())
+			{
+				string name = file_dialog_.GetSelected().string();
+				FbxImportOption option;
+
+				FBX->ImportAndSaveFbx(name, option, vertex_option_);
+				file_dialog_.ClearSelected();
+			}
+
+			file_dialog_.Display();
+		}
+		ImGui::EndMenuBar();
+	}
+	ImGui::End();
+}
+
+void GwFbxLoadingOptionWindow::FbxLoaderBoard()
+{
+	ImGui::Text("Mesh vertex option");
+	ImGui::RadioButton("By polygon vertex", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_POLYGON_VERTEX)); ImGui::SameLine();
+	ImGui::RadioButton("By control point", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_CONTROL_POINT));
 }

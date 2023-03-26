@@ -28,11 +28,24 @@ project "CharacterTool"
 
 	includedirs
 	{
-		"../Game-Engine/Engine/vendor/spdlog/include",
+		"../Game-Engine/Engine/src/Actors",
+		"../Game-Engine/Engine/src/Components",
+		"../Game-Engine/Engine/src/Core",
+		"../Game-Engine/Engine/src/DataTypes",
+		"../Game-Engine/Engine/src/Headers",
+		"../Game-Engine/Engine/src/Physics",
+		"../Game-Engine/Engine/src/ResourceTypes",
+		"../Game-Engine/Engine/src/Systems",
+		"../Game-Engine/Engine/src/Tools",
+		"../Game-Engine/Engine/src/UI",
+		"../Game-Engine/Engine/src/World",
+		"../Game-Engine/Engine/src/Event",
+		"../Game-Engine/Engine/src/Scene",
+		"../Game-Engine/Engine/src/Sound",
+		"../Game-Engine/Engine/src/Input",
+		"../Game-Engine/Engine/src/Managers",
 		"../Game-Engine/Engine/src",
-		"../Game-Engine/Engine/src/Engine",
-		"../Game-Engine/Engine/src/ECS",
-		"../Game-Engine/Engine/src/Engine/SingletonClass",
+		"../Game-Engine/Engine/vendor/spdlog/include",
 		"../SDK/DirectXTK/include",
 		"../SDK/FBXSDK/include",
 		"../SDK/FMOD/include",
@@ -71,6 +84,11 @@ project "CharacterTool"
 		shaderentry "PS"
 	    shadermodel "5.0"
 
+	filter "files:**GS.hlsl"
+	    shadertype "Geometry"
+		shaderentry "GS"
+	    shadermodel "5.0"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "Off"
@@ -90,7 +108,6 @@ project "CharacterTool"
 		postbuildcommands
 		{
 			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
-			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\""
 		}
 
 	filter "configurations:Debug"
