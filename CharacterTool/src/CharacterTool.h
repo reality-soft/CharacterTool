@@ -12,7 +12,7 @@ public:
 public:
 	void LoadResource();
 
-	string camera_mode = "Player";
+	string camera_mode = "Debug";
 	reality::CameraSystem sys_camera_;
 private:
 	reality::LightMeshLevel level;

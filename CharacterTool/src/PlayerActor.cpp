@@ -75,62 +75,62 @@ void reality::PlayerActor::SetCharacterAnimation(string anim_id)
 
 void reality::PlayerActor::MoveRight()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_RF_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_RF_Anim_Unreal Take.anim");
 	movement_component_->direction += right_;
 }
 
 void reality::PlayerActor::MoveRightForward()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_RF_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_RF_Anim_Unreal Take.anim");
 	movement_component_->direction += front_;
 	movement_component_->direction += right_;
 }
 
 void reality::PlayerActor::MoveRightBack()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_RB_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_RB_Anim_Unreal Take.anim");
 	movement_component_->direction -= front_;
 	movement_component_->direction += right_;
 }
 
 void reality::PlayerActor::MoveLeft()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_LF_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_LF_Anim_Unreal Take.anim");
 	movement_component_->direction -= right_;
 }
 
 void reality::PlayerActor::MoveLeftForward()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_LF_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_LF_Anim_Unreal Take.anim");
 	movement_component_->direction += front_;
 	movement_component_->direction -= right_;
 }
 
 void reality::PlayerActor::MoveLeftBack()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_LB_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_LB_Anim_Unreal Take.anim");
 	movement_component_->direction -= front_;
 	movement_component_->direction -= right_;
 }
 
 void reality::PlayerActor::MoveForward()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_F_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_F_Anim_Unreal Take.anim");
 	movement_component_->direction += front_;
 }
 
 void reality::PlayerActor::MoveBack()
 {
-	SetCharacterAnimation("A_TP_CH_Jog_B_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Jog_B_Anim_Unreal Take.anim");
 	movement_component_->direction -= front_;
 }
 
 void reality::PlayerActor::Idle()
 {
-	SetCharacterAnimation("A_TP_CH_Breathing_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Breathing_Anim_Unreal Take.anim");
 }
 
 void reality::PlayerActor::Fire()
 {
-	SetCharacterAnimation("A_TP_CH_Handgun_Fire_Anim.anim");
+	SetCharacterAnimation("A_TP_CH_Handgun_Fire_Anim_Unreal Take.anim");
 }
