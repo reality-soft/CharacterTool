@@ -11,8 +11,8 @@ using namespace reality;
 
 void GwMainMenu::Init()
 {
-	file_dialog.SetTitle("FbxLoader");
-	file_dialog.SetTypeFilters({ ".fbx"});
+	file_dialog_.SetTitle("FbxLoader");
+	file_dialog_.SetTypeFilters({ ".fbx" });
 }
 
 void GwMainMenu::Update()
@@ -34,20 +34,15 @@ void GwMainMenu::Render()
 				GUI->FindWidget("CharacterTool")->InvertOpen();
 			}
 		}
-		if (ImGui::MenuItem("LoadFbx"))
+		if (ImGui::MenuItem("Load Fbx"))
 		{
-			file_dialog.Open();
+			if (GUI->FindWidget("FbxOption") == nullptr) {
+				GUI->AddWidget("FbxOption", new GwFbxLoadingOptionWindow);
+			}
+			else {
+				GUI->FindWidget("FbxOption")->InvertOpen();
+			}
 		}
-
-		if (file_dialog.HasSelected())
-		{
-			string name = file_dialog.GetSelected().string();
-			FbxImportOption option;
-			FBX->ImportAndSaveFbx(name, option);
-			file_dialog.ClearSelected();
-		}
-
-		file_dialog.Display();
 	}
 	ImGui::EndMainMenuBar();
 }
@@ -425,4 +420,55 @@ void GwDataViewer::Render()
 		}
 	}
 	ImGui::End();
+}
+
+void GwFbxLoadingOptionWindow::Init()
+{
+}
+
+void GwFbxLoadingOptionWindow::Update()
+{
+}
+
+void GwFbxLoadingOptionWindow::Render()
+{
+	ImGui::SetNextWindowSize(ImVec2(600, 600));
+	ImGui::Begin("FbxLoader", &open_, ImGuiWindowFlags_MenuBar);
+	{
+		string clicked = "";
+		ImGui::BeginMenuBar();
+		{
+			if (ImGui::BeginMenu("Set Loading Option"))
+			{
+				FbxLoaderBoard();
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Load Fbx"))
+			{
+				file_dialog_.Open();
+				ImGui::EndMenu();
+			}
+
+			if (file_dialog_.HasSelected())
+			{
+				string name = file_dialog_.GetSelected().string();
+				FbxImportOption option;
+
+				FBX->ImportAndSaveFbx(name, option, vertex_option_);
+				file_dialog_.ClearSelected();
+			}
+
+			file_dialog_.Display();
+		}
+		ImGui::EndMenuBar();
+	}
+	ImGui::End();
+}
+
+void GwFbxLoadingOptionWindow::FbxLoaderBoard()
+{
+	ImGui::Text("Mesh vertex option");
+	ImGui::RadioButton("By polygon vertex", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_POLYGON_VERTEX)); ImGui::SameLine();
+	ImGui::RadioButton("By control point", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_CONTROL_POINT));
 }

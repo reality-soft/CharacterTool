@@ -19,8 +19,26 @@ public:
 	virtual void Render() override;
 
 	MsgType msg_ = MsgType::NONE;
-	ImGui::FileBrowser file_dialog;
+	ImGui::FileBrowser file_dialog_;
+};
 
+
+class GwFbxLoadingOptionWindow : public reality::GuiWidget
+{
+public:
+	virtual void Init() override;
+	virtual void Update() override;
+	virtual void Render() override;
+private:
+	void		 FbxLoaderBoard();
+public:
+	FbxVertexOption GetVertexOption() {
+		return vertex_option_;
+	};
+
+private:
+	FbxVertexOption vertex_option_;
+	ImGui::FileBrowser file_dialog_;
 };
 
 class GwCharacterWindow : public reality::GuiWidget
