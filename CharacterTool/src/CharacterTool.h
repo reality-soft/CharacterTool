@@ -16,6 +16,7 @@ public:
 	reality::CameraSystem sys_camera_;
 private:
 	reality::StaticMeshLevel level;
+	Environment environment_;
 
 	reality::LightingSystem sys_light_;
 	reality::RenderSystem  sys_render_;

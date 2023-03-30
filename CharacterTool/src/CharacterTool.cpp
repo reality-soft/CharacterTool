@@ -20,7 +20,7 @@ void CharacterTool::OnInit()
 
 	level.Create("DeadPoly_FullLevel_04.stmesh", "LevelVS.cso", "DeadPoly_Level_Collision_04.stmesh");
 	//level.ImportGuideLines("../../Contents/BinaryPackage/DeadPoly_Blocking1.mapdat", GuideLine::GuideType::eBlocking);
-	level.ImportGuideLines("../../Contents/BinaryPackage/DeadPoly_NpcTrack.mapdat", GuideLine::GuideType::eNpcTrack);
+	level.ImportGuideLines("../../Contents/BinaryPackage/DeadPoly_NpcTrack_01.mapdat", GuideLine::GuideType::eNpcTrack);
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene_);
 
@@ -49,6 +49,13 @@ void CharacterTool::OnInit()
 	//INPUT_EVENT->SubscribeMouseEvent({ MouseButton::L_BUTTON }, std::bind(&PlayerActor::Fire, character_actor), KEY_HOLD);
 	//INPUT_EVENT->SubscribeMouseEvent({ MouseButton::L_BUTTON }, idle, KEY_UP);
 
+	environment_.CreateEnvironment();
+	environment_.SetWorldTime(60, 60, true);
+	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
+	environment_.SetFogDistanceByTime(5000, 1000);
+	environment_.SetLightProperty(0.2f, 0.2f);
+
+
 	INPUT_EVENT->SubscribeKeyEvent({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
 
 	sys_light_.OnCreate(reg_scene_);
@@ -61,6 +68,8 @@ void CharacterTool::OnUpdate()
 
 	INPUT_EVENT->PollEvents();
 	sys_light_.OnUpdate(reg_scene_);
+
+	environment_.Update(&sys_camera_, &sys_light_);
 	
 	sys_movement_.OnUpdate(reg_scene_);
 }
