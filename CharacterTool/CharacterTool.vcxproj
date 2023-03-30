@@ -171,16 +171,6 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="HLSL\BasicShapePS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\BasicShapeVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
-    </FxCompile>
     <FxCompile Include="HLSL\EffectDefaultPS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -190,31 +180,6 @@
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\InstancingVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelEditorGS.hlsl">
-      <ShaderType>Geometry</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>GS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelEditorPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelEditorVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelGS.hlsl">
-      <ShaderType>Geometry</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>GS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelPS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -259,6 +224,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
+      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
