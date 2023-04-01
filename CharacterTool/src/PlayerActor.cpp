@@ -51,7 +51,7 @@ void reality::PlayerActor::SetCharacterData(CharacterData data)
 {
 	reality::C_Animation animation;
 	animation.anim_id = data.anim_id;
-	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation);
+	
 
 	reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
 	bounding_box.SetXYZ(data.x, data.y, data.z);
@@ -62,6 +62,10 @@ void reality::PlayerActor::SetCharacterData(CharacterData data)
 	skm.local = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180)) * XMMatrixScalingFromVector({ 0.3, 0.3, 0.3, 0.0 });
 	skm.vertex_shader_id = data.vs_id;
 	reg_scene_->emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
+
+	animation.AddNewAnimSlot("UpperBody", data.skm_id, "Spine_02");
+	animation.SetAnimSlotAnimation("UpperBody", "A_TP_CH_Handgun_Fire_Anim_Retargeted_Unreal Take.anim");
+	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation);
 
 	transform_tree_.root_node->Translate(*reg_scene_, entity_id_, transform_matrix_);
 }

@@ -8,6 +8,8 @@ void CharacterTool::OnInit()
 {
 	AABBShape aabb;
 	
+	COMPONENT->OnInit(reg_scene_);
+
 	SCENE_MGR->AddPlayer<PlayerActor>();
 	sys_camera_.OnCreate(reg_scene_);
 	sys_camera_.TargetTag(reg_scene_, camera_mode);
