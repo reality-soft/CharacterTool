@@ -20,17 +20,14 @@ struct VS_OUT
 	float3 origin : NORMAL1;
 };
 
-cbuffer cb_transform_data : register(b1)
+cbuffer cb_skeletal_mesh : register(b1)
 {
 	matrix world;
-};
-
-cbuffer cb_bone_data : register(b2)
-{
+	matrix local;
 	matrix bind_pose[128];
 	matrix animation[128];
 	matrix slot_animation[128];
-	float4  weights[32];
+	float4 weights[32];
 }
 
 VS_OUT VS(VS_IN input)
@@ -54,8 +51,9 @@ VS_OUT VS(VS_IN input)
 		anim_normal += mul(input.n, bind_pose_animation_matrix) * weight;
 	}
 
-	float4 world_vector = mul(animation_vector, world);
-	float4 view_vector = mul(world_vector, view_matrix);
+	float4 world_vector1 = mul(animation_vector, world);
+	float4 world_vector2 = mul(world_vector1, local);
+	float4 view_vector = mul(world_vector2, view_matrix);
 	float4 proj_vector = mul(view_vector, projection_matrix);
 
 	output.lod = 0;
@@ -64,8 +62,8 @@ VS_OUT VS(VS_IN input)
 	output.t = input.t;
 
 	output.lod = GetLod(input.p);
-	output.view_dir = normalize(camera_world - world_vector).xyz;
-	output.origin = world_vector;
+	output.view_dir = normalize(camera_world - world_vector2).xyz;
+	output.origin = world_vector2;
 
 	return output;
 }
