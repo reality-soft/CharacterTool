@@ -63,7 +63,7 @@ void reality::PlayerActor::SetCharacterData(CharacterData data)
 	skm.vertex_shader_id = data.vs_id;
 	reg_scene_->emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
 
-	animation.AddNewAnimSlot("UpperBody", data.skm_id, "Spine_02");
+	animation.AddNewAnimSlot("UpperBody", data.skm_id, "Spine_02", 6);
 	animation.SetAnimSlotAnimation("UpperBody", "A_TP_CH_Handgun_Fire_Anim_Retargeted_Unreal Take.anim");
 	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation);
 
