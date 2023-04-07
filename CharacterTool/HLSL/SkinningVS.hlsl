@@ -25,9 +25,13 @@ cbuffer cb_skeletal_mesh : register(b1)
 	matrix world;
 	matrix local;
 	matrix bind_pose[128];
+	matrix prev_animation[128];
 	matrix animation[128];
+	matrix prev_slot_animation[128];
 	matrix slot_animation[128];
 	float4 weights[32];
+	float  base_time_weight;
+	float  slot_time_weight;
 }
 
 VS_OUT VS(VS_IN input)
@@ -44,7 +48,9 @@ VS_OUT VS(VS_IN input)
 		float weight = input.w[s];
 
 		float animation_weight = ((float[4])(weights[skeleton_index / 4]))[skeleton_index % 4];
-		matrix animation_matrix = mul(animation[skeleton_index], 1.0f - animation_weight) + mul(slot_animation[skeleton_index], animation_weight);
+		matrix animation_matrix_by_time = mul(prev_animation[skeleton_index], 1.0f - base_time_weight) + mul(animation[skeleton_index], base_time_weight);
+		matrix slot_animation_matrix_by_time = mul(prev_slot_animation[skeleton_index], 1.0f - slot_time_weight) + mul(slot_animation[skeleton_index], slot_time_weight);
+		matrix animation_matrix = mul(animation_matrix_by_time, 1.0f - animation_weight) + mul(slot_animation_matrix_by_time, animation_weight);
 		matrix bind_pose_animation_matrix = mul(bind_pose[skeleton_index], animation_matrix);
 
 		animation_vector += mul(local_vector, bind_pose_animation_matrix) * weight;
@@ -55,6 +61,7 @@ VS_OUT VS(VS_IN input)
 	float4 world_vector2 = mul(world_vector1, local);
 	float4 view_vector = mul(world_vector2, view_matrix);
 	float4 proj_vector = mul(view_vector, projection_matrix);
+
 
 	output.lod = 0;
 	output.p = proj_vector;

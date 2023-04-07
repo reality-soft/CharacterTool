@@ -74,6 +74,7 @@ void CharacterTool::OnUpdate()
 	environment_.Update(&sys_camera_, &sys_light_);
 	
 	sys_movement_.OnUpdate(reg_scene_);
+	sys_animation_.OnUpdate(reg_scene_);
 }
 
 void CharacterTool::OnRender()
