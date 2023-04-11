@@ -63,7 +63,7 @@ void reality::PlayerActor::SetCharacterData(CharacterData data)
 
 	reality::C_Animation* animation_component_ptr = reg_scene_->try_get<reality::C_Animation>(entity_id_);
 
-	animation_component_ptr->AddNewAnimSlot("UpperBody", data.skm_id, "Spine_02", 6, &AnimationBase());
+	animation_component_ptr->AddNewAnimSlot<AnimationBase>("UpperBody", data.skm_id, "Spine_02", 6);
 	animation_component_ptr->GetAnimSlotByName("UpperBody").anim_object_->SetAnimation("A_TP_CH_Handgun_Fire_Anim_Retargeted_Unreal Take.anim", 0.3);
 	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
 
