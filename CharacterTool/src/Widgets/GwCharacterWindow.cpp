@@ -1,51 +1,11 @@
-#include "Widgets.h"
-#include "Engine_include.h"
-#include "FbxMgr.h"
-
+#include "GwCharacterWindow.h"
+#include "PlayerActor.h"
 using namespace reality;
 
 #define LISTBOX_WIDTH 150.0f
 #define TEXT_WIDTH 150.0f
 
 #define GET_VARIABLE_NAME(n) #n
-
-void GwMainMenu::Init()
-{
-	file_dialog_.SetTitle("FbxLoader");
-	file_dialog_.SetTypeFilters({ ".fbx" });
-}
-
-void GwMainMenu::Update()
-{
-	ImGui::SetCurrentContext(GUI->GetContext());
-	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
-}
-
-void GwMainMenu::Render()
-{
-	ImGui::BeginMainMenuBar();
-	{
-		if (ImGui::MenuItem("Character"))
-		{
-			if (GUI->FindWidget("CharacterTool") == nullptr) {
-				GUI->AddWidget("CharacterTool", new GwCharacterWindow);
-			}
-			else {
-				GUI->FindWidget("CharacterTool")->InvertOpen();
-			}
-		}
-		if (ImGui::MenuItem("Load Fbx"))
-		{
-			if (GUI->FindWidget("FbxOption") == nullptr) {
-				GUI->AddWidget("FbxOption", new GwFbxLoadingOptionWindow);
-			}
-			else {
-				GUI->FindWidget("FbxOption")->InvertOpen();
-			}
-		}
-	}
-	ImGui::EndMainMenuBar();
-}
 
 void GwCharacterWindow::Update()
 {
@@ -72,8 +32,8 @@ void GwCharacterWindow::Render()
 				{
 					GuiWidget* widget_ptr = GUI->FindWidget("FileViewer");
 					if (widget_ptr == nullptr) {
-						auto widget = new GwDataViewer;
-						GUI->AddWidget("FileViewer", widget);
+						//auto widget = new GwDataViewer;
+						//GUI->AddWidget("FileViewer", widget);
 					}
 					else {
 						widget_ptr->InvertOpen();
@@ -370,7 +330,7 @@ void GwCharacterWindow::LoadCharacterData(string loading_data_id)
 		return;
 
 	strncpy(input_character_data.character_name, item->GetValue("character_name").c_str(), item->GetValue("character_name").size());
-	
+
 	input_character_data.anim_id = item->GetValue("anim_id");
 	input_character_data.skm_id = item->GetValue("skm_id");
 	input_character_data.vs_id = item->GetValue("vs_id");
@@ -379,96 +339,4 @@ void GwCharacterWindow::LoadCharacterData(string loading_data_id)
 	input_character_data.z = stoi(item->GetValue("z"));
 
 	loading_data_id = "";
-}
-
-void GwDataViewer::Update()
-{
-	ImGui::SetCurrentContext(GUI->GetContext());
-}
-
-void GwDataViewer::Render()
-{
-	ImGui::Begin("Load Character File", &open_);
-	{
-		static int item_current_idx = 0;
-
-		DATA->LoadAllData();
-		auto id_list = DATA->GetAllDataSheetID();
-		if (ImGui::BeginListBox("Data File"))
-		{
-			for (int n = 0; n < id_list.size(); n++)
-			{
-				const bool is_selected = (item_current_idx == n);
-				if (ImGui::Selectable(id_list[n].c_str(), is_selected))
-					item_current_idx = n;
-
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndListBox();
-		}
-		if (ImGui::Button("Load"))
-		{
-			if (id_list.size() == 0)
-			{
-			}
-			else
-			{	
-				auto tool_window = dynamic_cast<GwCharacterWindow*>(GUI->FindWidget("CharacterTool"));
-				tool_window->LoadCharacterData(id_list[item_current_idx]);
-			}
-		}
-	}
-	ImGui::End();
-}
-
-void GwFbxLoadingOptionWindow::Init()
-{
-}
-
-void GwFbxLoadingOptionWindow::Update()
-{
-}
-
-void GwFbxLoadingOptionWindow::Render()
-{
-	ImGui::SetNextWindowSize(ImVec2(600, 600));
-	ImGui::Begin("FbxLoader", &open_, ImGuiWindowFlags_MenuBar);
-	{
-		string clicked = "";
-		ImGui::BeginMenuBar();
-		{
-			if (ImGui::BeginMenu("Set Loading Option"))
-			{
-				FbxLoaderBoard();
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Load Fbx"))
-			{
-				file_dialog_.Open();
-				ImGui::EndMenu();
-			}
-
-			if (file_dialog_.HasSelected())
-			{
-				string name = file_dialog_.GetSelected().string();
-				FbxImportOption option;
-
-				FBX->ImportAndSaveFbx(name, option, vertex_option_);
-				file_dialog_.ClearSelected();
-			}
-
-			file_dialog_.Display();
-		}
-		ImGui::EndMenuBar();
-	}
-	ImGui::End();
-}
-
-void GwFbxLoadingOptionWindow::FbxLoaderBoard()
-{
-	ImGui::Text("Mesh vertex option");
-	ImGui::RadioButton("By polygon vertex", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_POLYGON_VERTEX)); ImGui::SameLine();
-	ImGui::RadioButton("By control point", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_CONTROL_POINT));
 }

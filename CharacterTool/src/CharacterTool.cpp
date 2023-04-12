@@ -1,6 +1,7 @@
 #include "CharacterTool.h"
-#include "PlayerActor.h"
 #include "Movements.h"
+#include "PlayerActor.h"
+#include "GwMainMenu.h"
 
 using namespace reality;
 

@@ -28,6 +28,9 @@ project "CharacterTool"
 
 	includedirs
 	{
+		"%{prj.name}/src",
+		"%{prj.name}/src/Widgets",
+		"../Game-Engine/Engine/src/Actors",
 		"../Game-Engine/Engine/src/Actors",
 		"../Game-Engine/Engine/src/Animation",
 		"../Game-Engine/Engine/src/Components",
@@ -91,7 +94,7 @@ project "CharacterTool"
 	    shadermodel "5.0"
 
 	filter "system:windows"
-		cppdialect "C++17"
+		cppdialect "C++20"
 		staticruntime "Off"
 		systemversion "latest"
 		runtime "Debug"
@@ -100,6 +103,10 @@ project "CharacterTool"
 		{
 			"PLATFORM_WINDOWS"
 		}
+
+	filter "configurations:Debug"
+		defines "_DEBUG"
+		symbols "On"
 
 		prebuildcommands
 		{
@@ -111,12 +118,30 @@ project "CharacterTool"
 			"copy \"..\\..\\output\\bin\\Debug-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
 		}
 
-	filter "configurations:Debug"
-		defines "_DEBUG"
-		symbols "On"
 	filter "configurations:Release"
 		defines "_RELEASE"
 		optimize "On"
+
+		prebuildcommands
+		{
+			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\Engine\\*.dll\" \"..\\..\\output\\bin\\Release-windows-x86_64\\CharacterTool\\*.dll\""
+		}
+
+		postbuildcommands
+		{
+			"copy \"..\\..\\output\\bin\\Release-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
+		}
+
 	filter "configurations:Dist"
 		defines "_DIST"
 		optimize "On"
+
+		prebuildcommands
+		{
+			"copy \"..\\..\\output\\bin\\Dist-windows-x86_64\\Engine\\*.dll\" \"..\\..\\output\\bin\\Dist-windows-x86_64\\CharacterTool\\*.dll\""
+		}
+
+		postbuildcommands
+		{
+			"copy \"..\\..\\output\\bin\\Dist-windows-x86_64\\CharacterTool\\*.cso\" \"..\\..\\Contents\\Shader\\*.cso\"",
+		}

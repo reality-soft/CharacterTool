@@ -79,11 +79,11 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\Widgets;..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,14 +104,14 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\Widgets;..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,10 +121,10 @@
       <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
+      <Command>copy "..\..\output\bin\Release-windows-x86_64\Engine\*.dll" "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Release-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -133,14 +133,14 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;src\Widgets;..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,10 +150,10 @@
       <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.dll"</Command>
+      <Command>copy "..\..\output\bin\Dist-windows-x86_64\Engine\*.dll" "..\..\output\bin\Dist-windows-x86_64\CharacterTool\*.dll"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>copy "..\..\output\bin\Debug-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
+      <Command>copy "..\..\output\bin\Dist-windows-x86_64\CharacterTool\*.cso" "..\..\Contents\Shader\*.cso"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -161,13 +161,17 @@
     <ClInclude Include="src\CharacterTool.h" />
     <ClInclude Include="src\Movements.h" />
     <ClInclude Include="src\PlayerActor.h" />
-    <ClInclude Include="src\Widgets.h" />
+    <ClInclude Include="src\Widgets\GwCharacterWindow.h" />
+    <ClInclude Include="src\Widgets\GwFbxLoader.h" />
+    <ClInclude Include="src\Widgets\GwMainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CharacterTool.cpp" />
     <ClCompile Include="src\Movements.cpp" />
     <ClCompile Include="src\PlayerActor.cpp" />
-    <ClCompile Include="src\Widgets.cpp" />
+    <ClCompile Include="src\Widgets\GwCharacterWindow.cpp" />
+    <ClCompile Include="src\Widgets\GwFbxLoader.cpp" />
+    <ClCompile Include="src\Widgets\GwMainMenu.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -249,11 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
-      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

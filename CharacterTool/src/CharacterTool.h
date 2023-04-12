@@ -1,5 +1,6 @@
 #pragma once
-#include "Widgets.h"
+#include "Engine_Include.h"
+using namespace reality;
 
 class CharacterTool : public reality::Scene
 {
@@ -15,12 +16,12 @@ public:
 	string camera_mode = "Debug";
 	reality::CameraSystem sys_camera_;
 private:
-	reality::StaticMeshLevel level;
+	StaticMeshLevel level;
 	Environment environment_;
 
-	reality::LightingSystem sys_light_;
-	reality::RenderSystem  sys_render_;
-	reality::MovementSystem  sys_movement_;
-	reality::AnimationSystem  sys_animation_;
+	LightingSystem sys_light_;
+	RenderSystem  sys_render_;
+	MovementSystem  sys_movement_;
+	AnimationSystem  sys_animation_;
 };
 

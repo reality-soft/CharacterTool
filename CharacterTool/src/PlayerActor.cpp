@@ -33,7 +33,8 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_BoundingBox), TYPE_ID(reality::C_SkeletalMesh));
 	transform_tree_.AddNodeToNode(TYPE_ID(C_SkeletalMesh), TYPE_ID(C_Camera));
 
-	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, C_Animation(&AnimationBase()));
+	AnimationBase animation_base;
+	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, C_Animation(&animation_base));
 
 	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_matrix_);
 }
