@@ -15,10 +15,12 @@ public:
 	string camera_mode = "Debug";
 	reality::CameraSystem sys_camera_;
 private:
-	reality::LightMeshLevel level;
+	reality::StaticMeshLevel level;
+	Environment environment_;
 
 	reality::LightingSystem sys_light_;
 	reality::RenderSystem  sys_render_;
 	reality::MovementSystem  sys_movement_;
+	reality::AnimationSystem  sys_animation_;
 };
 

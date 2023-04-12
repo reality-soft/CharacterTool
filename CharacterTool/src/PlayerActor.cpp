@@ -33,6 +33,8 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_BoundingBox), TYPE_ID(reality::C_SkeletalMesh));
 	transform_tree_.AddNodeToNode(TYPE_ID(C_SkeletalMesh), TYPE_ID(C_Camera));
 
+	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, C_Animation(&AnimationBase()));
+
 	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_matrix_);
 }
 
@@ -49,10 +51,6 @@ void reality::PlayerActor::OnUpdate()
 
 void reality::PlayerActor::SetCharacterData(CharacterData data)
 {
-	reality::C_Animation animation;
-	animation.anim_id = data.anim_id;
-	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation);
-
 	reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
 	bounding_box.SetXYZ(data.x, data.y, data.z);
 	reg_scene_->emplace_or_replace<reality::C_BoundingBox>(entity_id_, bounding_box);
@@ -63,14 +61,23 @@ void reality::PlayerActor::SetCharacterData(CharacterData data)
 	skm.vertex_shader_id = data.vs_id;
 	reg_scene_->emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
 
+	reality::C_Animation* animation_component_ptr = reg_scene_->try_get<reality::C_Animation>(entity_id_);
+
+	animation_component_ptr->AddNewAnimSlot<AnimationBase>("UpperBody", data.skm_id, "Spine_02", 6);
+	animation_component_ptr->GetAnimSlotByName("UpperBody").anim_object_->SetAnimation("A_TP_CH_Handgun_Fire_Anim_Retargeted_Unreal Take.anim", 0.3);
+	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
+
+	SetCharacterAnimation(data.anim_id);
+
 	transform_tree_.root_node->Translate(*reg_scene_, entity_id_, transform_matrix_);
 }
 
 void reality::PlayerActor::SetCharacterAnimation(string anim_id)
 {
-	C_Animation animation;
-	animation.anim_id = anim_id;
-	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation);
+	reality::C_Animation* animation_component_ptr = reg_scene_->try_get<reality::C_Animation>(entity_id_);
+	int base_index = animation_component_ptr->name_to_anim_slot_index["Base"];
+	animation_component_ptr->anim_slots[base_index].second.anim_object_->SetAnimation(anim_id, 0.3);
+	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
 }
 
 void reality::PlayerActor::MoveRight()
