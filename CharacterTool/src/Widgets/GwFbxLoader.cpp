@@ -11,36 +11,28 @@ void GwFbxLoader::Update()
 
 void GwFbxLoader::Render()
 {
-	ImGui::SetNextWindowSize(ImVec2(600, 600));
-	ImGui::Begin("FbxLoader", &open_, ImGuiWindowFlags_MenuBar);
+	ImGui::SetNextWindowSize(ImVec2(400, 200));
+	ImGui::Begin("FbxLoader", &open_);
 	{
-		string clicked = "";
-		ImGui::BeginMenuBar();
+		ImGui::NewLine();
+		FbxLoaderBoard();
+
+		ImGui::NewLine();
+		if (ImGui::Button("Load Fbx"))
 		{
-			if (ImGui::BeginMenu("Set Loading Option"))
-			{
-				FbxLoaderBoard();
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Load Fbx"))
-			{
-				file_dialog_.Open();
-				ImGui::EndMenu();
-			}
-
-			if (file_dialog_.HasSelected())
-			{
-				string name = file_dialog_.GetSelected().string();
-				reality::FbxImportOption option;
-
-				FBX->ImportAndSaveFbx(name, option, vertex_option_);
-				file_dialog_.ClearSelected();
-			}
-
-			file_dialog_.Display();
+			file_dialog_.Open();
 		}
-		ImGui::EndMenuBar();
+
+		if (file_dialog_.HasSelected())
+		{
+			string name = file_dialog_.GetSelected().string();
+			reality::FbxImportOption option;
+
+			FBX->ImportAndSaveFbx(name, option, vertex_option_);
+			file_dialog_.ClearSelected();
+		}
+
+		file_dialog_.Display();
 	}
 	ImGui::End();
 }
