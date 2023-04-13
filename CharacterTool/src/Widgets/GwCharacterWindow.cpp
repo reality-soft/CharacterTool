@@ -16,33 +16,9 @@ void GwCharacterWindow::Update()
 void GwCharacterWindow::Render()
 {
 	ImGui::SetNextWindowSize(ImVec2(600, 600));
-	ImGui::Begin("Character Tool", &open_, ImGuiWindowFlags_MenuBar);
+	ImGui::Begin("Current Character", &open_);
 	{
-		string clicked = "";
-		ImGui::BeginMenuBar();
-		{
-			if (ImGui::BeginMenu("Current Character"))
-			{
-				CharacterBoard();
-				ImGui::EndMenu();
-			}
-			if (ImGui::BeginMenu("Load Character"))
-			{
-				if (ImGui::MenuItem("Loading From DataManager"))
-				{
-					GuiWidget* widget_ptr = GUI->FindWidget("FileViewer");
-					if (widget_ptr == nullptr) {
-						//auto widget = new GwDataViewer;
-						//GUI->AddWidget("FileViewer", widget);
-					}
-					else {
-						widget_ptr->InvertOpen();
-					}
-				}
-				ImGui::EndMenu();
-			}
-		}
-		ImGui::EndMenuBar();
+		CharacterBoard();
 	}
 	ImGui::End();
 }

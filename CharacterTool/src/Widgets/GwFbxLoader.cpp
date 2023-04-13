@@ -3,6 +3,8 @@
 
 void GwFbxLoader::Init()
 {
+	file_dialog_.SetTitle("FbxLoader");
+	file_dialog_.SetTypeFilters({ ".fbx", ".FBX" });
 }
 
 void GwFbxLoader::Update()

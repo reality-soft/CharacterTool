@@ -4,8 +4,8 @@
 
 void GwMainMenu::Init()
 {
-	file_dialog_.SetTitle("FbxLoader");
-	file_dialog_.SetTypeFilters({ ".fbx" });
+	file_dialog_.SetTitle("CharacterLoader");
+	file_dialog_.SetTypeFilters({ ".chardata" });
 }
 
 void GwMainMenu::Update()
@@ -27,6 +27,10 @@ void GwMainMenu::Render()
 				GUI->FindWidget("CharacterTool")->InvertOpen();
 			}
 		}
+		if (ImGui::MenuItem("Load Character"))
+		{
+			file_dialog_.Open();
+		}
 		if (ImGui::MenuItem("Load Fbx"))
 		{
 			if (GUI->FindWidget("FbxOption") == nullptr) {
@@ -38,4 +42,14 @@ void GwMainMenu::Render()
 		}
 	}
 	ImGui::EndMainMenuBar();
+
+
+	if (file_dialog_.HasSelected())
+	{
+		string name = file_dialog_.GetSelected().string();
+
+		file_dialog_.ClearSelected();
+	}
+
+	file_dialog_.Display();
 }
