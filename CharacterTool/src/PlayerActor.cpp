@@ -15,11 +15,8 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 	registry.emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
 
 
-	reality::C_BoundingBox bounding_box;
-	bounding_box.local = XMMatrixIdentity();
-	bounding_box.world = XMMatrixIdentity();
-	bounding_box.SetXYZ(0, 0, 0);
-	registry.emplace<reality::C_BoundingBox>(entity_id_, bounding_box);
+	reality::C_CapsuleCollision capsule_collision;
+	registry.emplace<reality::C_CapsuleCollision>(entity_id_, capsule_collision);
 
 	C_Camera camera;
 	camera.local = XMMatrixTranslationFromVector({ 0, 70, -90, 0 });
@@ -29,8 +26,8 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 	camera.tag = "Player";
 	registry.emplace<C_Camera>(entity_id_, camera);
 
-	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(reality::C_BoundingBox));
-	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_BoundingBox), TYPE_ID(reality::C_SkeletalMesh));
+	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(reality::C_CapsuleCollision));
+	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_CapsuleCollision), TYPE_ID(reality::C_SkeletalMesh));
 	transform_tree_.AddNodeToNode(TYPE_ID(C_SkeletalMesh), TYPE_ID(C_Camera));
 
 	AnimationBase animation_base;
@@ -52,9 +49,9 @@ void reality::PlayerActor::OnUpdate()
 
 void reality::PlayerActor::SetCharacterData(CharacterData data)
 {
-	reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
-	bounding_box.SetXYZ(data.x, data.y, data.z);
-	reg_scene_->emplace_or_replace<reality::C_BoundingBox>(entity_id_, bounding_box);
+	//reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
+	//bounding_box.SetXYZ(data.x, data.y, data.z);
+	//reg_scene_->emplace_or_replace<reality::C_BoundingBox>(entity_id_, bounding_box);
 
 	reality::C_SkeletalMesh skm;
 	skm.skeletal_mesh_id = data.skm_id;
