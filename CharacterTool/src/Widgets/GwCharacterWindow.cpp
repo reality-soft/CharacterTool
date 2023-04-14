@@ -2,10 +2,15 @@
 #include "PlayerActor.h"
 using namespace reality;
 
-#define LISTBOX_WIDTH 150.0f
+#define LISTBOX_WIDTH 300.0f
 #define TEXT_WIDTH 150.0f
 
 #define GET_VARIABLE_NAME(n) #n
+
+void GwCharacterWindow::Init()
+{
+	SCENE_MGR->AddPlayer<PlayerActor>();
+}
 
 void GwCharacterWindow::Update()
 {
@@ -18,242 +23,175 @@ void GwCharacterWindow::Render()
 	ImGui::SetNextWindowSize(ImVec2(600, 600));
 	ImGui::Begin("Current Character", &open_);
 	{
-		CharacterBoard();
+		ImGui::Text("Character Name:");
+		ImGui::SameLine();
+		ImGui::InputText("##Character Name", input_character_data.character_name, 100);
+		ImGui::Separator();
+
+		SetSkeletalMesh();
+		
+		SetBoundingBox(input_character_data.x, input_character_data.y, input_character_data.z);
+
+		if (is_skm_set_ == false) {
+			ImGui::NewLine();
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::Text("Please select valid Skeletal Mesh and Vertex Shader first");
+			ImGui::PopStyleColor();
+			ImGui::NewLine();
+			ImGui::BeginDisabled();
+		}
+
+		ImGui::NewLine();
+		if (ImGui::Button("Save"))
+		{
+			SaveCharacterData(input_character_data);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Render"))
+		{
+			auto player = SCENE_MGR->GetPlayer<PlayerActor>(0);
+			if (player != nullptr) {
+				player->SetCharacterData(input_character_data);
+			}
+		}
+
+		if (is_skm_set_ == false) {
+			ImGui::EndDisabled();
+		}
 	}
 	ImGui::End();
 }
 
-void GwCharacterWindow::CharacterBoard()
+void GwCharacterWindow::SetSkeletalMesh()
 {
-	ImVec2 img_size = { 200, 200 };
-	ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcItemSize(img_size, img_size.x, img_size.y).x) / 4);
-	ImGui::NewLine();
-	ImGui::InputText("CharacterName", input_character_data.character_name, 100);
-
-	ImGui::NewLine();
-
-	SelectAnimation(input_character_data.anim_id);
-	ImGui::Text(input_character_data.anim_id.c_str());
-	ImGui::NewLine();
-
-	SelectSKM(input_character_data.skm_id);
-	ImGui::Text(input_character_data.skm_id.c_str());
-	ImGui::NewLine();
-
-	SelectVertexShader(input_character_data.vs_id);
-	ImGui::Text(input_character_data.vs_id.c_str());
-	ImGui::NewLine();
-
-	SetBoundingBox(input_character_data.x, input_character_data.y, input_character_data.z);
-
-	ImGui::NewLine();
-	if (ImGui::Button("Save"))
+	ImGui::SetNextItemOpen(true, ImGuiCond_FirstUseEver);
+	if (ImGui::CollapsingHeader("Mesh vertex option"))
 	{
-		SaveCharacterData(input_character_data);
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Render"))
-	{
-		auto player = SCENE_MGR->GetPlayer<PlayerActor>(0);
-		if (player != nullptr) {
-			player->SetCharacterData(input_character_data);
+		SelectSKM(input_character_data.skm_id);
+
+		SelectVertexShader(input_character_data.vs_id);
+		ImGui::NewLine();
+
+		SkeletalMesh* skm_ptr = RESOURCE->UseResource<SkeletalMesh>(input_character_data.skm_id);
+		VertexShader* vs_ptr = RESOURCE->UseResource<VertexShader>(input_character_data.vs_id);
+
+		if (skm_ptr != nullptr && vs_ptr != nullptr) {
+			is_skm_set_ = true;
+		}
+		else {
+			is_skm_set_ = false;
 		}
 	}
-}
-
-void GwCharacterWindow::SelectFrame(int& max_frame, int& cur_frame)
-{
-	ImGui::SetNextItemWidth(100.0f);
-	ImGui::InputInt("Max Frame", &max_frame);
-
-	ImGui::SameLine();
-	ImGui::SetNextItemWidth(200.0f);
-	ImGui::SliderInt("Frame", &cur_frame, 1, max_frame);
-
-	static bool bPlay = false;
-	static float timer = cur_frame;
-
-	ImGui::SameLine();
-	if (ImGui::Button("Play"))
-	{
-		bPlay = true;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Pause"))
-	{
-		bPlay = false;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Stop"))
-	{
-		bPlay = false;
-		cur_frame = 1;
-		timer = cur_frame;
-	}
-
-	if (bPlay)
-	{
-		timer += TIMER->GetDeltaTime();
-		if (timer > max_frame + 1)
-			timer -= max_frame;
-		cur_frame = (int)timer;
-	}
-
 }
 
 void GwCharacterWindow::SelectVertexShader(string& id)
 {
-	static int item_current_idx = 0;
-
-	auto vs_set = RESOURCE->GetTotalVSID();
-	vector<string> vs_vec(vs_set.begin(), vs_set.end());
-
-	for (int i = 0; i < vs_vec.size(); i++)
+	if (ImGui::TreeNode("Vertex Shader"))
 	{
-		if (vs_vec[i] == id)
-			item_current_idx = i;
-	}
+		static int item_current_idx = 0;
 
-	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-	if (ImGui::BeginListBox("Vertex Shader"))
-	{
-		for (int n = 0; n < vs_vec.size(); n++)
+		auto vs_set = RESOURCE->GetTotalVSID();
+		vector<string> vs_vec(vs_set.begin(), vs_set.end());
+
+		for (int i = 0; i < vs_vec.size(); i++)
 		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(vs_vec[n].c_str(), is_selected))
-				item_current_idx = n;
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
+			if (vs_vec[i] == id)
+				item_current_idx = i;
 		}
-		ImGui::EndListBox();
-	}
 
-	if (vs_vec.size() != 0) id = vs_vec[item_current_idx];
-}
-
-void GwCharacterWindow::SelectPixelShader(string& id)
-{
-	static int item_current_idx = 0;
-
-	auto ps_set = RESOURCE->GetTotalPSID();
-	vector<string> ps_vec(ps_set.begin(), ps_set.end());
-
-	for (int i = 0; i < ps_vec.size(); i++)
-	{
-		if (ps_vec[i] == id)
-			item_current_idx = i;
-	}
-
-	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-	if (ImGui::BeginListBox("Pixel Shader"))
-	{
-		for (int n = 0; n < ps_vec.size(); n++)
+		ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+		if (ImGui::BeginListBox(""))
 		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(ps_vec[n].c_str(), is_selected))
-				item_current_idx = n;
+			for (int n = 0; n < vs_vec.size(); n++)
+			{
+				const bool is_selected = (item_current_idx == n);
+				if (ImGui::Selectable(vs_vec[n].c_str(), is_selected))
+					item_current_idx = n;
 
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndListBox();
 		}
-		ImGui::EndListBox();
+
+		if (vs_vec.size() != 0) id = vs_vec[item_current_idx];
+		ImGui::TreePop();
 	}
 
-	if (ps_vec.size() != 0) id = ps_vec[item_current_idx];
-}
-
-void GwCharacterWindow::SelectTexture(string& id)
-{
-	int item_current_idx = 0;
-
-	auto tex_set = RESOURCE->GetTotalTexID();
-	vector<string> tex_vec(tex_set.begin(), tex_set.end());
-
-	for (int i = 0; i < tex_vec.size(); i++)
-	{
-		if (tex_vec[i] == id)
-			item_current_idx = i;
-	}
-
-	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-	if (ImGui::BeginListBox("Texture            "))
-	{
-		for (int n = 0; n < tex_vec.size(); n++)
-		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(tex_vec[n].c_str(), is_selected))
-				item_current_idx = n;
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
-		}
-		ImGui::EndListBox();
-	}
-
-	if (tex_vec.size() != 0)id = tex_vec[item_current_idx];
+	PrintSelectedItem("Vertex Shader", input_character_data.vs_id);
 }
 
 void GwCharacterWindow::SelectAnimation(string& id)
 {
-	int item_current_idx = 0;
-
-	auto anim_set = RESOURCE->GetTotalANIMID();
-	vector<string> anim_vec(anim_set.begin(), anim_set.end());
-
-	for (int i = 0; i < anim_vec.size(); i++)
+	if (ImGui::TreeNode("Animation"))
 	{
-		if (anim_vec[i] == id)
-			item_current_idx = i;
-	}
+		int item_current_idx = 0;
 
-	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-	if (ImGui::BeginListBox("Animation"))
-	{
-		for (int n = 0; n < anim_vec.size(); n++)
+		auto anim_set = RESOURCE->GetTotalANIMID();
+		vector<string> anim_vec(anim_set.begin(), anim_set.end());
+
+		for (int i = 0; i < anim_vec.size(); i++)
 		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(anim_vec[n].c_str(), is_selected))
-				item_current_idx = n;
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
+			if (anim_vec[i] == id)
+				item_current_idx = i;
 		}
-		ImGui::EndListBox();
+
+		ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+		if (ImGui::BeginListBox(""))
+		{
+			for (int n = 0; n < anim_vec.size(); n++)
+			{
+				const bool is_selected = (item_current_idx == n);
+				if (ImGui::Selectable(anim_vec[n].c_str(), is_selected))
+					item_current_idx = n;
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndListBox();
+		}
+
+		if (anim_vec.size() != 0)id = anim_vec[item_current_idx];
+		ImGui::TreePop();
 	}
 
-	if (anim_vec.size() != 0)id = anim_vec[item_current_idx];
+	PrintSelectedItem("Animation", input_character_data.anim_id);
 }
 
 void GwCharacterWindow::SelectSKM(string& id)
 {
-	int item_current_idx = 0;
-
-	auto skm_set = RESOURCE->GetTotalSKMID();
-	vector<string> skm_vec(skm_set.begin(), skm_set.end());
-
-	for (int i = 0; i < skm_vec.size(); i++)
+	if (ImGui::TreeNode("Skeletal Mesh"))
 	{
-		if (skm_vec[i] == id)
-			item_current_idx = i;
-	}
+		int item_current_idx = 0;
 
-	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-	if (ImGui::BeginListBox("SkeletalMesh  "))
-	{
-		for (int n = 0; n < skm_vec.size(); n++)
+		auto skm_set = RESOURCE->GetTotalSKMID();
+		vector<string> skm_vec(skm_set.begin(), skm_set.end());
+
+		for (int i = 0; i < skm_vec.size(); i++)
 		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(skm_vec[n].c_str(), is_selected))
-				item_current_idx = n;
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
+			if (skm_vec[i] == id)
+				item_current_idx = i;
 		}
-		ImGui::EndListBox();
-	}
 
-	if (skm_vec.size() != 0)id = skm_vec[item_current_idx];
+		ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+		if (ImGui::BeginListBox(""))
+		{
+			for (int n = 0; n < skm_vec.size(); n++)
+			{
+				const bool is_selected = (item_current_idx == n);
+				if (ImGui::Selectable(skm_vec[n].c_str(), is_selected))
+					item_current_idx = n;
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndListBox();
+		}
+
+		if (skm_vec.size() != 0)id = skm_vec[item_current_idx];
+		ImGui::TreePop();
+	}
+	PrintSelectedItem("Skeletal Mesh", input_character_data.skm_id);
 }
 
 void GwCharacterWindow::SetBoundingBox(int& x, int& y, int& z)
@@ -262,6 +200,18 @@ void GwCharacterWindow::SetBoundingBox(int& x, int& y, int& z)
 	ImGui::InputInt("x", &x, 1, 10, ImGuiInputTextFlags_CharsDecimal);
 	ImGui::InputInt("y", &y, 1, 10, ImGuiInputTextFlags_CharsDecimal);
 	ImGui::InputInt("z", &z, 1, 10, ImGuiInputTextFlags_CharsDecimal);
+}
+
+void GwCharacterWindow::PrintSelectedItem(std::string category, std::string selected_item)
+{
+	category = "Selected " + category + ": ";
+	ImGui::Separator();
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
+	ImGui::Text(category.c_str());
+	ImGui::PopStyleColor();
+	ImGui::SameLine();
+	ImGui::Text(selected_item.c_str());
+	ImGui::Separator();
 }
 
 void GwCharacterWindow::SaveCharacterData(CharacterData& data)

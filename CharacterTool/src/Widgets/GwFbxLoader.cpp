@@ -16,10 +16,10 @@ void GwFbxLoader::Render()
 	ImGui::SetNextWindowSize(ImVec2(400, 200));
 	ImGui::Begin("FbxLoader", &open_);
 	{
-		ImGui::NewLine();
 		FbxLoaderBoard();
 
 		ImGui::NewLine();
+
 		if (ImGui::Button("Load Fbx"))
 		{
 			file_dialog_.Open();
@@ -41,7 +41,10 @@ void GwFbxLoader::Render()
 
 void GwFbxLoader::FbxLoaderBoard()
 {
-	ImGui::Text("Mesh vertex option");
-	ImGui::RadioButton("By polygon vertex", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_POLYGON_VERTEX)); ImGui::SameLine();
-	ImGui::RadioButton("By control point", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_CONTROL_POINT));
+	ImGui::SetNextItemOpen(true, ImGuiCond_FirstUseEver);
+	if (ImGui::CollapsingHeader("Mesh vertex option")) 
+	{ 
+		ImGui::RadioButton("By polygon vertex", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_POLYGON_VERTEX)); ImGui::SameLine();
+		ImGui::RadioButton("By control point", (int*)&vertex_option_, static_cast<int>(FbxVertexOption::BY_CONTROL_POINT));
+	}
 }

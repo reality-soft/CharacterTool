@@ -47,7 +47,7 @@ void reality::PlayerActor::OnUpdate()
 	right_ = XMVector3Transform({ 1, 0, 0, 0 }, rotation_matrix);
 }
 
-void reality::PlayerActor::SetCharacterData(CharacterData data)
+void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 {
 	//reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
 	//bounding_box.SetXYZ(data.x, data.y, data.z);

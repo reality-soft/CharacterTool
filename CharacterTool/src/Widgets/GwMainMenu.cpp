@@ -21,7 +21,7 @@ void GwMainMenu::Render()
 		if (ImGui::MenuItem("Character"))
 		{
 			if (GUI->FindWidget("CharacterTool") == nullptr) {
-				GUI->AddWidget("CharacterTool", new GwCharacterWindow);
+				GUI->AddWidget<GwCharacterWindow>("CharacterTool", reg_scene_);
 			}
 			else {
 				GUI->FindWidget("CharacterTool")->InvertOpen();
@@ -34,7 +34,7 @@ void GwMainMenu::Render()
 		if (ImGui::MenuItem("Load Fbx"))
 		{
 			if (GUI->FindWidget("FbxOption") == nullptr) {
-				GUI->AddWidget("FbxOption", new GwFbxLoader);
+				GUI->AddWidget<GwFbxLoader>("FbxOption");
 			}
 			else {
 				GUI->FindWidget("FbxOption")->InvertOpen();
