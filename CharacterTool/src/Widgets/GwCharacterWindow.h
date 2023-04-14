@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include "CharacterData.h"
-#include "Engine_include.h"
 using namespace reality;
 
 class GwCharacterWindow : public GuiWidget
@@ -15,6 +14,9 @@ public:
 	virtual void Render() override;
 private:
 	void	SetSkeletalMesh();
+	void	SetTransform(C_Transform& transform);
+
+private:
 	void	SelectVertexShader(std::string& id);
 	void	SelectAnimation(std::string& id);
 	void	SelectSKM(std::string& id);
@@ -24,7 +26,7 @@ private:
 	void	PrintSelectedItem(std::string category, std::string selected_item);
 
 private:
-	void SaveCharacterData(CharacterData& data);
+	void SaveCharacterData(const CharacterData& data);
 
 public:
 	void LoadCharacterData(std::string loading_data_id);

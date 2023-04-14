@@ -157,6 +157,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\AnimSlotData.h" />
     <ClInclude Include="src\CharacterData.h" />
     <ClInclude Include="src\CharacterTool.h" />
     <ClInclude Include="src\Movements.h" />
