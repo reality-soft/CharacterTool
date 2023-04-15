@@ -50,7 +50,7 @@ void GwCharacterWindow::Render()
 		}
 
 		SetAnimSlots();
-
+		ImGui::NewLine();
 		if (ImGui::Button("Save"))
 		{
 			SaveCharacterData(input_character_data_);
@@ -224,11 +224,10 @@ void GwCharacterWindow::SetAnimSlots()
 		for (auto& anim_slot_pair : input_character_data_.anim_slots) {
 			auto& anim_slot_name = anim_slot_pair.first;
 			auto& anim_slot = anim_slot_pair.second;
-			string anim_slot_name_title = "anim_slot_name: " + anim_slot_name;
+			string anim_slot_name_title = "Anim Slot: " + anim_slot_name;
 			if (ImGui::TreeNode(anim_slot_name_title.c_str()))
 			{
 				SetAnimation(anim_slot.animation_name, anim_slot_name);
-				ImGui::Separator();
 				SetAnimSlotData(anim_slot);
 				ImGui::TreePop();
 			}
@@ -302,12 +301,16 @@ void GwCharacterWindow::SetAnimSlotData(AnimSlotData& anim_slot_data)
 {
 	if (ImGui::TreeNode("Anim Slot Settings"))
 	{
+		anim_slot_data.skeletal_mesh_id = input_character_data_.skeletal_mesh_component.skeletal_mesh_id;
 		SetAnimObject(anim_slot_data);
-		ImGui::Separator();
 		if (anim_slot_data.anim_slot_name == "Base") {
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::Text("You can't set the bone of the Base anim slot");
+			ImGui::PopStyleColor();
 			ImGui::BeginDisabled();
 		}
 		SetBone(anim_slot_data.bone_id);
+		ImGui::InputInt("Blend range", &anim_slot_data.range);
 		if (anim_slot_data.anim_slot_name == "Base") {
 			ImGui::EndDisabled();
 		}

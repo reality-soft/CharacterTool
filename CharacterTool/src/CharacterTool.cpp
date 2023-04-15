@@ -6,6 +6,7 @@ using namespace reality;
 
 void CharacterTool::OnInit()
 {
+	QUADTREE->view_collisions_ = true;
 	QUADTREE->Init(&level, reg_scene_);
 	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
 	
