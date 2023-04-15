@@ -20,7 +20,7 @@ private:
 	void	SelectVertexShader(std::string& id);
 	void	SelectAnimation(std::string& id);
 	void	SelectSKM(std::string& id);
-	void	SetBoundingBox(int& x, int& y, int& z);
+	void	SetCapsuleCollision();
 
 private: 
 	void	PrintSelectedItem(std::string category, std::string selected_item);

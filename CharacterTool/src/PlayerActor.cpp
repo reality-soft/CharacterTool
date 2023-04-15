@@ -16,6 +16,7 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 
 	reality::C_CapsuleCollision capsule_collision;
 	registry.emplace<reality::C_CapsuleCollision>(entity_id_, capsule_collision);
+	QUADTREE->RegistDynamicCapsule(entity_id_);
 
 	C_Camera camera;
 	camera.local = XMMatrixTranslationFromVector({ 0, 70, -90, 0 });
@@ -49,15 +50,14 @@ void reality::PlayerActor::OnUpdate()
 
 void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 {
-	//reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
-	//bounding_box.SetXYZ(data.x, data.y, data.z);
-	//reg_scene_->emplace_or_replace<reality::C_BoundingBox>(entity_id_, bounding_box);
+	reality::C_CapsuleCollision* capsule_collision_component = reg_scene_->try_get<C_CapsuleCollision>(entity_id_);
+	capsule_collision_component->capsule = data.capsule_collision.capsule;
+	capsule_collision_component->local = data.capsule_collision.local;
 
-	reality::C_SkeletalMesh skm;
-	skm.skeletal_mesh_id = data.skeletal_mesh_component.skeletal_mesh_id;
-	skm.local = data.skeletal_mesh_component.local;
-	skm.vertex_shader_id = data.skeletal_mesh_component.vertex_shader_id;
-	reg_scene_->emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
+	reality::C_SkeletalMesh* skm = reg_scene_->try_get<C_SkeletalMesh>(entity_id_);
+	skm->skeletal_mesh_id = data.skeletal_mesh_component.skeletal_mesh_id;
+	skm->local = data.skeletal_mesh_component.local;
+	skm->vertex_shader_id = data.skeletal_mesh_component.vertex_shader_id;
 
 	//AnimationBase animation_base;
 	//reality::C_Animation animation_component(animation_base);

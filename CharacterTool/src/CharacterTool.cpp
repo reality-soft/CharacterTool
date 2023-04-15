@@ -7,7 +7,8 @@ using namespace reality;
 
 void CharacterTool::OnInit()
 {
-	AABBShape aabb;
+	QUADTREE->Init(&level, reg_scene_);
+	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
 	
 	COMPONENT->OnInit(reg_scene_);
 
@@ -41,6 +42,8 @@ void CharacterTool::OnInit()
 	INPUT_EVENT->SubscribeKeyEvent({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
 
 	sys_light_.OnCreate(reg_scene_);
+
+	QUADTREE->InitCollisionMeshes();
 }
 
 void CharacterTool::OnUpdate()
@@ -49,12 +52,14 @@ void CharacterTool::OnUpdate()
 	sys_camera_.OnUpdate(reg_scene_);
 
 	INPUT_EVENT->PollEvents();
-	sys_light_.OnUpdate(reg_scene_);
+	//sys_light_.OnUpdate(reg_scene_);
 
 	environment_.Update(&sys_camera_, &sys_light_);
 	
 	sys_movement_.OnUpdate(reg_scene_);
 	sys_animation_.OnUpdate(reg_scene_);
+
+	QUADTREE->Frame(&sys_camera_);
 }
 
 void CharacterTool::OnRender()
@@ -62,12 +67,15 @@ void CharacterTool::OnRender()
 	level.Render();
 	sys_render_.OnUpdate(reg_scene_);
 
+	QUADTREE->RenderCollisionMeshes();
+
 	// GUI
 	GUI->RenderWidgets();
 }
 
 void CharacterTool::OnRelease()
 {
+	QUADTREE->Release();
 	RESOURCE->Release();
 }
 

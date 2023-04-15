@@ -28,7 +28,7 @@ void GwCharacterWindow::Render()
 		ImGui::InputText("##Character Name", input_character_data.character_name, 100);
 		ImGui::Separator();
 
-		SetBoundingBox(input_character_data.x, input_character_data.y, input_character_data.z);
+		SetCapsuleCollision();
 
 		SetSkeletalMesh();
 
@@ -69,7 +69,6 @@ void GwCharacterWindow::SetSkeletalMesh()
 	{
 		SelectSKM(input_character_data.skeletal_mesh_component.skeletal_mesh_id);
 		SelectVertexShader(input_character_data.skeletal_mesh_component.vertex_shader_id);
-		SetTransform(input_character_data.skeletal_mesh_component);
 		ImGui::NewLine();
 
 		SkeletalMesh* skm_ptr = RESOURCE->UseResource<SkeletalMesh>(input_character_data.skeletal_mesh_component.skeletal_mesh_id);
@@ -86,9 +85,9 @@ void GwCharacterWindow::SetSkeletalMesh()
 
 void GwCharacterWindow::SetTransform(C_Transform& transform)
 {
-	static XMVECTOR translation_vector{ .0f, .0f, .0f, .0f };
+	static XMVECTOR scale_vector{ 1.0f, 1.0f, 1.0f, 1.0f };	
 	static XMVECTOR rotation_vector{ .0f, .0f, .0f, .0f };
-	static XMVECTOR scale_vector{ .0f, .0f, .0f, .0f };
+	static XMVECTOR translation_vector{ .0f, .0f, .0f, .0f };
 
 	if (ImGui::TreeNode("Transform")) {
 		if (ImGui::TreeNode("Scale"))
@@ -104,7 +103,7 @@ void GwCharacterWindow::SetTransform(C_Transform& transform)
 
 			if (ImGui::Button("Reset##Y"))
 			{
-				scale_vector = XMVectorZero();
+				scale_vector = { 1.0f, 1.0f, 1.0f, 1.0f };
 			}
 
 			ImGui::TreePop();
@@ -113,11 +112,10 @@ void GwCharacterWindow::SetTransform(C_Transform& transform)
 		if (ImGui::TreeNode("Rotation"))
 		{
 			ImGui::Text("Yaw");	ImGui::SameLine();
-			ImGui::InputFloat("##inputX", &rotation_vector.m128_f32[0]);
-
+			ImGui::InputFloat("##inputY", &rotation_vector.m128_f32[1]);
 
 			ImGui::Text("Pitch");	ImGui::SameLine();
-			ImGui::InputFloat("##inputY", &rotation_vector.m128_f32[1]);
+			ImGui::InputFloat("##inputX", &rotation_vector.m128_f32[0]);
 
 			ImGui::Text("Roll");	ImGui::SameLine();
 			ImGui::InputFloat("##inputZ", &rotation_vector.m128_f32[2]);
@@ -196,6 +194,7 @@ void GwCharacterWindow::SelectVertexShader(string& id)
 	}
 
 	PrintSelectedItem("Vertex Shader", input_character_data.skeletal_mesh_component.vertex_shader_id);
+	ImGui::Separator();
 }
 
 void GwCharacterWindow::SelectAnimation(string& id)
@@ -239,58 +238,69 @@ void GwCharacterWindow::SelectSKM(string& id)
 {
 	if (ImGui::TreeNode("Skeletal Mesh"))
 	{
-		int item_current_idx = 0;
+		SetTransform(input_character_data.skeletal_mesh_component);
 
-		auto skm_set = RESOURCE->GetTotalSKMID();
-		vector<string> skm_vec(skm_set.begin(), skm_set.end());
+		if (ImGui::TreeNode("Skeletal Mesh##1")) {
+			int item_current_idx = 0;
 
-		for (int i = 0; i < skm_vec.size(); i++)
-		{
-			if (skm_vec[i] == id)
-				item_current_idx = i;
-		}
+			auto skm_set = RESOURCE->GetTotalSKMID();
+			vector<string> skm_vec(skm_set.begin(), skm_set.end());
 
-		ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-		if (ImGui::BeginListBox(""))
-		{
-			for (int n = 0; n < skm_vec.size(); n++)
+			for (int i = 0; i < skm_vec.size(); i++)
 			{
-				const bool is_selected = (item_current_idx == n);
-				if (ImGui::Selectable(skm_vec[n].c_str(), is_selected))
-					item_current_idx = n;
-
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
+				if (skm_vec[i] == id)
+					item_current_idx = i;
 			}
-			ImGui::EndListBox();
-		}
 
-		if (skm_vec.size() != 0)id = skm_vec[item_current_idx];
+			ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+			if (ImGui::BeginListBox(""))
+			{
+				for (int n = 0; n < skm_vec.size(); n++)
+				{
+					const bool is_selected = (item_current_idx == n);
+					if (ImGui::Selectable(skm_vec[n].c_str(), is_selected))
+						item_current_idx = n;
+
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndListBox();
+			}
+
+			if (skm_vec.size() != 0)id = skm_vec[item_current_idx];
+			ImGui::TreePop();
+		}
 		ImGui::TreePop();
 	}
 	PrintSelectedItem("Skeletal Mesh", input_character_data.skeletal_mesh_component.skeletal_mesh_id);
+	ImGui::Separator();
 }
 
-void GwCharacterWindow::SetBoundingBox(int& x, int& y, int& z)
+void GwCharacterWindow::SetCapsuleCollision()
 {
-	if (ImGui::CollapsingHeader("Bounding Box"))
+	SetTransform(input_character_data.capsule_collision);
+
+	if (ImGui::CollapsingHeader("Capsule Collision"))
 	{
-		ImGui::InputInt("x", &x, 1, 10, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputInt("y", &y, 1, 10, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputInt("z", &z, 1, 10, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputFloat("height", &input_character_data.capsule_collision.capsule.height);
+		ImGui::InputFloat("radius", &input_character_data.capsule_collision.capsule.radius);
+
+		if (ImGui::Button("Reset")) {
+			input_character_data.capsule_collision.capsule.height = 0;
+			input_character_data.capsule_collision.capsule.radius = 0;
+		}
 	}
+	ImGui::Separator();
 }
 
 void GwCharacterWindow::PrintSelectedItem(std::string category, std::string selected_item)
 {
 	category = "Selected " + category + ": ";
-	ImGui::Separator();
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
 	ImGui::Text(category.c_str());
 	ImGui::PopStyleColor();
 	ImGui::SameLine();
 	ImGui::Text(selected_item.c_str());
-	ImGui::Separator();
 }
 
 void GwCharacterWindow::SaveCharacterData(const CharacterData& data)
@@ -314,9 +324,6 @@ void GwCharacterWindow::SaveCharacterData(const CharacterData& data)
 	character->SetValue("character_name", data.character_name);
 	character->SetValue("skm_id", data.skeletal_mesh_component.skeletal_mesh_id);
 	character->SetValue("vs_id", data.skeletal_mesh_component.vertex_shader_id);
-	character->SetValue("x", to_string(data.x));
-	character->SetValue("y", to_string(data.y));
-	character->SetValue("z", to_string(data.z));
 
 	DATA->SaveSheetFile(sheet_name);
 }
@@ -336,9 +343,6 @@ void GwCharacterWindow::LoadCharacterData(string loading_data_id)
 	strncpy(input_character_data.character_name, item->GetValue("character_name").c_str(), item->GetValue("character_name").size());
 	input_character_data.skeletal_mesh_component.skeletal_mesh_id = item->GetValue("skm_id");
 	input_character_data.skeletal_mesh_component.vertex_shader_id = item->GetValue("vs_id");
-	input_character_data.x = stoi(item->GetValue("x"));
-	input_character_data.y = stoi(item->GetValue("y"));
-	input_character_data.z = stoi(item->GetValue("z"));
 
 	loading_data_id = "";
 }
