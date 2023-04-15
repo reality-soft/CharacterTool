@@ -1,18 +1,17 @@
 #include "CharacterTool.h"
 #include "Movements.h"
-#include "PlayerActor.h"
 #include "GwMainMenu.h"
 
 using namespace reality;
 
 void CharacterTool::OnInit()
 {
+	QUADTREE->view_collisions_ = true;
 	QUADTREE->Init(&level, reg_scene_);
 	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
 	
 	COMPONENT->OnInit(reg_scene_);
 
-	SCENE_MGR->AddPlayer<PlayerActor>();
 	sys_camera_.OnCreate(reg_scene_);
 	sys_camera_.TargetTag(reg_scene_, camera_mode);
 
@@ -30,8 +29,6 @@ void CharacterTool::OnInit()
 
 	//GUI
 	GUI->AddWidget<GwMainMenu>("MainMenu", reg_scene_);
-	
-	auto character_actor = SCENE_MGR->GetPlayer<PlayerActor>(0);
 
 	environment_.CreateEnvironment();
 	environment_.SetWorldTime(60, 60);

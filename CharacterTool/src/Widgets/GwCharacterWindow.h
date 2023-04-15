@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "CharacterData.h"
+#include "PlayerActor.h"
 using namespace reality;
 
 class GwCharacterWindow : public GuiWidget
@@ -15,13 +15,22 @@ public:
 private:
 	void	SetSkeletalMesh();
 	void	SetTransform(C_Transform& transform);
+	void	SetCapsuleCollision();
 
 private:
 	void	SelectVertexShader(std::string& id);
-	void	SetAnimSlots();
-	void	SetAnimation(std::string& id);
 	void	SelectSKM(std::string& id);
-	void	SetCapsuleCollision();
+
+private:
+	void	SetAnimSlots();
+
+private:
+	void	SetAnimation(std::string& id, const std::string& anim_slot_name);
+	void	SetAnimSlotData(AnimSlotData& anim_slot_data);
+
+private:
+	void	SetAnimObject(AnimSlotData& anim_slot_data);
+	void	SetBone(string& bone_id);
 
 private: 
 	void	PrintSelectedItem(std::string category, std::string selected_item);

@@ -177,9 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\CollisionMeshVS.hlsl">
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\EffectDefaultPS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -259,11 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Game-Engine\Engine\Engine.vcxproj">
-      <Project>{dbc7d3b0-c769-fe86-b024-12db9c6585d7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

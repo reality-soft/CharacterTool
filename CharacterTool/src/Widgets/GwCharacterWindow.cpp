@@ -1,5 +1,4 @@
 #include "GwCharacterWindow.h"
-#include "PlayerActor.h"
 using namespace reality;
 
 #define LISTBOX_WIDTH 300.0f
@@ -10,6 +9,16 @@ using namespace reality;
 void GwCharacterWindow::Init()
 {
 	SCENE_MGR->AddPlayer<PlayerActor>();
+
+	AnimSlotData base_anim_slot_data;
+	base_anim_slot_data.anim_object_type = ANIM_OBJECT_TYPE::ANIMATION_BASE;
+	base_anim_slot_data.anim_slot_name = "Base";
+	base_anim_slot_data.bone_id = "";
+	base_anim_slot_data.range = 0;
+	base_anim_slot_data.skeletal_mesh_id = "";
+	base_anim_slot_data.anim_object_type = ANIM_OBJECT_TYPE::ANIMATION_BASE;
+	input_character_data_.anim_slots.push_back({ "Base", base_anim_slot_data });
+
 }
 
 void GwCharacterWindow::Update()
@@ -41,7 +50,7 @@ void GwCharacterWindow::Render()
 		}
 
 		SetAnimSlots();
-
+		ImGui::NewLine();
 		if (ImGui::Button("Save"))
 		{
 			SaveCharacterData(input_character_data_);
@@ -65,7 +74,7 @@ void GwCharacterWindow::Render()
 void GwCharacterWindow::SetSkeletalMesh()
 {
 	ImGui::SetNextItemOpen(true, ImGuiCond_FirstUseEver);
-	if (ImGui::CollapsingHeader("Mesh vertex option"))
+	if (ImGui::CollapsingHeader("Skeletal Mesh Component"))
 	{
 		SelectSKM(input_character_data_.skeletal_mesh_component.skeletal_mesh_id);
 		SelectVertexShader(input_character_data_.skeletal_mesh_component.vertex_shader_id);
@@ -84,9 +93,9 @@ void GwCharacterWindow::SetSkeletalMesh()
 			for (const auto& anim_id : anim_set)
 			{
 				auto anim = RESOURCE->UseResource<OutAnimData>(anim_id);
-				if (anim->animations.size() - 3 == bone_name_id_map_.size()) {
+				//if (anim->animations.size() - 3 == bone_name_id_map_.size()) {
 					valid_animation_list_.push_back(anim_id);
-				}
+				//}
 			}
 		}
 		else {
@@ -211,60 +220,157 @@ void GwCharacterWindow::SelectVertexShader(string& id)
 
 void GwCharacterWindow::SetAnimSlots()
 {
-	for (auto& anim_slot_pair : input_character_data_.anim_slots) {
-		auto& anim_slot_name = anim_slot_pair.first;
-		auto& anim_slot = anim_slot_pair.second;
-		
-		string anim_slot_name_title = "anim_slot_name: " + anim_slot_name;
-		if (ImGui::TreeNode(anim_slot_name_title.c_str()))
-		{
-
-			int item_current_idx = 0;
-
-			string id = "";
-
-			for (int i = 0; i < valid_animation_list_.size(); i++)
+	if (ImGui::CollapsingHeader("Anim Slots")) {
+		for (auto& anim_slot_pair : input_character_data_.anim_slots) {
+			auto& anim_slot_name = anim_slot_pair.first;
+			auto& anim_slot = anim_slot_pair.second;
+			string anim_slot_name_title = "Anim Slot: " + anim_slot_name;
+			if (ImGui::TreeNode(anim_slot_name_title.c_str()))
 			{
-				if (valid_animation_list_[i] == id)
-					item_current_idx = i;
+				SetAnimation(anim_slot.animation_name, anim_slot_name);
+				SetAnimSlotData(anim_slot);
+				ImGui::TreePop();
 			}
-
-			ImGui::SetNextItemWidth(LISTBOX_WIDTH);
-			string anim_slot_name_example_anim = "Set animation on " + anim_slot_name;
-			if (ImGui::BeginListBox(anim_slot_name_example_anim.c_str()))
-			{
-				for (int n = 0; n < valid_animation_list_.size(); n++)
-				{
-					const bool is_selected = (item_current_idx == n);
-					if (ImGui::Selectable(valid_animation_list_[n].c_str(), is_selected))
-						item_current_idx = n;
-
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndListBox();
-			}
-
-			if (valid_animation_list_.size() != 0) id = valid_animation_list_[item_current_idx];
-			ImGui::TreePop();
-	
+			ImGui::Separator();
 		}
-		ImGui::Separator();
-	}
 
-	static char anim_slot_name_input[100];
-	ImGui::InputText("New anim slot name", anim_slot_name_input, 100);
-	if (ImGui::Button("Add new anim slot")) {
+		static char anim_slot_name_input[100];
+		ImGui::InputText("New anim slot name", anim_slot_name_input, 100);
+
 		string anim_slot_name = anim_slot_name_input;
-		input_character_data_.anim_slots.push_back({ anim_slot_name, AnimSlotData() });
-		ZeroMemory(anim_slot_name_input, 100);
-	}
+		bool is_name_exists = false;
+		for (const auto& anim_slot_pair : input_character_data_.anim_slots) {
+			if (anim_slot_name == anim_slot_pair.first) {
+				is_name_exists = true;
+				break;
+			}
+		}
 
-	PrintSelectedItem("Animation", "animation");
+		if (anim_slot_name.empty() || is_name_exists == true) {
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::Text("Please enter a valid name");
+			ImGui::PopStyleColor();
+			ImGui::BeginDisabled();
+		}
+		if (ImGui::Button("Add new anim slot")) {
+			input_character_data_.anim_slots.push_back({ anim_slot_name, AnimSlotData() });
+			ZeroMemory(anim_slot_name_input, 100);
+		}
+		if (anim_slot_name.empty() || is_name_exists == true) {
+			ImGui::EndDisabled();
+		}
+	}
 }
 
-void GwCharacterWindow::SetAnimation(std::string& id)
+void GwCharacterWindow::SetAnimation(std::string& id, const std::string& anim_slot_name)
 {
+	string anim_slot_name_title = "anim_slot_name: " + anim_slot_name;
+	if (ImGui::TreeNode("Animation to apply"))
+	{
+		int item_current_idx = 0;
+
+		for (int i = 0; i < valid_animation_list_.size(); i++)
+		{
+			if (valid_animation_list_[i] == id)
+				item_current_idx = i;
+		}
+
+		ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+		string anim_slot_name_example_anim = "Set animation on " + anim_slot_name;
+		if (ImGui::BeginListBox(anim_slot_name_example_anim.c_str()))
+		{
+			for (int n = 0; n < valid_animation_list_.size(); n++)
+			{
+				const bool is_selected = (item_current_idx == n);
+				if (ImGui::Selectable(valid_animation_list_[n].c_str(), is_selected))
+					item_current_idx = n;
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndListBox();
+		}
+
+		if (valid_animation_list_.size() != 0) id = valid_animation_list_[item_current_idx];
+		ImGui::TreePop();
+	}
+	PrintSelectedItem("Animation", id);
+}
+
+void GwCharacterWindow::SetAnimSlotData(AnimSlotData& anim_slot_data)
+{
+	if (ImGui::TreeNode("Anim Slot Settings"))
+	{
+		anim_slot_data.skeletal_mesh_id = input_character_data_.skeletal_mesh_component.skeletal_mesh_id;
+		SetAnimObject(anim_slot_data);
+		if (anim_slot_data.anim_slot_name == "Base") {
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::Text("You can't set the bone of the Base anim slot");
+			ImGui::PopStyleColor();
+			ImGui::BeginDisabled();
+		}
+		SetBone(anim_slot_data.bone_id);
+		ImGui::InputInt("Blend range", &anim_slot_data.range);
+		if (anim_slot_data.anim_slot_name == "Base") {
+			ImGui::EndDisabled();
+		}
+
+		static char anim_object_type[100];
+		//ImGui::InputText("New anim slot name", anim_slot_name_input, 100);
+
+		//string anim_slot_name = anim_slot_name_input;
+		bool is_name_exists = false;
+		anim_slot_data.anim_object_type;
+		ImGui::TreePop();
+	}
+}
+
+void GwCharacterWindow::SetAnimObject(AnimSlotData& anim_slot_data)
+{
+	unordered_map<ANIM_OBJECT_TYPE, string> anim_object_type_name_map = {
+	{ANIM_OBJECT_TYPE::ANIMATION_BASE, "Animation Base"},
+	{ANIM_OBJECT_TYPE::ANIMATION_STATE_MACHINE, "Animation State Machine"}
+	};
+
+	if (ImGui::BeginCombo("Anim object type", anim_object_type_name_map[anim_slot_data.anim_object_type].c_str()))
+	{
+		for (const auto& anim_object_type_pair : anim_object_type_name_map) {
+			bool is_selected = (anim_slot_data.anim_object_type == anim_object_type_pair.first);
+			if (ImGui::Selectable(anim_object_type_name_map[anim_object_type_pair.first].c_str(), is_selected))
+			{
+				anim_slot_data.anim_object_type = anim_object_type_pair.first;
+			}
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
+void GwCharacterWindow::SetBone(string& bone_id)
+{
+	string cur_selected_bone = bone_id;
+
+	ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+
+	if (ImGui::BeginListBox("Select Bone"))
+	{
+		for (const auto& bone_name_id_pair : bone_name_id_map_)
+		{
+			const bool is_selected = (cur_selected_bone == bone_name_id_pair.first);
+			if (ImGui::Selectable(bone_name_id_pair.first.c_str(), is_selected))
+				cur_selected_bone = bone_name_id_pair.first.c_str();
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndListBox();
+	}
+
+	if (bone_name_id_map_.size() != 0) bone_id = cur_selected_bone;
+
+	PrintSelectedItem("Bone", bone_id);
 }
 
 void GwCharacterWindow::SelectSKM(string& id)
@@ -311,10 +417,9 @@ void GwCharacterWindow::SelectSKM(string& id)
 
 void GwCharacterWindow::SetCapsuleCollision()
 {
-	SetTransform(input_character_data_.capsule_collision);
-
 	if (ImGui::CollapsingHeader("Capsule Collision"))
 	{
+		SetTransform(input_character_data_.capsule_collision);
 		ImGui::InputFloat("height", &input_character_data_.capsule_collision.capsule.height);
 		ImGui::InputFloat("radius", &input_character_data_.capsule_collision.capsule.radius);
 
@@ -323,7 +428,6 @@ void GwCharacterWindow::SetCapsuleCollision()
 			input_character_data_.capsule_collision.capsule.radius = 0;
 		}
 	}
-	ImGui::Separator();
 }
 
 void GwCharacterWindow::PrintSelectedItem(std::string category, std::string selected_item)
