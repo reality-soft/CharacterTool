@@ -11,7 +11,7 @@ namespace reality
 	public:
 		virtual void OnInit(entt::registry& registry) override;
 		virtual void OnUpdate() override;
-		void SetCharacterData(CharacterData data);
+		void SetCharacterData(const CharacterData& data);
 		void SetCharacterAnimation(string anim_id);
 
 		void MoveRight();

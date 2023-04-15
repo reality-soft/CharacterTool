@@ -1,8 +1,9 @@
 #include "CharacterTool.h"
+#include "Engine_include.h"
 
 int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	ENGINE->OnInit(hinstance, L"CharacterTool", { 1280, 720 });
+	ENGINE->OnInit(hinstance, L"CharacterTool", E_Resolution::R1280x720, true);
 
 	CharacterTool charcter_tool;
 

@@ -14,12 +14,9 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 	auto& meshes = RESOURCE->UseResource<SkeletalMesh>(skm.skeletal_mesh_id)->meshes;
 	registry.emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
 
-
-	reality::C_BoundingBox bounding_box;
-	bounding_box.local = XMMatrixIdentity();
-	bounding_box.world = XMMatrixIdentity();
-	bounding_box.SetXYZ(0, 0, 0);
-	registry.emplace<reality::C_BoundingBox>(entity_id_, bounding_box);
+	reality::C_CapsuleCollision capsule_collision;
+	registry.emplace<reality::C_CapsuleCollision>(entity_id_, capsule_collision);
+	QUADTREE->RegistDynamicCapsule(entity_id_);
 
 	C_Camera camera;
 	camera.local = XMMatrixTranslationFromVector({ 0, 70, -90, 0 });
@@ -29,11 +26,13 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 	camera.tag = "Player";
 	registry.emplace<C_Camera>(entity_id_, camera);
 
-	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(reality::C_BoundingBox));
-	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_BoundingBox), TYPE_ID(reality::C_SkeletalMesh));
+	transform_tree_.root_node = make_shared<TransformTreeNode>(TYPE_ID(reality::C_CapsuleCollision));
+	transform_tree_.AddNodeToNode(TYPE_ID(reality::C_CapsuleCollision), TYPE_ID(reality::C_SkeletalMesh));
 	transform_tree_.AddNodeToNode(TYPE_ID(C_SkeletalMesh), TYPE_ID(C_Camera));
 
-	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, C_Animation(&AnimationBase()));
+	//AnimationBase animation_base;
+	//C_Animation animation_copmonent(animation_base);
+	//reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation_copmonent);
 
 	transform_tree_.root_node->OnUpdate(registry, entity_id_, transform_matrix_);
 }
@@ -49,25 +48,27 @@ void reality::PlayerActor::OnUpdate()
 	right_ = XMVector3Transform({ 1, 0, 0, 0 }, rotation_matrix);
 }
 
-void reality::PlayerActor::SetCharacterData(CharacterData data)
+void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 {
-	reality::C_BoundingBox& bounding_box = reg_scene_->get<C_BoundingBox>(entity_id_);
-	bounding_box.SetXYZ(data.x, data.y, data.z);
-	reg_scene_->emplace_or_replace<reality::C_BoundingBox>(entity_id_, bounding_box);
+	reality::C_CapsuleCollision* capsule_collision_component = reg_scene_->try_get<C_CapsuleCollision>(entity_id_);
+	capsule_collision_component->capsule = data.capsule_collision.capsule;
+	capsule_collision_component->local = data.capsule_collision.local;
 
-	reality::C_SkeletalMesh skm;
-	skm.skeletal_mesh_id = data.skm_id;
-	skm.local = XMMatrixIdentity() * XMMatrixRotationY(XMConvertToRadians(180)) * XMMatrixScalingFromVector({ 0.3, 0.3, 0.3, 0.0 });
-	skm.vertex_shader_id = data.vs_id;
-	reg_scene_->emplace_or_replace<reality::C_SkeletalMesh>(entity_id_, skm);
+	reality::C_SkeletalMesh* skm = reg_scene_->try_get<C_SkeletalMesh>(entity_id_);
+	skm->skeletal_mesh_id = data.skeletal_mesh_component.skeletal_mesh_id;
+	skm->local = data.skeletal_mesh_component.local;
+	skm->vertex_shader_id = data.skeletal_mesh_component.vertex_shader_id;
 
-	reality::C_Animation* animation_component_ptr = reg_scene_->try_get<reality::C_Animation>(entity_id_);
+	//AnimationBase animation_base;
+	//reality::C_Animation animation_component(animation_base);
 
-	animation_component_ptr->AddNewAnimSlot<AnimationBase>("UpperBody", data.skm_id, "Spine_02", 6);
-	animation_component_ptr->GetAnimSlotByName("UpperBody").anim_object_->SetAnimation("A_TP_CH_Handgun_Fire_Anim_Retargeted_Unreal Take.anim", 0.3);
-	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
+	//for (auto anim_slot_pair : data.anim_slots) {
+	//	auto anim_slot_name = anim_slot_pair.first;
+	//	auto anim_slot = anim_slot_pair.second;
+	//	animation_component.AddNewAnimSlot<AnimationBase>(anim_slot_name, anim_slot.skeletal_mesh_id, anim_slot.bone_id, anim_slot.range);
+	//}
 
-	SetCharacterAnimation(data.anim_id);
+	//reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
 
 	transform_tree_.root_node->Translate(*reg_scene_, entity_id_, transform_matrix_);
 }
