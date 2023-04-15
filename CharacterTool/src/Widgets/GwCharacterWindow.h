@@ -18,7 +18,8 @@ private:
 
 private:
 	void	SelectVertexShader(std::string& id);
-	void	SelectAnimation(std::string& id);
+	void	SetAnimSlots();
+	void	SetAnimation(std::string& id);
 	void	SelectSKM(std::string& id);
 	void	SetCapsuleCollision();
 
@@ -32,7 +33,9 @@ public:
 	void LoadCharacterData(std::string loading_data_id);
 
 public:
-	CharacterData input_character_data;
+	CharacterData input_character_data_;
+	vector<string> valid_animation_list_;
+	map<string, UINT> bone_name_id_map_;
 
 private:
 	bool is_skm_set_ = false;
