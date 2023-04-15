@@ -8,7 +8,7 @@ using namespace reality;
 void CharacterTool::OnInit()
 {
 	QUADTREE->Init(&level, reg_scene_);
-	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
+	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
 	
 	COMPONENT->OnInit(reg_scene_);
 
@@ -22,7 +22,7 @@ void CharacterTool::OnInit()
 	RESOURCE->Init("../../Contents");
 	LoadResource();
 
-	level.Create("DeadPoly_FullLevel_04.stmesh", "LevelVS.cso");
+	level.Create("DNDLevel_WithCollision_01.stmesh", "LevelVS.cso");
 	// Component Init
 	ComponentSystem::GetInst()->OnInit(reg_scene_);
 
@@ -34,7 +34,7 @@ void CharacterTool::OnInit()
 	auto character_actor = SCENE_MGR->GetPlayer<PlayerActor>(0);
 
 	environment_.CreateEnvironment();
-	environment_.SetWorldTime(60, 60, true);
+	environment_.SetWorldTime(60, 60);
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
 	environment_.SetFogDistanceByTime(5000, 1000);
 	environment_.SetLightProperty(0.2f, 0.2f);

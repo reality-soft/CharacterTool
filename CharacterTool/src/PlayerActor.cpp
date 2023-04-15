@@ -6,8 +6,6 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 
 	movement_component_->speed = 100;
 
-	collision_box_ = AABBShape();
-
 	reality::C_SkeletalMesh skm;
 	skm.local = XMMatrixIdentity();
 	skm.world = XMMatrixIdentity();
