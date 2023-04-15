@@ -1,4 +1,5 @@
 #include "PlayerActor.h"
+#include "AnimationStateMachine.h"
 
 void reality::PlayerActor::OnInit(entt::registry& registry)
 {
@@ -57,16 +58,33 @@ void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 	skm->local = data.skeletal_mesh_component.local;
 	skm->vertex_shader_id = data.skeletal_mesh_component.vertex_shader_id;
 
-	//AnimationBase animation_base;
-	//reality::C_Animation animation_component(animation_base);
+	AnimationBase* animation_obj = nullptr;
+	if (data.anim_slots[0].second.anim_object_type == ANIM_OBJECT_TYPE::ANIMATION_BASE) {
+		animation_obj = new AnimationBase();
+	}
+	else if (data.anim_slots[0].second.anim_object_type == ANIM_OBJECT_TYPE::ANIMATION_STATE_MACHINE) {
+		animation_obj = new AnimationStateMachine(entity_id_);
+	}
 
-	//for (auto anim_slot_pair : data.anim_slots) {
-	//	auto anim_slot_name = anim_slot_pair.first;
-	//	auto anim_slot = anim_slot_pair.second;
-	//	animation_component.AddNewAnimSlot<AnimationBase>(anim_slot_name, anim_slot.skeletal_mesh_id, anim_slot.bone_id, anim_slot.range);
-	//}
+	reality::C_Animation animation_component(animation_obj);
+	animation_component.GetAnimSlotByName("Base").anim_object_->SetAnimation(data.anim_slots[0].second.animation_name, 0.3);
 
-	//reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
+	for (int i = 1;i < data.anim_slots.size();i++) {
+		const auto& anim_slot_pair = data.anim_slots[i];
+		const auto& anim_slot_name = anim_slot_pair.first;
+		const auto& anim_slot_data = anim_slot_pair.second;
+
+		if (anim_slot_data.anim_object_type == ANIM_OBJECT_TYPE::ANIMATION_BASE) {
+			animation_component.AddNewAnimSlot<AnimationBase>(anim_slot_name, anim_slot_data.skeletal_mesh_id, anim_slot_data.bone_id, anim_slot_data.range);
+		}
+		else if (anim_slot_data.anim_object_type == ANIM_OBJECT_TYPE::ANIMATION_STATE_MACHINE) {
+			animation_component.AddNewAnimSlot<AnimationStateMachine>(anim_slot_name, anim_slot_data.skeletal_mesh_id, anim_slot_data.bone_id, anim_slot_data.range, entity_id_);
+		}
+
+		animation_component.GetAnimSlotByName(anim_slot_name).anim_object_->SetAnimation(anim_slot_data.animation_name, 0.3);
+	}
+
+	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation_component);
 
 	transform_tree_.root_node->Translate(*reg_scene_, entity_id_, transform_matrix_);
 }
