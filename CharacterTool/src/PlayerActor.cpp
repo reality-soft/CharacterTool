@@ -86,6 +86,18 @@ void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 
 	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation_component);
 
+	reality::C_Socket socket_component;
+
+	for (const auto& cur_socket : data.sockets) {
+		const auto& socket_name = cur_socket.first;
+		const auto& socket = cur_socket.second;
+		socket_component.AddSocket(socket_name, socket.bone_id, socket.owner_local, socket.local_offset);
+
+		reg_scene_->emplace_or_replace<reality::C_StaticMesh>(entity_id_, data.socket_static_meshes.at(socket_name));
+	}
+
+	reg_scene_->emplace_or_replace<reality::C_Socket>(entity_id_, socket_component);
+
 	transform_tree_.root_node->Translate(*reg_scene_, entity_id_, transform_matrix_);
 }
 

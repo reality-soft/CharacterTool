@@ -42,7 +42,6 @@ void GwCharacterWindow::Render()
 		SetSkeletalMesh();
 
 		if (is_skm_set_ == false) {
-			ImGui::NewLine();
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 			ImGui::Text("Please select valid Skeletal Mesh and Vertex Shader first");
 			ImGui::PopStyleColor();
@@ -50,6 +49,8 @@ void GwCharacterWindow::Render()
 		}
 
 		SetAnimSlots();
+		SetSocket();
+
 		ImGui::NewLine();
 		if (ImGui::Button("Save"))
 		{
@@ -104,25 +105,55 @@ void GwCharacterWindow::SetSkeletalMesh()
 	}
 }
 
-void GwCharacterWindow::SetTransform(C_Transform& transform)
+void GwCharacterWindow::SetTransform(XMMATRIX& transform)
 {
-	static XMVECTOR scale_vector{ 1.0f, 1.0f, 1.0f, 1.0f };	
-	static XMVECTOR rotation_vector{ .0f, .0f, .0f, .0f };
-	static XMVECTOR translation_vector{ .0f, .0f, .0f, .0f };
+	XMVECTOR scale_vector{ 1.0f, 1.0f, 1.0f, 1.0f };
+	XMVECTOR rotation_vector{ .0f, .0f, .0f, .0f };
+	XMVECTOR translation_vector{ .0f, .0f, .0f, .0f };
+
+	XMVECTOR quaternion;
+	XMMatrixDecompose(&scale_vector, &quaternion, &translation_vector, transform);
+
+	const float tolerance = 0.0001f;
+	if (fabs(quaternion.m128_f32[0]) < tolerance &&
+		fabs(quaternion.m128_f32[1]) < tolerance &&
+		fabs(quaternion.m128_f32[2]) < tolerance &&
+		fabs(quaternion.m128_f32[3] - 1.0f) < tolerance)
+	{
+		// The quaternion is an identity quaternion
+		rotation_vector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	else {
+		XMVECTOR axis;
+		float angle;
+		XMQuaternionToAxisAngle(&axis, &angle, quaternion);
+
+		// Convert axis-angle representation to quaternion and decompose to get Euler angles
+		XMVECTOR q = XMQuaternionRotationAxis(axis, angle);
+		XMFLOAT4 qf;
+		XMStoreFloat4(&qf, q);
+		rotation_vector.m128_f32[0] = XMConvertToDegrees(atan2(2.0f * (qf.y * qf.z + qf.w * qf.x), qf.w * qf.w - qf.x * qf.x - qf.y * qf.y + qf.z * qf.z));
+		rotation_vector.m128_f32[1] = XMConvertToDegrees(asin(-2.0f * (qf.x * qf.z - qf.w * qf.y)));
+		rotation_vector.m128_f32[2] = XMConvertToDegrees(atan2(2.0f * (qf.x * qf.y + qf.w * qf.z), qf.w * qf.w + qf.x * qf.x - qf.y * qf.y - qf.z * qf.z));
+	}
 
 	if (ImGui::TreeNode("Transform")) {
 		if (ImGui::TreeNode("Scale"))
 		{
 			ImGui::Text("X");	ImGui::SameLine();
-			ImGui::InputFloat("##inputX", &scale_vector.m128_f32[0]);
+			string x = "##inputX";
+			ImGui::InputFloat(x.c_str(), &scale_vector.m128_f32[0]);
 
 			ImGui::Text("Y");	ImGui::SameLine();
-			ImGui::InputFloat("##inputY", &scale_vector.m128_f32[1]);
+			string y = "##inputY";
+			ImGui::InputFloat(y.c_str(), &scale_vector.m128_f32[1]);
 
 			ImGui::Text("Z");	ImGui::SameLine();
-			ImGui::InputFloat("##inputZ", &scale_vector.m128_f32[2]);
+			string z = "##inputZ";
+			ImGui::InputFloat(z.c_str(), &scale_vector.m128_f32[2]);
 
-			if (ImGui::Button("Reset##Y"))
+			string reset = "Reset##Trasform";
+			if (ImGui::Button(reset.c_str()))
 			{
 				scale_vector = { 1.0f, 1.0f, 1.0f, 1.0f };
 			}
@@ -133,15 +164,19 @@ void GwCharacterWindow::SetTransform(C_Transform& transform)
 		if (ImGui::TreeNode("Rotation"))
 		{
 			ImGui::Text("Yaw");	ImGui::SameLine();
-			ImGui::InputFloat("##inputY", &rotation_vector.m128_f32[1]);
+			string yaw = "##inputYaw";
+			ImGui::InputFloat(yaw.c_str(), &rotation_vector.m128_f32[1]);
 
 			ImGui::Text("Pitch");	ImGui::SameLine();
-			ImGui::InputFloat("##inputX", &rotation_vector.m128_f32[0]);
+			string pitch = "##inputPitch";
+			ImGui::InputFloat(pitch.c_str(), &rotation_vector.m128_f32[0]);
 
 			ImGui::Text("Roll");	ImGui::SameLine();
-			ImGui::InputFloat("##inputZ", &rotation_vector.m128_f32[2]);
+			string roll = "##inputRoll";
+			ImGui::InputFloat(roll.c_str(), &rotation_vector.m128_f32[2]);
 
-			if (ImGui::Button("Reset##Y"))
+			string reset = "Reset##Rotation";
+			if (ImGui::Button(reset.c_str()))
 			{
 				rotation_vector = XMVectorZero();
 			}
@@ -152,16 +187,19 @@ void GwCharacterWindow::SetTransform(C_Transform& transform)
 		if (ImGui::TreeNode("Translation"))
 		{
 			ImGui::Text("X");	ImGui::SameLine();
-			ImGui::InputFloat("##inputX", &translation_vector.m128_f32[0]);
-
+			string x_trans = "##inputXtrans";
+			ImGui::InputFloat(x_trans.c_str(), &translation_vector.m128_f32[0]);
 
 			ImGui::Text("Y");	ImGui::SameLine();
-			ImGui::InputFloat("##inputY", &translation_vector.m128_f32[1]);
+			string y_trans = "##inputYtrans";
+			ImGui::InputFloat(y_trans.c_str(), &translation_vector.m128_f32[1]);
 
 			ImGui::Text("Z");	ImGui::SameLine();
-			ImGui::InputFloat("##inputZ", &translation_vector.m128_f32[2]);
+			string z_trans = "##inputZtrans";
+			ImGui::InputFloat(z_trans.c_str(), &translation_vector.m128_f32[2]);
 
-			if (ImGui::Button("Reset##Y"))
+			string reset = "Reset##Translation";
+			if (ImGui::Button(reset.c_str()))
 			{
 				translation_vector = XMVectorZero();
 			}
@@ -177,7 +215,7 @@ void GwCharacterWindow::SetTransform(C_Transform& transform)
 							   XMMatrixRotationZ(XMConvertToRadians(rotation_vector.m128_f32[2]));
 	XMMATRIX translation_matrix = XMMatrixTranslationFromVector(translation_vector);
 
-	transform.local = scale_matrix * rotation_matrix * translation_matrix;
+	transform = scale_matrix * rotation_matrix * translation_matrix;
 }
 
 void GwCharacterWindow::SelectVertexShader(string& id)
@@ -373,11 +411,110 @@ void GwCharacterWindow::SetBone(string& bone_id)
 	PrintSelectedItem("Bone", bone_id);
 }
 
+void GwCharacterWindow::SetSocket()
+{
+	if (ImGui::CollapsingHeader("Sockets")) {
+		for (auto& socket_pair : input_character_data_.sockets) {
+			const auto& socket_name = socket_pair.first;
+			auto& socket = socket_pair.second;
+			string socket_name_title = "Socket: " + socket_name;
+			if (ImGui::TreeNode(socket_name_title.c_str()))
+			{
+				SetSocketData(socket);
+				input_character_data_.socket_static_meshes[socket_name].socket_name = socket_name;
+				SetSocketStaticMesh(input_character_data_.socket_static_meshes[socket_name]);
+				ImGui::TreePop();
+			}
+			ImGui::Separator();
+		}
+
+		static char socket_name_input[100];
+		ImGui::InputText("New anim slot name", socket_name_input, 100);
+
+		string socket_name = socket_name_input;
+		bool is_name_exists = false;
+		for (const auto& socket_pair : input_character_data_.sockets) {
+			if (socket_name == socket_pair.first) {
+				is_name_exists = true;
+				break;
+			}
+		}
+
+		if (socket_name.empty() || is_name_exists == true) {
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::Text("Please enter a valid name");
+			ImGui::PopStyleColor();
+			ImGui::BeginDisabled();
+		}
+		if (ImGui::Button("Add new socket")) {
+			input_character_data_.sockets.insert({ socket_name, Socket() });
+			input_character_data_.socket_static_meshes.insert({ socket_name, C_StaticMesh() });
+			ZeroMemory(socket_name_input, 100);
+		}
+		if (socket_name.empty() || is_name_exists == true) {
+			ImGui::EndDisabled();
+		}
+	}
+}
+
+void GwCharacterWindow::SetSocketData(Socket& socket_data)
+{
+	ImGui::Text("Socket local offset"); ImGui::SameLine();
+	SetTransform(socket_data.local_offset);
+	static string bone_name;
+	SetBone(bone_name);
+	socket_data.bone_id = bone_name_id_map_[bone_name];
+	socket_data.owner_local = input_character_data_.skeletal_mesh_component.local;
+}
+
+void GwCharacterWindow::SetSocketStaticMesh(C_StaticMesh& static_mesh_component)
+{
+	if (ImGui::TreeNode("Static Mesh""Static Mesh"))
+	{
+		SetTransform(input_character_data_.skeletal_mesh_component.local);
+
+		if (ImGui::TreeNode("Static Mesh##1")) {
+			string cur_selected_stm_id = "";
+
+			auto stm_set = RESOURCE->GetTotalSTMID();
+			vector<string> stm_vec(stm_set.begin(), stm_set.end());
+
+			for (const auto& stm_id : stm_vec)
+			{
+				if (stm_id == static_mesh_component.static_mesh_id)
+					cur_selected_stm_id = stm_id;
+			}
+
+			ImGui::SetNextItemWidth(LISTBOX_WIDTH);
+			if (ImGui::BeginListBox(""))
+			{
+				for (const auto& stm_id : stm_vec)
+				{
+					const bool is_selected = (cur_selected_stm_id == stm_id);
+					if (ImGui::Selectable(stm_id.c_str(), is_selected))
+						cur_selected_stm_id = stm_id;
+
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndListBox();
+			}
+
+			if (stm_vec.size() != 0)static_mesh_component.static_mesh_id = cur_selected_stm_id;
+			static_mesh_component.vertex_shader_id = "StaticMeshVS.cso";
+			ImGui::TreePop();
+		}
+		ImGui::TreePop();
+	}
+	PrintSelectedItem("Static Mesh", static_mesh_component.static_mesh_id);
+	ImGui::Separator();
+}
+
 void GwCharacterWindow::SelectSKM(string& id)
 {
 	if (ImGui::TreeNode("Skeletal Mesh"))
 	{
-		SetTransform(input_character_data_.skeletal_mesh_component);
+		SetTransform(input_character_data_.skeletal_mesh_component.local);
 
 		if (ImGui::TreeNode("Skeletal Mesh##1")) {
 			int item_current_idx = 0;
@@ -419,7 +556,7 @@ void GwCharacterWindow::SetCapsuleCollision()
 {
 	if (ImGui::CollapsingHeader("Capsule Collision"))
 	{
-		SetTransform(input_character_data_.capsule_collision);
+		SetTransform(input_character_data_.capsule_collision.local);
 		ImGui::InputFloat("height", &input_character_data_.capsule_collision.capsule.height);
 		ImGui::InputFloat("radius", &input_character_data_.capsule_collision.capsule.radius);
 
