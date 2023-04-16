@@ -14,7 +14,7 @@ public:
 	virtual void Render() override;
 private:
 	void	SetSkeletalMesh();
-	void	SetTransform(C_Transform& transform);
+	void	SetTransform(XMMATRIX& transform);
 	void	SetCapsuleCollision();
 
 private:
@@ -23,13 +23,16 @@ private:
 
 private:
 	void	SetAnimSlots();
-
-private:
 	void	SetAnimation(std::string& id, const std::string& anim_slot_name);
 	void	SetAnimSlotData(AnimSlotData& anim_slot_data);
+	void	SetAnimObject(AnimSlotData& anim_slot_data);
 
 private:
-	void	SetAnimObject(AnimSlotData& anim_slot_data);
+	void	SetSocket();
+	void	SetSocketData(Socket& socket_data);
+	void	SetSocketStaticMesh(C_StaticMesh& static_mesh_component);
+
+private:
 	void	SetBone(string& bone_id);
 
 private: 
