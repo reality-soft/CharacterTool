@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Movements.h"
 #include "CharacterTool.h"
 
