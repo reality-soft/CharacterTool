@@ -29,7 +29,7 @@ void GwFbxLoader::Render()
 		{
 			string name = file_dialog_.GetSelected().string();
 			reality::FbxImportOption option;
-
+			option.recalculate_normal = true;
 			FBX->ImportAndSaveFbx(name, option, vertex_option_);
 			file_dialog_.ClearSelected();
 		}
