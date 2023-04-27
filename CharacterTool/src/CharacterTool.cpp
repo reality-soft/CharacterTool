@@ -51,7 +51,7 @@ void CharacterTool::OnUpdate()
 	INPUT_EVENT->PollEvents();
 	//sys_light_.OnUpdate(reg_scene_);
 
-	environment_.Update(&sys_camera_, &sys_light_);
+	environment_.Update(sys_camera_.GetCamera()->camera_pos, &sys_light_);
 	
 	sys_movement_.OnUpdate(reg_scene_);
 	sys_animation_.OnUpdate(reg_scene_);
