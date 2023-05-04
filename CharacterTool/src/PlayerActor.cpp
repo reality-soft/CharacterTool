@@ -5,7 +5,7 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 {
 	Character::OnInit(registry);
 
-	movement_component_->speed = 100;
+	GetMovementComponent()->speed = 100;
 
 	reality::C_SkeletalMesh skm;
 	skm.local = XMMatrixIdentity();
@@ -15,7 +15,6 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 
 	reality::C_CapsuleCollision capsule_collision;
 	registry.emplace<reality::C_CapsuleCollision>(entity_id_, capsule_collision);
-	QUADTREE->RegistDynamicCapsule(entity_id_);
 
 	C_Camera camera;
 	camera.local = XMMatrixTranslationFromVector({ 0, 70, -90, 0 });
@@ -60,7 +59,7 @@ void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 		animation_component.SetBaseAnimObject<AnimationStateMachine>(entity_id_, skm->skeletal_mesh_id, 0);
 	}
 	
-	animation_component.GetAnimSlotByName("Base")->SetAnimation(data.anim_slots[0].second.animation_name, 0.3);
+	animation_component.GetAnimSlotByName("Base")->SetAnimation(data.anim_slots[0].second.animation_name, 0.3, true);
 
 	for (int i = 1;i < data.anim_slots.size();i++) {
 		const auto& anim_slot_pair = data.anim_slots[i];
@@ -74,7 +73,7 @@ void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 			animation_component.AddNewAnimSlot<AnimationStateMachine>(anim_slot_name, entity_id_, anim_slot_data.skeletal_mesh_id, anim_slot_data.range, anim_slot_data.bone_id);
 		}
 
-		animation_component.GetAnimSlotByName(anim_slot_name)->SetAnimation(anim_slot_data.animation_name, 0.3);
+		animation_component.GetAnimSlotByName(anim_slot_name)->SetAnimation(anim_slot_data.animation_name, 0.3, true);
 	}
 
 	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, animation_component);
@@ -98,7 +97,7 @@ void reality::PlayerActor::SetCharacterAnimation(string anim_id)
 {
 	reality::C_Animation* animation_component_ptr = reg_scene_->try_get<reality::C_Animation>(entity_id_);
 	int base_index = animation_component_ptr->name_to_anim_slot_index["Base"];
-	animation_component_ptr->anim_slots[base_index].second->SetAnimation(anim_id, 0.3);
+	animation_component_ptr->anim_slots[base_index].second->SetAnimation(anim_id, 0.3, true);
 	reg_scene_->emplace_or_replace<reality::C_Animation>(entity_id_, *animation_component_ptr);
 }
 
