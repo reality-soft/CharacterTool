@@ -1,14 +1,14 @@
 #define e 2.71828182846
-
+#define EPSILON 0.001f
 // Global Directional Lighting
 cbuffer CbGlobalLight : register(b0)
 {
-    float3 position;
-    float brightness;
-
-    float3 direction;
+    float4 gblight_pos;
+    float4 gblight_color;
+    
+    float3 gblight_dir;
     float specular_strength;
-
+    
     float4 ambient_up;
     float4 ambient_down;
     float4 ambient_range;
@@ -50,7 +50,7 @@ cbuffer CbDistanceFog : register(b4)
 {
     float4 fog_color;
     float3 eye_position;
-    float distance;
+    float fog_distance;
 }
 
 // White Basic color  
@@ -58,14 +58,14 @@ float4 WhiteColor()
 {
     return float4(1, 1, 1, 1);
 }
-
+  
 // Returns Color with Texture, returns white color if no texture
 float4 CreateColor(Texture2D tex, SamplerState sample, float2 uv)
 {
     float4 color = tex.Sample(sample, uv);
     if (length(color) == 0)
         return WhiteColor();
-
+    
     return color;
 }
 
@@ -171,7 +171,7 @@ float4 ApplyCookTorrance(float4 albedo, float roughness, float3 specular, float3
 {
     // Correct the input and compute aliases
     view_dir = normalize(view_dir);
-    float3 light_dir = normalize(-direction);
+    float3 light_dir = normalize(-gblight_dir);
     float3 half_vec = normalize(light_dir + view_dir);
     float normal_dot_half = dot(normal, half_vec);
     float view_dot_half = dot(half_vec, view_dir);
@@ -195,7 +195,7 @@ float4 ApplyCookTorrance(float4 albedo, float roughness, float3 specular, float3
 
     // Compute the final term  
     float3 S = ((G * F * R) / (normal_dot_light * normal_dot_view)) * specular;
-    float3 flinal_color = float3(brightness, brightness, brightness) * max(0.2f, normal_dot_light) * (albedo.xyz + S);
+    float3 flinal_color = gblight_color.xyz * max(0.2f, normal_dot_light) * (albedo.xyz + S);
     return float4(flinal_color, 1.0f);
 }
 
@@ -210,6 +210,7 @@ float4 ApplyPointLight(float4 color, float3 normal, float3 world_pos, float3 vie
             continue;
 
         float3 lightVec = point_lights[i].position - world_pos;
+
         float distance = length(lightVec);
 
         if (distance > point_lights[i].range)
@@ -275,9 +276,8 @@ float4 ApplySpotLight(float4 color, float3 normal, float3 world_pos, float3 view
 float4 ApplyDistanceFog(float4 color, float3 pixel_world)
 {
     float3 fog_start = eye_position;
-    float3 fog_end = normalize(pixel_world - fog_start) * distance;
+    float3 fog_end = normalize(pixel_world - fog_start) * fog_distance;
 
-    float f = 1 / pow(e, pow(length(pixel_world - fog_start) / distance, 2));
-
+    float f = 1 / pow(e, pow(length(pixel_world - fog_start) / fog_distance, 2));    
     return f * color + (1.0f - f) * fog_color;
 }
