@@ -94,9 +94,9 @@ void GwCharacterWindow::SetSkeletalMesh()
 			for (const auto& anim_id : anim_set)
 			{
 				auto anim = RESOURCE->UseResource<OutAnimData>(anim_id);
-				//if (anim->animations.size() - 3 == bone_name_id_map_.size()) {
+				if (anim->animation_matrices.size() == bone_name_id_map_.size()) {
 					valid_animation_list_.push_back(anim_id);
-				//}
+				}
 			}
 		}
 		else {
