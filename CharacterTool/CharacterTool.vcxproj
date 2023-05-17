@@ -181,6 +181,11 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="HLSL\DepthMapVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="HLSL\EffectDefaultPS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -206,6 +211,11 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>GS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="HLSL\InstancingVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="HLSL\LevelPS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -220,6 +230,11 @@
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\PhysicsCS.hlsl">
+      <ShaderType>Compute</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>CS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkinningPS.hlsl">
       <ShaderType>Pixel</ShaderType>
