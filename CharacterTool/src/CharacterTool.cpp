@@ -34,7 +34,7 @@ void CharacterTool::OnInit()
 	environment_.SetWorldTime(60, 60);
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
 	environment_.SetFogDistanceByTime(5000, 1000);
-	environment_.SetLightProperty(XMFLOAT4(1, 1, 1, 1), XMFLOAT4(0.2, 0.2, 0.2, 0.2), 0.15, 0.3);
+	environment_.SetLightProperty(XMFLOAT4(1, 1, 1, 1), XMFLOAT4(1, 1, 1, 1), 0.15, 0.3);
 
 	INPUT_EVENT->SubscribeKeyEvent({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
 
