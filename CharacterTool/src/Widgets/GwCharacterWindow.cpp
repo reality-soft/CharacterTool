@@ -420,7 +420,7 @@ void GwCharacterWindow::SetSocket()
 		}
 
 		static char socket_name_input[100];
-		ImGui::InputText("New anim slot name", socket_name_input, 100);
+		ImGui::InputText("New socket name", socket_name_input, 100);
 
 		string socket_name = socket_name_input;
 		bool is_name_exists = false;
