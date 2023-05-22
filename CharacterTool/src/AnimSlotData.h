@@ -12,6 +12,6 @@ struct AnimSlotData {
 	string skeletal_mesh_id;
 	string bone_id; 
 	string animation_name;
-	int range;
-	ANIM_OBJECT_TYPE anim_object_type;
+	int range = 0;
+	ANIM_OBJECT_TYPE anim_object_type = ANIM_OBJECT_TYPE::ANIMATION_BASE;
 };
