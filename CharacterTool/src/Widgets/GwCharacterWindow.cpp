@@ -240,10 +240,8 @@ void GwCharacterWindow::SelectVertexShader(string& id)
 
 void GwCharacterWindow::SetAnimSlots()
 {
-	is_all_anim_set_ = false;
+	is_all_anim_set_ = true;
 	if (ImGui::CollapsingHeader("Anim Slots")) {
-		is_all_anim_set_ = true;
-
 		for (auto& anim_slot_pair : input_character_data_.anim_slots) {
 			auto& anim_slot_name = anim_slot_pair.first;
 			auto& anim_slot = anim_slot_pair.second;
@@ -287,6 +285,15 @@ void GwCharacterWindow::SetAnimSlots()
 		}
 		if (anim_slot_name.empty() || is_name_exists == true) {
 			ImGui::EndDisabled();
+		}
+	}
+
+	for (auto& anim_slot_pair : input_character_data_.anim_slots) {
+		auto& anim_slot_name = anim_slot_pair.first;
+		auto& anim_slot = anim_slot_pair.second;
+
+		if (RESOURCE->UseResource<OutAnimData>(anim_slot.animation_name) == nullptr) {
+			is_all_anim_set_ = false;
 		}
 	}
 }
@@ -450,7 +457,7 @@ void GwCharacterWindow::SetSocket()
 
 void GwCharacterWindow::SetSocketData(SocketData& socket_data)
 {
-	ImGui::Text("Socket local offset"); ImGui::SameLine();
+	ImGui::Text("Socket local offset");
 	SetTransform(socket_data.transform_data_);
 	socket_data.socket_.local_offset = socket_data.transform_data_.transform_;
 	static string bone_name;
