@@ -18,7 +18,6 @@ void GwCharacterWindow::Init()
 	base_anim_slot_data.skeletal_mesh_id = "";
 	base_anim_slot_data.anim_object_type = ANIM_OBJECT_TYPE::ANIMATION_BASE;
 	input_character_data_.anim_slots.push_back({ "Base", base_anim_slot_data });
-
 }
 
 void GwCharacterWindow::Update()
@@ -52,6 +51,13 @@ void GwCharacterWindow::Render()
 		SetSocket();
 
 		ImGui::NewLine();
+
+		if (is_skm_set_ == true && is_all_anim_set_ == false) {
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+			ImGui::Text("Please set animations to all the anim slots");
+			ImGui::PopStyleColor();
+			ImGui::BeginDisabled();
+		}
 		if (ImGui::Button("Save"))
 		{
 			SaveCharacterData(input_character_data_);
@@ -65,7 +71,7 @@ void GwCharacterWindow::Render()
 			}
 		}
 
-		if (is_skm_set_ == false) {
+		if (is_skm_set_ == false || is_all_anim_set_ == false) {
 			ImGui::EndDisabled();
 		}
 	}
@@ -94,9 +100,9 @@ void GwCharacterWindow::SetSkeletalMesh()
 			for (const auto& anim_id : anim_set)
 			{
 				auto anim = RESOURCE->UseResource<OutAnimData>(anim_id);
-				//if (anim->animations.size() - 3 == bone_name_id_map_.size()) {
+				if (anim->animation_matrices.size() == bone_name_id_map_.size()) {
 					valid_animation_list_.push_back(anim_id);
-				//}
+				}
 			}
 		}
 		else {
@@ -258,7 +264,10 @@ void GwCharacterWindow::SelectVertexShader(string& id)
 
 void GwCharacterWindow::SetAnimSlots()
 {
+	is_all_anim_set_ = false;
 	if (ImGui::CollapsingHeader("Anim Slots")) {
+		is_all_anim_set_ = true;
+
 		for (auto& anim_slot_pair : input_character_data_.anim_slots) {
 			auto& anim_slot_name = anim_slot_pair.first;
 			auto& anim_slot = anim_slot_pair.second;
@@ -270,6 +279,10 @@ void GwCharacterWindow::SetAnimSlots()
 				ImGui::TreePop();
 			}
 			ImGui::Separator();
+
+			if (RESOURCE->UseResource<OutAnimData>(anim_slot.animation_name) == nullptr) {
+				is_all_anim_set_ = false;
+			}
 		}
 
 		static char anim_slot_name_input[100];
@@ -291,7 +304,9 @@ void GwCharacterWindow::SetAnimSlots()
 			ImGui::BeginDisabled();
 		}
 		if (ImGui::Button("Add new anim slot")) {
-			input_character_data_.anim_slots.push_back({ anim_slot_name, AnimSlotData() });
+			AnimSlotData anim_slot_data;
+			anim_slot_data.skeletal_mesh_id = input_character_data_.skeletal_mesh_component.skeletal_mesh_id;
+			input_character_data_.anim_slots.push_back({ anim_slot_name, anim_slot_data });
 			ZeroMemory(anim_slot_name_input, 100);
 		}
 		if (anim_slot_name.empty() || is_name_exists == true) {

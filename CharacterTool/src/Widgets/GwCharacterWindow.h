@@ -51,6 +51,7 @@ public:
 
 private:
 	bool is_skm_set_ = false;
+	bool is_all_anim_set_ = false;
 
 private:
 	entt::registry& reg_scene_;

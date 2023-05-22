@@ -5,6 +5,8 @@ void reality::PlayerActor::OnInit(entt::registry& registry)
 {
 	Character::OnInit(registry);
 
+	GetMovementComponent()->speed = 100;
+
 	reality::C_SkeletalMesh skm;
 	skm.local = XMMatrixIdentity();
 	skm.world = XMMatrixIdentity();

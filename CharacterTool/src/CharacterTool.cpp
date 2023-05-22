@@ -9,7 +9,7 @@ void CharacterTool::OnInit()
 	QUADTREE->view_collisions_ = true;
 	QUADTREE->Init(&level, reg_scene_);
 	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
-	
+	QUADTREE->view_collisions_ = false;
 	COMPONENT->OnInit(reg_scene_);
 
 	sys_camera_.OnCreate(reg_scene_);
@@ -31,10 +31,10 @@ void CharacterTool::OnInit()
 	GUI->AddWidget<GwMainMenu>("MainMenu", reg_scene_);
 
 	environment_.CreateEnvironment();
-	environment_.SetWorldTime(120, 120);
+	environment_.SetWorldTime(60, 60);
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
-	environment_.SetFogDistanceByTime(5000, 2000);
-	environment_.SetLightProperty(XMFLOAT4(1.0f, 0.7f, 0.5f, 1.0f), XMFLOAT4(0.1f, 0.1f, 0.15f, 1.0f), 0.05f, 0.25f);
+	environment_.SetFogDistanceByTime(5000, 1000);
+	environment_.SetLightProperty(XMFLOAT4(1, 1, 1, 1), XMFLOAT4(1, 1, 1, 1), 0.15, 0.3);
 
 	INPUT_EVENT->SubscribeKeyEvent({ DIK_1 }, Movements::CameraModeChange, KEY_PUSH);
 
@@ -61,7 +61,9 @@ void CharacterTool::OnUpdate()
 
 void CharacterTool::OnRender()
 {   
+	environment_.Render();
 	level.Render();
+
 	sys_render_.OnUpdate(reg_scene_);
 
 	QUADTREE->RenderCollisionMeshes();

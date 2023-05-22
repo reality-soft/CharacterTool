@@ -93,6 +93,11 @@ project "CharacterTool"
 		shaderentry "GS"
 	    shadermodel "5.0"
 
+	filter "files:**CS.hlsl"
+	    shadertype "Compute"
+		shaderentry "CS"
+	    shadermodel "5.0"
+
 	filter "system:windows"
 		cppdialect "C++20"
 		staticruntime "Off"
