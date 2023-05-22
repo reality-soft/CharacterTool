@@ -14,7 +14,7 @@ public:
 	virtual void Render() override;
 private:
 	void	SetSkeletalMesh();
-	void	SetTransform(XMMATRIX& transform);
+	void	SetTransform(TransformData& transform);
 	void	SetCapsuleCollision();
 
 private:
@@ -29,7 +29,7 @@ private:
 
 private:
 	void	SetSocket();
-	void	SetSocketData(Socket& socket_data);
+	void	SetSocketData(SocketData& socket_data);
 	void	SetSocketStaticMesh(C_StaticMesh& static_mesh_component);
 
 private:

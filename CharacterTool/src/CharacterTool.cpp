@@ -9,7 +9,6 @@ void CharacterTool::OnInit()
 	QUADTREE->view_collisions_ = true;
 	QUADTREE->Init(&level, reg_scene_);
 	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
-	QUADTREE->view_collisions_ = false;
 	COMPONENT->OnInit(reg_scene_);
 
 	sys_camera_.OnCreate(reg_scene_);

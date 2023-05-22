@@ -82,7 +82,7 @@ void reality::PlayerActor::SetCharacterData(const CharacterData& data)
 
 	for (const auto& cur_socket : data.sockets) {
 		const auto& socket_name = cur_socket.first;
-		const auto& socket = cur_socket.second;
+		const auto& socket = cur_socket.second.socket_;
 		socket_component.AddSocket(socket_name, socket.bone_id, socket.owner_local, socket.local_offset);
 
 		reg_scene_->emplace_or_replace<reality::C_StaticMesh>(entity_id_, data.socket_static_meshes.at(socket_name));

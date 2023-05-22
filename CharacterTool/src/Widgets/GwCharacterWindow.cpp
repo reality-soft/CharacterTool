@@ -111,37 +111,13 @@ void GwCharacterWindow::SetSkeletalMesh()
 	}
 }
 
-void GwCharacterWindow::SetTransform(XMMATRIX& transform)
+void GwCharacterWindow::SetTransform(TransformData& transform)
 {
 	XMVECTOR scale_vector{ 1.0f, 1.0f, 1.0f, 1.0f };
-	XMVECTOR rotation_vector{ .0f, .0f, .0f, .0f };
 	XMVECTOR translation_vector{ .0f, .0f, .0f, .0f };
 
 	XMVECTOR quaternion;
-	XMMatrixDecompose(&scale_vector, &quaternion, &translation_vector, transform);
-
-	const float tolerance = 0.0001f;
-	if (fabs(quaternion.m128_f32[0]) < tolerance &&
-		fabs(quaternion.m128_f32[1]) < tolerance &&
-		fabs(quaternion.m128_f32[2]) < tolerance &&
-		fabs(quaternion.m128_f32[3] - 1.0f) < tolerance)
-	{
-		// The quaternion is an identity quaternion
-		rotation_vector = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	}
-	else {
-		XMVECTOR axis;
-		float angle;
-		XMQuaternionToAxisAngle(&axis, &angle, quaternion);
-
-		// Convert axis-angle representation to quaternion and decompose to get Euler angles
-		XMVECTOR q = XMQuaternionRotationAxis(axis, angle);
-		XMFLOAT4 qf;
-		XMStoreFloat4(&qf, q);
-		rotation_vector.m128_f32[0] = XMConvertToDegrees(atan2(2.0f * (qf.y * qf.z + qf.w * qf.x), qf.w * qf.w - qf.x * qf.x - qf.y * qf.y + qf.z * qf.z));
-		rotation_vector.m128_f32[1] = XMConvertToDegrees(asin(-2.0f * (qf.x * qf.z - qf.w * qf.y)));
-		rotation_vector.m128_f32[2] = XMConvertToDegrees(atan2(2.0f * (qf.x * qf.y + qf.w * qf.z), qf.w * qf.w + qf.x * qf.x - qf.y * qf.y - qf.z * qf.z));
-	}
+	XMMatrixDecompose(&scale_vector, &quaternion, &translation_vector, transform.transform_);
 
 	if (ImGui::TreeNode("Transform")) {
 		if (ImGui::TreeNode("Scale"))
@@ -171,20 +147,20 @@ void GwCharacterWindow::SetTransform(XMMATRIX& transform)
 		{
 			ImGui::Text("Yaw");	ImGui::SameLine();
 			string yaw = "##inputYaw";
-			ImGui::InputFloat(yaw.c_str(), &rotation_vector.m128_f32[1]);
+			ImGui::InputFloat(yaw.c_str(), &transform.rotation_vector_.m128_f32[1]);
 
 			ImGui::Text("Pitch");	ImGui::SameLine();
 			string pitch = "##inputPitch";
-			ImGui::InputFloat(pitch.c_str(), &rotation_vector.m128_f32[0]);
+			ImGui::InputFloat(pitch.c_str(), &transform.rotation_vector_.m128_f32[0]);
 
 			ImGui::Text("Roll");	ImGui::SameLine();
 			string roll = "##inputRoll";
-			ImGui::InputFloat(roll.c_str(), &rotation_vector.m128_f32[2]);
+			ImGui::InputFloat(roll.c_str(), &transform.rotation_vector_.m128_f32[2]);
 
 			string reset = "Reset##Rotation";
 			if (ImGui::Button(reset.c_str()))
 			{
-				rotation_vector = XMVectorZero();
+				transform.rotation_vector_ = XMVectorZero();
 			}
 
 			ImGui::TreePop();
@@ -216,12 +192,12 @@ void GwCharacterWindow::SetTransform(XMMATRIX& transform)
 	}
 
 	XMMATRIX scale_matrix = XMMatrixScalingFromVector(scale_vector);
-	XMMATRIX rotation_matrix = XMMatrixRotationX(XMConvertToRadians(rotation_vector.m128_f32[0])) *
-							   XMMatrixRotationY(XMConvertToRadians(rotation_vector.m128_f32[1])) *
-							   XMMatrixRotationZ(XMConvertToRadians(rotation_vector.m128_f32[2]));
+	XMMATRIX rotation_matrix = XMMatrixRotationX(XMConvertToRadians(transform.rotation_vector_.m128_f32[0])) *
+							   XMMatrixRotationY(XMConvertToRadians(transform.rotation_vector_.m128_f32[1])) *
+							   XMMatrixRotationZ(XMConvertToRadians(transform.rotation_vector_.m128_f32[2]));
 	XMMATRIX translation_matrix = XMMatrixTranslationFromVector(translation_vector);
 
-	transform = scale_matrix * rotation_matrix * translation_matrix;
+	transform.transform_ = scale_matrix * rotation_matrix * translation_matrix;
 }
 
 void GwCharacterWindow::SelectVertexShader(string& id)
@@ -462,7 +438,7 @@ void GwCharacterWindow::SetSocket()
 			ImGui::BeginDisabled();
 		}
 		if (ImGui::Button("Add new socket")) {
-			input_character_data_.sockets.insert({ socket_name, Socket() });
+			input_character_data_.sockets.insert({ socket_name, SocketData() });
 			input_character_data_.socket_static_meshes.insert({ socket_name, C_StaticMesh() });
 			ZeroMemory(socket_name_input, 100);
 		}
@@ -472,21 +448,23 @@ void GwCharacterWindow::SetSocket()
 	}
 }
 
-void GwCharacterWindow::SetSocketData(Socket& socket_data)
+void GwCharacterWindow::SetSocketData(SocketData& socket_data)
 {
 	ImGui::Text("Socket local offset"); ImGui::SameLine();
-	SetTransform(socket_data.local_offset);
+	SetTransform(socket_data.transform_data_);
+	socket_data.socket_.local_offset = socket_data.transform_data_.transform_;
 	static string bone_name;
 	SetBone(bone_name);
-	socket_data.bone_id = bone_name_id_map_[bone_name];
-	socket_data.owner_local = input_character_data_.skeletal_mesh_component.local;
+	socket_data.socket_.bone_id = bone_name_id_map_[bone_name];
+	socket_data.socket_.owner_local = input_character_data_.skeletal_mesh_component.local;
 }
 
 void GwCharacterWindow::SetSocketStaticMesh(C_StaticMesh& static_mesh_component)
 {
 	if (ImGui::TreeNode("Static Mesh""Static Mesh"))
 	{
-		SetTransform(input_character_data_.skeletal_mesh_component.local);
+		SetTransform(input_character_data_.socket_static_mesh_transforms[static_mesh_component.static_mesh_id]);
+		static_mesh_component.local = input_character_data_.socket_static_mesh_transforms[static_mesh_component.static_mesh_id].transform_;
 
 		if (ImGui::TreeNode("Static Mesh##1")) {
 			string cur_selected_stm_id = "";
@@ -529,7 +507,8 @@ void GwCharacterWindow::SelectSKM(string& id)
 {
 	if (ImGui::TreeNode("Skeletal Mesh"))
 	{
-		SetTransform(input_character_data_.skeletal_mesh_component.local);
+		SetTransform(input_character_data_.skeletal_mesh_transform_data);
+		input_character_data_.skeletal_mesh_component.local = input_character_data_.skeletal_mesh_transform_data.transform_;
 
 		if (ImGui::TreeNode("Skeletal Mesh##1")) {
 			int item_current_idx = 0;
@@ -571,7 +550,9 @@ void GwCharacterWindow::SetCapsuleCollision()
 {
 	if (ImGui::CollapsingHeader("Capsule Collision"))
 	{
-		SetTransform(input_character_data_.capsule_collision.local);
+		SetTransform(input_character_data_.capsule_collision_transform_data);
+		input_character_data_.capsule_collision.local = input_character_data_.capsule_collision_transform_data.transform_;
+
 		ImGui::InputFloat("height", &input_character_data_.capsule_collision.capsule.height);
 		ImGui::InputFloat("radius", &input_character_data_.capsule_collision.capsule.radius);
 
